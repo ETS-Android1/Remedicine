@@ -5,4 +5,5 @@
     <string name="active_meds">Active Meds</string>
     <string name="inactive_meds">Inactive Meds</string>
     <string name="med_name">Panadol</string>
+    <string name="my_account">My Account</string>
 </resources>
