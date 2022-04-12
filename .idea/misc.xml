@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26944444444444443" />
+        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26944444444444443" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_add_new_medicine.xml" value="0.36500519210799587" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_main.xml" value="0.2653985507246377" />
+        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/fragment_my_account.xml" value="0.2653985507246377" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/fragment_show_medications.xml" value="0.33" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/med_fragment_custom_cell.xml" value="0.33" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/toolbar_main.xml" value="0.18" />
