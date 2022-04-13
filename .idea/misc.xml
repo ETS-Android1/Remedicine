@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.11752786220871327" />
         <entry key="app/src/main/res/layout/fragment_home_fragmenet.xml" value="0.11752786220871327" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/fragment_show_medications.xml" value="0.13496376811594202" />
         <entry key="app/src/main/res/layout/med_time_recyclerview_item.xml" value="0.165" />
         <entry key="app/src/main/res/layout/toolbar_main.xml" value="0.11752786220871327" />
       </map>

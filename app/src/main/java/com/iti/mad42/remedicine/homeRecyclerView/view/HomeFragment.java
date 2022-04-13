@@ -1,14 +1,30 @@
 package com.iti.mad42.remedicine.homeRecyclerView.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.harrywhewell.scrolldatepicker.DayScrollDatePicker;
+import com.harrywhewell.scrolldatepicker.OnDateSelectedListener;
+import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
 import com.iti.mad42.remedicine.R;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +33,10 @@ import com.iti.mad42.remedicine.R;
  */
 public class HomeFragment extends Fragment {
 
+    private View view;
+    DayScrollDatePicker dayScrollDatePicker;
+    RecyclerView ParentRecyclerViewItem;
+    FloatingActionButton btnAddMedicine;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,6 +81,89 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_fragmenet, container, false);
+        view = inflater.inflate(R.layout.fragment_home_fragmenet,container,false);
+
+        return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        btnAddMedicine = view.findViewById(R.id.btnAddMedicineHome);
+        btnAddMedicine.setOnClickListener(view1 -> {
+
+            Intent intent = new Intent(getActivity(), AddNewMedicineActivity.class);
+            startActivity(intent);
+        });
+        initScrollDatePicker();
+        ParentRecyclerViewItem = view.findViewById(R.id.parent_recyclerview);
+        // Initialise the Linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        // Pass the arguments
+        // to the parentItemAdapter.
+        // These arguments are passed
+        // using a method ParentItemList()
+        HomeParentItemAdapter parentItemAdapter = new HomeParentItemAdapter(getActivity(),ParentItemList());
+
+        // Set the layout manager
+        // and adapter for items
+        // of the parent recyclerview
+        ParentRecyclerViewItem
+                .setAdapter(parentItemAdapter);
+        ParentRecyclerViewItem
+                .setLayoutManager(layoutManager);
+
+    }
+
+
+    private void initScrollDatePicker() {
+
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, -1);
+
+        dayScrollDatePicker = view.findViewById(R.id.dayDatePicker);
+        dayScrollDatePicker.setStartDate(12,4,2022);
+        dayScrollDatePicker.getSelectedDate(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@Nullable Date date) {
+                Toast.makeText(getContext(),date.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    private List<HomeParentItem> ParentItemList() {
+
+        List<HomeParentItem> itemList = new ArrayList<>();
+
+        HomeParentItem item = new HomeParentItem("10:00 AM", ChildItemList());
+        itemList.add(item);
+        HomeParentItem item1 = new HomeParentItem("01:00 PM", ChildItemList());
+        itemList.add(item1);
+        HomeParentItem item2 = new HomeParentItem("05:00 PM", ChildItemList());
+        itemList.add(item2);
+        HomeParentItem item3 = new HomeParentItem("11:00 PM", ChildItemList());
+        itemList.add(item3);
+
+        return itemList;
+    }
+
+    // Method to pass the arguments
+    // for the elements
+    // of child RecyclerView
+    private List<HomeChildItem> ChildItemList() {
+
+        List<HomeChildItem> ChildItemList = new ArrayList<>();
+
+        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
+        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
+        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
+        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
+
+        return ChildItemList;
+    }
+
 }
