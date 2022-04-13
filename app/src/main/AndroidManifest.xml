@@ -11,10 +11,18 @@
         android:theme="@style/Theme.Remedicine">
         <activity
             android:name=".Requests.View.RequestsViewActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".AddNewMedicine.View.AddNewMedicineActivity"
             android:exported="false"></activity>
+        <activity
+            android:name=".AddDose.View.AddDose"
+            android:exported="false" />
+        <activity
+            android:name=".MedDetails.View.MedDetails"
+            android:exported="false">
+            
+        </activity>
         <activity
             android:name=".homeRecyclerView.view.HomeRecyclerView"
             android:exported="true">
@@ -23,10 +31,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+            </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

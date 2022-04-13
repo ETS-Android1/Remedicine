@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 //    FragmentManager mgr;
 //    FragmentTransaction transaction;
 
-
     MyAccountFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

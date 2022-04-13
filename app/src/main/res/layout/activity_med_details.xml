@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MedDetails.View.MedDetails">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="12dp"
+
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toStartOf="@id/edit"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="#ffff"
+        android:text="Med Details"
+        android:textSize="22dp"
+        android:fontFamily="@font/poppins_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="60dp"
+        android:fadeScrollbars="false"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/med_img"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ic_pills"/>
+
+                    <TextView
+                        android:id="@+id/medication_name_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Panadol"
+                        android:textColor="#000"
+                        app:layout_constraintEnd_toEndOf="@+id/med_img"
+                        app:layout_constraintStart_toStartOf="@id/med_img"
+                        app:layout_constraintTop_toBottomOf="@id/med_img" />
+
+                    <TextView
+                        android:id="@+id/medication_strength_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="1000 g"
+                        android:textColor="#595959"
+                        app:layout_constraintEnd_toEndOf="@+id/med_img"
+                        app:layout_constraintStart_toStartOf="@id/med_img"
+                        app:layout_constraintTop_toBottomOf="@id/medication_name_label" />
+                    <View
+                        android:id="@+id/seperator"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#54595959"
+                        android:layout_marginVertical="8dp"
+                        android:layout_marginHorizontal="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/medication_strength_label"
+                        />
+
+                    <TextView
+                        android:id="@+id/reminders_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Reminders"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/seperator" />
+
+                    <TextView
+                        android:id="@+id/med_duration_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:fontFamily="@font/poppins_regular"
+
+                        android:text="Every day , for 30 days"
+                        android:layout_marginVertical="8dp"
+                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/reminders_tv" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/suspend_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        app:cornerRadius="8dp"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Suspend"
+                        android:fontFamily="@font/poppins_semi_bold"
+                        app:strokeColor="@color/main_app_color"
+                        app:layout_constraintTop_toTopOf="@+id/reminders_tv" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/med_time_recyclerview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintStart_toStartOf="@id/med_duration_label"
+                        app:layout_constraintTop_toBottomOf="@id/med_duration_label"
+                        />
+                    <TextView
+                        android:id="@+id/reason_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+
+                        android:layout_marginTop="12sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Reason of taking this Med"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/med_time_recyclerview" />
+
+                    <TextView
+                        android:id="@+id/med_reason_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:text="Headache"
+                        android:fontFamily="@font/poppins_regular"
+
+                        android:layout_marginVertical="8dp"
+                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/reason_tv" />
+                    <TextView
+                        android:id="@+id/prescription_refill_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="12dp"
+
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Prescription Refill"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/med_reason_label" />
+
+                    <TextView
+                        android:id="@+id/pills_left_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:text="14 pills left"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="@font/poppins_regular"
+
+                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/prescription_refill_tv" />
+
+                    <TextView
+                        android:id="@+id/prescription_refill_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Refill Reminder When I have 3 Meds Left"
+                        android:layout_marginVertical="8dp"
+                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/pills_left_label" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/refill_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        app:cornerRadius="8dp"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Refill"
+                        android:fontFamily="@font/poppins_semi_bold"
+                        app:strokeColor="@color/main_app_color"
+                        app:layout_constraintTop_toTopOf="@+id/prescription_refill_tv" />
+                    <TextView
+                        android:id="@+id/how_to_use_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="12dp"
+
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="How To Use"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/prescription_refill_label" />
+
+                    <TextView
+                        android:id="@+id/how_to_use_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:text="After Eating"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/how_to_use_tv" />
+                    <TextView
+                        android:id="@+id/last_time_taken_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="12dp"
+
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Last Taken"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/how_to_use_label" />
+
+                    <TextView
+                        android:id="@+id/last_time_taken_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:text="27/06/2022    9:00 AM"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/last_time_taken_tv" />
+
+                    <Button
+                        android:id="@+id/add"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="36dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="36dp"
+                        android:background="@drawable/border"
+                        android:backgroundTint="#078E98"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Add Dose"
+                        android:textColor="#ffff"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/last_time_taken_label"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

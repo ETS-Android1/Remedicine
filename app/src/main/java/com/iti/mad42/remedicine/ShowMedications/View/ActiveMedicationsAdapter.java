@@ -29,9 +29,9 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
         public ViewHolder( View layout) {
             super(layout);
             this.layout = layout;
-            medName = layout.findViewById(R.id.medName);
-            medSubtitle = layout.findViewById(R.id.med_subtitle);
-            constraintLayout = layout.findViewById(R.id.custom_cell_constraint);
+            medName = layout.findViewById(R.id.txtViewHomeMedName);
+            medSubtitle = layout.findViewById(R.id.txtViewHomeMedSubtitle);
+            constraintLayout = layout.findViewById(R.id.constrainLayoutHomeChildItem);
         }
 
     }
