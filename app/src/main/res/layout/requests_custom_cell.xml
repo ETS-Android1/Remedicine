@@ -31,45 +31,80 @@
                     app:layout_constraintTop_toTopOf="parent"
                     />
                 <TextView
-                    android:id="@+id/requestMsg"
-                    android:layout_width="match_parent"
+                    android:id="@+id/requestUserName"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
-                    android:text="Mohamed Ahmed Sent tou a request to ba a Medfriend."
+                    android:text="Sandra George"
                     android:textSize="15sp"
-                    android:fontFamily="@font/poppins_semi_bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_bold"
                     app:layout_constraintStart_toEndOf="@id/reqProfilePhoto"
                     app:layout_constraintTop_toTopOf="parent"
-
+                    />
+                <TextView
+                    android:id="@+id/allReqMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sent you a request to be"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toEndOf="@+id/requestUserName"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <TextView
+                    android:id="@+id/allReqMsg2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="a Medfriend."
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:textSize="13sp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="45dp"
+                    app:layout_constraintStart_toEndOf="@+id/reqProfilePhoto"
+                    app:layout_constraintTop_toTopOf="parent"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/reqProfilePhoto"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/profilee"
-                    android:layout_margin="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Mohamed Ahmed Sent tou a request to ba a Medfriend."
-                    android:textSize="15sp"
-                    android:fontFamily="@font/poppins_semi_bold"
-                    app:layout_constraintStart_toEndOf="@id/reqProfilePhoto"
-                    app:layout_constraintTop_toTopOf="parent"
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/acceptBtn"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:text="Accept"
+                    android:textColor="@color/white"
+                    android:layout_margin="11dp"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/main_app_color"
+                    app:strokeWidth="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/rejectBtn"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:text="Reject"
+                    android:textColor="@color/main_app_color"
+                    android:layout_margin="11dp"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/main_app_color"
+                    app:strokeWidth="1dp"
+                    app:layout_constraintEnd_toStartOf="@id/acceptBtn"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
