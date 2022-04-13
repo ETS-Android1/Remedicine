@@ -3,28 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26944444444444443" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/home.xml" value="0.3769230769230769" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.21875" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26944444444444443" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_add_new_medicine.xml" value="0.1446700507614213" />
+        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_add_new_medicine.xml" value="0.36500519210799587" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_main.xml" value="0.2653985507246377" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_requests_view.xml" value="0.33" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/content_requests_view.xml" value="0.20260416666666667" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/fragment_my_account.xml" value="0.33" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/fragment_pill_fragmenet.xml" value="0.20260416666666667" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/fragment_show_medications.xml" value="0.33" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/med_fragment_custom_cell.xml" value="0.33" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/requests_custom_cell.xml" value="0.3625" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/toolbar_main.xml" value="0.18" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/border.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/activity_add_dose.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_add_new_medicine.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_home_recycler_view.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home_recycler_view.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.12537993920972645" />
-        <entry key="app/src/main/res/layout/fragment_home_fragmenet.xml" value="0.12537993920972645" />
-        <entry key="app/src/main/res/layout/fragment_pill_fragmenet.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/activity_med_details.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/fragment_home_fragmenet.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/med_time_recyclerview_item.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/toolbar_main.xml" value="0.11752786220871327" />
       </map>
     </option>
   </component>
