@@ -14,6 +14,7 @@ import android.view.WindowManager;
 
 import com.gauravk.bubblenavigation.BubbleNavigationLinearView;
 import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
+import com.iti.mad42.remedicine.MyAccount.View.MyAccountFragment;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.ShowMedications.View.ShowMedicationsFragment;
 
@@ -48,7 +49,7 @@ public class HomeRecyclerView extends AppCompatActivity {
                     replaceFragments(new ShowMedicationsFragment());
                     break;
                 case 2:
-                    replaceFragments(new AccountFragment());
+                    replaceFragments(new MyAccountFragment());
                     break;
             }
         });
