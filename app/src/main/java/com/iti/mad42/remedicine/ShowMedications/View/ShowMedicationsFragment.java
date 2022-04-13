@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
+import com.iti.mad42.remedicine.EditMed.View.EditMed;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.R;
@@ -84,6 +86,15 @@ public class ShowMedicationsFragment extends Fragment {
 
         activeAdapter.notifyDataSetChanged();
         inactiveAdapter.notifyDataSetChanged();
+        activeAdapter.setOnItemClickListener(new ActiveMedicationsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startActivity(new Intent(getActivity(), MedDetails.class));
+
+                Toast.makeText(getContext(),myMeds.get(position).getMedName()+" Pressed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
         return view;

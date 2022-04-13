@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context=".AddNewMedicine.View.AddNewMedicineActivity"
-    tools:ignore="SpeakableTextPresentCheck">
-
+    tools:context=".EditMed.View.EditMed">
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_main"
@@ -41,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textColor="#ffff"
-        android:text="Add New Med"
+        android:text="Edit Med"
         android:textSize="22dp"
         android:fontFamily="@font/poppins_bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +92,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_name_edt"
+                        android:id="@+id/edit_medication_name_edt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -119,6 +116,7 @@
                             android:background="@drawable/border"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="Medication Name"
+                            android:text="Panadol"
                             android:inputType="text"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
@@ -134,10 +132,10 @@
                         android:text="Medication Form:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_name_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_name_edt" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_dose_edt"
+                        android:id="@+id/edit_medication_dose_edt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -160,13 +158,14 @@
                             android:background="@drawable/border"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="Medication Dose"
+                            android:text="2"
                             android:inputType="numberDecimal"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Spinner
-                        android:id="@+id/medication_form_spinner"
+                        android:id="@+id/edit_medication_form_spinner"
                         android:layout_width="100dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="16dp"
@@ -190,10 +189,10 @@
                         android:text="Medication Strength:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_form_spinner" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_form_spinner" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_strength_unit_edt"
+                        android:id="@+id/edit_medication_strength_unit_edt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -206,7 +205,7 @@
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
                         app:hintEnabled="false"
-                        app:layout_constraintEnd_toStartOf="@id/medication_form_spinner"
+                        app:layout_constraintEnd_toStartOf="@id/edit_medication_form_spinner"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_strength_txt">
 
@@ -217,12 +216,13 @@
                             android:fontFamily="@font/poppins_regular"
                             android:hint="Medication Strength"
                             android:inputType="numberDecimal"
+                            android:text="1000"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Spinner
-                        android:id="@+id/medication_strength_unit_spinner"
+                        android:id="@+id/edit_medication_strength_unit_spinner"
                         android:layout_width="100dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="16dp"
@@ -247,10 +247,10 @@
                         android:text="Reason of taking this med:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_strength_unit_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_strength_unit_edt" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_reason_edt"
+                        android:id="@+id/edit_medication_reason_edt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -274,6 +274,7 @@
                             android:fontFamily="@font/poppins_regular"
                             android:hint="Reason of taking this med"
                             android:inputType="text"
+                            android:text="Headache"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -288,10 +289,10 @@
                         android:text="Medication Instructions:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_reason_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_reason_edt" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_instruction_edt"
+                        android:id="@+id/edit_medication_instruction_edt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -316,6 +317,7 @@
                             android:hint="Medication Instructions"
                             android:inputType="text"
                             android:textColor="#000"
+                            android:text="After Eating"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -329,10 +331,10 @@
                         android:text="Medication Reoccurrence Per Day:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_instruction_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_instruction_edt" />
 
                     <Spinner
-                        android:id="@+id/medication_Reoccurrence_spinner"
+                        android:id="@+id/edit_medication_Reoccurrence_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="16dp"
@@ -348,6 +350,28 @@
                         app:layout_constraintTop_toBottomOf="@id/medication_Reoccurrence_txt" />
 
                     <TextView
+                        android:id="@+id/reminders_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Reminders"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_Reoccurrence_spinner" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/edit_med_time_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginHorizontal="16dp"
+                        app:layout_constraintStart_toStartOf="@id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@id/reminders_tv"
+                        />
+                    <TextView
                         android:id="@+id/medication_Reoccurrence_interval_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -357,10 +381,10 @@
                         android:text="Medication Reoccurrence Interval:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_Reoccurrence_spinner" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_med_time_recyclerview" />
 
                     <Spinner
-                        android:id="@+id/medication_Reoccurrence_interval_spinner"
+                        android:id="@+id/edit_medication_Reoccurrence_interval_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="16dp"
@@ -385,10 +409,10 @@
                         android:text="Treatment Duration:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_Reoccurrence_interval_spinner" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_Reoccurrence_interval_spinner" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_treatment_Duration_from_edt"
+                        android:id="@+id/edit_medication_treatment_Duration_from_edt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -413,13 +437,14 @@
                             android:focusable="false"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="From"
+                            android:text="2021-12-17"
                             android:inputType="text"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_treatment_Duration_to_edt"
+                        android:id="@+id/edit_medication_treatment_Duration_to_edt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -444,6 +469,7 @@
                             android:focusable="false"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="To"
+                            android:text="2021-12-18"
                             android:inputType="text"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
@@ -467,10 +493,10 @@
                         android:text="Number of Meds Left:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_treatment_Duration_from_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_treatment_Duration_from_edt" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_left_edt"
+                        android:id="@+id/edit_medication_left_edt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -495,6 +521,7 @@
                             android:hint="Number of Meds Left"
                             android:inputType="numberDecimal"
                             android:textColor="#000"
+                            android:text="15"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -508,10 +535,10 @@
                         android:text="Refill Reminder When:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_left_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_medication_left_edt" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_refill_reminder_num_of_items_edt"
+                        android:id="@+id/edit_medication_refill_reminder_num_of_items_edt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -534,13 +561,14 @@
                             android:background="@drawable/border"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="No. items"
+                            android:text="3"
                             android:inputType="numberDecimal"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_refill_reminder_time_edt"
+                        android:id="@+id/edit_medication_refill_reminder_time_edt"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="10dp"
@@ -548,7 +576,11 @@
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/border"
                         android:elevation="8dp"
-                        app:boxBackgroundMode="none"
+                        app:boxBackgroundColor="#FFF"
+                        app:boxStrokeColor="#FFF"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:hintEnabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/guideline"
                         app:layout_constraintTop_toBottomOf="@id/medication_refill_reminder_txt">
@@ -561,13 +593,14 @@
                             android:focusable="false"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="Ex: 10:00 AM"
+                            android:text="10:00 Am"
                             android:inputType="text"
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
-                        android:id="@+id/add"
+                        android:id="@+id/save_edit_btn"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginStart="16dp"
@@ -577,13 +610,13 @@
                         android:background="@drawable/border"
                         android:backgroundTint="#078E98"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Add"
+                        android:text="Save"
                         android:textColor="#ffff"
                         android:textSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/medication_refill_reminder_num_of_items_edt"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_medication_refill_reminder_num_of_items_edt"
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
