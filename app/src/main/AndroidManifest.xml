@@ -24,9 +24,6 @@
             
         </activity>
         <activity
-            android:name=".AddNewMedicine.View.AddNewMedicineActivity"
-            android:exported="false" />
-        <activity
             android:name=".homeRecyclerView.view.HomeRecyclerView"
             android:exported="true">
             <intent-filter>

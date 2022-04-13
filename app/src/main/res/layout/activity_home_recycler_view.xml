@@ -20,7 +20,8 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:elevation="8dp">
 
         <com.gauravk.bubblenavigation.BubbleToggleView
             android:id="@+id/homeToggle"
