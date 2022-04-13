@@ -79,7 +79,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1467dp">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/medication_name_txt"
@@ -135,9 +135,38 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_name_edt" />
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/medication_dose_edt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/border"
+                        android:elevation="8dp"
+                        app:boxBackgroundColor="#FFF"
+                        app:boxStrokeColor="#FFF"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:hintEnabled="false"
+                        app:layout_constraintEnd_toStartOf="@+id/medication_strength_unit_spinner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/medication_form_txt">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/poppins_regular"
+                            android:hint="Medication Dose"
+                            android:inputType="numberDecimal"
+                            android:textColor="#000"
+                            tools:ignore="SpeakableTextPresentCheck" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <Spinner
                         android:id="@+id/medication_form_spinner"
-                        android:layout_width="match_parent"
+                        android:layout_width="100dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
@@ -148,7 +177,6 @@
                         android:fontFamily="@font/poppins_regular"
                         android:spinnerMode="dropdown"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_form_txt" />
 
                     <TextView
@@ -177,8 +205,7 @@
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
                         app:hintEnabled="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/medication_strength_unit_spinner"
+                        app:layout_constraintEnd_toStartOf="@id/medication_form_spinner"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_strength_txt">
 
@@ -426,7 +453,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_begin="183dp" />
+                        app:layout_constraintGuide_percent="0.5"
+                        />
 
                     <TextView
                         android:id="@+id/medication_left_txt"
