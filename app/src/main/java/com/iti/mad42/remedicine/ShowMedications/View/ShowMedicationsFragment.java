@@ -1,5 +1,6 @@
 package com.iti.mad42.remedicine.ShowMedications.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,7 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.iti.mad42.remedicine.AddDose.View.AddDose;
+import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
+import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.R;
 
@@ -22,6 +28,7 @@ public class ShowMedicationsFragment extends Fragment {
     RecyclerView inActiveMedsRecycler;
     ActiveMedicationsAdapter activeAdapter, inactiveAdapter;
     List<Medication> myMeds = new ArrayList<>();
+    FloatingActionButton addMedBtn;
 
     public ShowMedicationsFragment() {
         // Required empty public constructor
@@ -44,6 +51,16 @@ public class ShowMedicationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_show_medications, container, false);
+
+        addMedBtn = view.findViewById(R.id.btnAddMedicineHome);
+        addMedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), AddNewMedicineActivity.class));
+
+            }
+        });
+
         activeMedsRecycler = view.findViewById(R.id.activeMedsRecycler);
         inActiveMedsRecycler = view.findViewById(R.id.inactiveMedsRecycler);
 
@@ -67,6 +84,8 @@ public class ShowMedicationsFragment extends Fragment {
 
         activeAdapter.notifyDataSetChanged();
         inactiveAdapter.notifyDataSetChanged();
+
+
         return view;
     }
 }
