@@ -2,6 +2,7 @@ package com.iti.mad42.remedicine.MedDetails.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
+import com.iti.mad42.remedicine.EditMed.View.EditMed;
 import com.iti.mad42.remedicine.Model.Medication;
+import com.iti.mad42.remedicine.Model.MedicineDose;
 import com.iti.mad42.remedicine.R;
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import java.util.List;
 public class MedDetails extends AppCompatActivity {
 
     RemindersRecyclerAdapter adapter;
-    List<Medication> myMeds = new ArrayList<>();
+    List<MedicineDose>medDose = new ArrayList<>();
     RecyclerView.LayoutManager layoutManager;
     private ImageView back;
     private ImageView delete;
@@ -50,7 +53,7 @@ public class MedDetails extends AppCompatActivity {
         initView();
         addDummyData();
         medTimeRecyclerview.setHasFixedSize(true);
-        adapter = new RemindersRecyclerAdapter(this, myMeds);
+        adapter = new RemindersRecyclerAdapter(this, medDose);
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         medTimeRecyclerview.setLayoutManager(layoutManager);
         medTimeRecyclerview.setAdapter(adapter);
@@ -59,12 +62,19 @@ public class MedDetails extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(MedDetails.this, AddDose.class));            }
         });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("TAG", "onClick: ");
+                startActivity(new Intent(MedDetails.this, EditMed.class));            }
+        });
     }
 
     void addDummyData() {
-        myMeds.add(new Medication("Panadol", "500", "g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500", "g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500", "g", "After Eating", "15"));
+        medDose.add(new MedicineDose("Pill", 3, 9, 30));
+        medDose.add(new MedicineDose("Pill", 3, 9, 30));
+        medDose.add(new MedicineDose("Pill", 3, 9, 30));
+
     }
 
     private void initView() {

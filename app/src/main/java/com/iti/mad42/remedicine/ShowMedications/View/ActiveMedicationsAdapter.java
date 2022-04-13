@@ -2,9 +2,11 @@ package com.iti.mad42.remedicine.ShowMedications.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.iti.mad42.remedicine.EditMed.View.EditMed;
+import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.R;
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.List;
 public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicationsAdapter.ViewHolder> {
     private final Context context;
     private List<Medication> myMeds;
+    OnItemClickListener mListener;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -59,8 +64,14 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,myMeds.get(position).getMedName()+" Pressed", Toast.LENGTH_SHORT).show();
-            }
+                if (mListener!=null){
+                    int pos=position;
+                    if(pos!=RecyclerView.NO_POSITION){
+                        mListener.onItemClick(pos);
+                    }
+                }
+                }
+
         });
     }
 
@@ -68,4 +79,11 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
     public int getItemCount() {
         return myMeds.size();
     }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener=listener;
+    }
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
 }
