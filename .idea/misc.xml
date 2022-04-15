@@ -16,10 +16,10 @@
         <entry key="app/src/main/res/layout/activity_add_dose.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_add_new_medicine.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_home_recycler_view.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_med_details.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.11752786220871327" />
         <entry key="app/src/main/res/layout/fragment_home_fragmenet.xml" value="0.11752786220871327" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.11752786220871327" />
