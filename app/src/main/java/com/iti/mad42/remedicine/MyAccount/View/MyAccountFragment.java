@@ -22,8 +22,8 @@ import com.iti.mad42.remedicine.Requests.View.RequestsViewActivity;
 
 public class MyAccountFragment extends Fragment {
 
-    ConstraintLayout myRequestsConst, addMedfriendConst;
-    Dialog addMedfrienDialog;
+    ConstraintLayout myRequestsConst, addMedfriendConst, switchAcc;
+    Dialog addMedfrienDialog, showReminderDialog;
 
     public MyAccountFragment() {
         // Required empty public constructor
@@ -44,8 +44,10 @@ public class MyAccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         myRequestsConst = view.findViewById(R.id.onClickRequests);
         addMedfriendConst = view.findViewById(R.id.onClickAddMedfriend);
+        switchAcc = view.findViewById(R.id.onClickSwitch);
 
         addMedfrienDialog = new Dialog(getContext());
+        showReminderDialog = new Dialog(getContext());
 
         myRequestsConst.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +61,13 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 openAddMedfriendDialog();
+            }
+        });
+
+        switchAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openReminderDialog();
             }
         });
         return view;
@@ -94,5 +103,20 @@ public class MyAccountFragment extends Fragment {
         });
 
         addMedfrienDialog.show();
+    }
+    public void openReminderDialog(){
+        showReminderDialog.setContentView(R.layout.medication_reminder_dialog);
+        showReminderDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ImageView closeDialog = showReminderDialog.findViewById(R.id.reminderDialogCloseBtn);
+        closeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showReminderDialog.dismiss();
+            }
+        });
+
+
+        showReminderDialog.show();
     }
 }
