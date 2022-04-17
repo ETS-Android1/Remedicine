@@ -16,14 +16,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.Requests.View.RequestsViewActivity;
+import com.iti.mad42.remedicine.login.view.view.LoginActivity;
 
 
 public class MyAccountFragment extends Fragment {
 
-    ConstraintLayout myRequestsConst, addMedfriendConst, switchAcc;
+    ConstraintLayout myRequestsConst, addMedfriendConst, switchAcc, logoutConst;
     Dialog addMedfrienDialog, showReminderDialog;
+    Intent intent;
 
     public MyAccountFragment() {
         // Required empty public constructor
@@ -45,7 +49,7 @@ public class MyAccountFragment extends Fragment {
         myRequestsConst = view.findViewById(R.id.onClickRequests);
         addMedfriendConst = view.findViewById(R.id.onClickAddMedfriend);
         switchAcc = view.findViewById(R.id.onClickSwitch);
-
+        logoutConst = view.findViewById(R.id.onClickLogout);
         addMedfrienDialog = new Dialog(getContext());
         showReminderDialog = new Dialog(getContext());
 
@@ -68,6 +72,13 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 openReminderDialog();
+            }
+        });
+
+        logoutConst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logoutFromApp();
             }
         });
         return view;
@@ -118,5 +129,13 @@ public class MyAccountFragment extends Fragment {
 
 
         showReminderDialog.show();
+    }
+
+    private void logoutFromApp() {
+        if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null){
+            LoginManager.getInstance().logOut();
+            intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }
