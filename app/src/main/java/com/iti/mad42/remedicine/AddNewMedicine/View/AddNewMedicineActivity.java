@@ -1,8 +1,10 @@
 package com.iti.mad42.remedicine.AddNewMedicine.View;
 
+import static com.iti.mad42.remedicine.Model.Utility.dateToLong;
 import static com.iti.mad42.remedicine.Model.Utility.medReoccurrence;
 import static com.iti.mad42.remedicine.Model.Utility.medReoccurrenceInterval;
 import static com.iti.mad42.remedicine.Model.Utility.medStrengthUnit;
+import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -59,38 +61,46 @@ public class AddNewMedicineActivity extends AppCompatActivity {
     private TextInputLayout medicationRefillReminderNumOfItemsEdt;
     private TextInputLayout medicationRefillReminderTimeEdt;
     private RecyclerView editMedTimeRecyclerview;
-
     private Button add;
-    int refillHour = 0 , refillMinute =0;
-    String startDate;
-    String endDate;
-    String medName = "",strength ="" ,reason ="",instruction ="",medQty ="",reminderMedQtyLeft ="";
-    boolean isActive;
-    List<MedState> medStates = new ArrayList<>();
 
-    String form="";
-    List<MedicineDose> medDose = new ArrayList<>();
     RecyclerView.LayoutManager layoutManager;
     EditRemindersRecyclerAdapter adapter;
+
+    int refillHour = 0 , refillMinute =0,interval=1;
+    String startDate,endDate;
+    List<MedState> medStates = new ArrayList<>();
+    String form="";
+    List<MedicineDose> medDose = new ArrayList<>();
     MedicationPojo med = new MedicationPojo();
-    int interval=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_medicine);
         initView();
+        initRecyclerView();
+        setAdapters();
+        setListeners();
 
+    }
+
+    private void initRecyclerView(){
         editMedTimeRecyclerview.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         editMedTimeRecyclerview.setLayoutManager(layoutManager);
 
-        ArrayAdapter<String> medFormAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, Utility.medForm);
-        medicationFormSpinner.setAdapter(medFormAdapter);
+    }
+    private void setListeners(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         medicationFormSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                selectedTime = times.get(position);
-//                selectedTimeIndex = position;
                 form = Utility.medForm[position];
                 med.setFormIndex(position);
             }
@@ -99,13 +109,38 @@ public class AddNewMedicineActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medStrengthUnitAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medStrengthUnit);
-        medicationStrengthUnitSpinner.setAdapter(medStrengthUnitAdapter);
+
+        medicationReoccurrenceIntervalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                med.setRecurrencePerWeekIndex(position);
+                switch (position){
+                    case 0  :
+                        interval = 1;
+                        break;
+                    case 1  :
+                        interval =2;
+                        break;
+                    case 2  :
+                        interval = 3;
+                        break;
+                    case 3  :
+                        interval = 7;
+                        break;
+                    case 4  :
+                        interval = 30;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         medicationStrengthUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                selectedTime = times.get(position);
-//                selectedTimeIndex = position;
                 med.setStrengthUnitIndex(position);
             }
 
@@ -113,13 +148,10 @@ public class AddNewMedicineActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrence);
-        medicationReoccurrenceSpinner.setAdapter(medReoccurrenceAdapter);
+
         medicationReoccurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                selectedTime = times.get(position);
-//                selectedTimeIndex = position;
                 medDose = new ArrayList<>();
                 med.setRecurrencePerDayIndex(position);
 
@@ -147,37 +179,7 @@ public class AddNewMedicineActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrenceInterval);
-        medicationReoccurrenceIntervalSpinner.setAdapter(medReoccurrenceIntervalAdapter);
-        medicationReoccurrenceIntervalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                selectedTime = times.get(position);
-//                selectedTimeIndex = position;
-                med.setRecurrencePerWeekIndex(position);
-                switch (position){
-                    case 0  :
-                        interval = 1;
-                        break;
-                    case 1  :
-                        interval =2;
-                        break;
-                    case 2  :
-                        interval = 3;
-                        break;
-                    case 3  :
-                        interval = 7;
-                        break;
-                    case 4  :
-                        interval = 30;
-                        break;
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
         medicationRefillReminderTimeEdt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,24 +193,37 @@ public class AddNewMedicineActivity extends AppCompatActivity {
                 openDatePicker("from");
             }
         });
+
         medicationTreatmentDurationToEdt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openDatePicker("to");
             }
         });
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 getData();
                 Log.i("mando", "onClick: "+ med );
-                // every day =1 , every 2days =2 , 3days = 3 ,every week = 7 ,ever month 30
-
             }
         });
+
     }
 
+    private void setAdapters(){
+        ArrayAdapter<String> medFormAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, Utility.medForm);
+        medicationFormSpinner.setAdapter(medFormAdapter);
+
+        ArrayAdapter<String> medStrengthUnitAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medStrengthUnit);
+        medicationStrengthUnitSpinner.setAdapter(medStrengthUnitAdapter);
+
+        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrence);
+        medicationReoccurrenceSpinner.setAdapter(medReoccurrenceAdapter);
+
+        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrenceInterval);
+        medicationReoccurrenceIntervalSpinner.setAdapter(medReoccurrenceIntervalAdapter);
+    }
     public void openDatePicker(String state){
         final Calendar c = Calendar.getInstance();
         long now = System.currentTimeMillis() - 1000;
@@ -257,17 +272,6 @@ public class AddNewMedicineActivity extends AppCompatActivity {
         med.setActive(true);
     }
 
-    public long dateToLong(String date){
-        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-        long milliseconds = 0;
-        try {
-            Date d = f.parse(date);
-            milliseconds = d.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return milliseconds;
-    }
     public void openTimePicker(View view) {
         Calendar calendar = Calendar.getInstance();
 
@@ -277,14 +281,12 @@ public class AddNewMedicineActivity extends AppCompatActivity {
                 refillHour = hour;
                 refillMinute = minute;
                 med.setRefillReminderTimeInMilliSec(timeToMillis(hour,minute));
-                //Log.e("mando", "onTimeSet: "+timeToMillis(hour,minute) +"|||"+millisToTimeAsString(timeToMillis(hour,minute)));
                 medicationRefillReminderTimeEdt.getEditText().setText(refillHour+":"+refillMinute);
             }
         }, calendar.get(Calendar.HOUR_OF_DAY)
                 , calendar.get(Calendar.MINUTE)
                 , true);
         timePickerDialog.show();
-        //flag=true;
     }
 
 
@@ -307,21 +309,7 @@ public class AddNewMedicineActivity extends AppCompatActivity {
 
 
     }
-    public long timeToMillis(int hour , int min){
-        return ((hour*60)+min) * 60 * 1000;
-    }
 
-    public String millisToTimeAsString(long timeInMillis){
-        int minutes = (int) ((timeInMillis / (1000*60)) % 60);
-        int hours   = (int) ((timeInMillis / (1000*60*60)) % 24);
-        return (hours+":"+minutes);
-    }
-    public String longToDateAsString(long dateInMillis){
-
-        Date d = new Date(dateInMillis);
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return dateFormat.format(d);
-    }
 
 
     private void initView() {
