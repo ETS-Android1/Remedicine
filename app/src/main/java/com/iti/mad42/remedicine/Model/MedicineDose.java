@@ -1,49 +1,82 @@
 package com.iti.mad42.remedicine.Model;
 
-public class MedicineDose {
-    private String type;
-    private int dose;
-    private int hour;
-    private int minute;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    public MedicineDose(){}
+public class MedicineDose implements Parcelable {
+    String medForm;
+    int medDose;
+    Long doseTimeInMilliSec;
 
-    public MedicineDose(String name, int dose, int hour, int minute) {
-        this.type = name;
-        this.dose = dose;
-        this.hour = hour;
-        this.minute = minute;
+    public MedicineDose() {
     }
 
-    public String getName() {
-        return type;
+
+    public MedicineDose(String medForm, int medDose, Long doseTimeInMilliSec) {
+        this.medForm = medForm;
+        this.medDose = medDose;
+        this.doseTimeInMilliSec = doseTimeInMilliSec;
     }
 
-    public void setName(String name) {
-        this.type = name;
+    public String getMedForm() {
+        return medForm;
     }
 
-    public int getDose() {
-        return dose;
+    public void setMedForm(String medForm) {
+        this.medForm = medForm;
     }
 
-    public void setDose(int dose) {
-        this.dose = dose;
+    public int getMedDose() {
+        return medDose;
     }
 
-    public int getHour() {
-        return hour;
+    public void setMedDose(int medDose) {
+        this.medDose = medDose;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    public Long getDoseTimeInMilliSec() {
+        return doseTimeInMilliSec;
     }
 
-    public int getMinute() {
-        return minute;
+    public void setDoseTimeInMilliSec(Long doseTimeInMilliSec) {
+        this.doseTimeInMilliSec = doseTimeInMilliSec;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public static final Creator<MedicineDose> CREATOR = new Creator<MedicineDose>() {
+        @Override
+        public MedicineDose createFromParcel(Parcel in) {
+            return new MedicineDose(in);
+        }
+
+        @Override
+        public MedicineDose[] newArray(int size) {
+            return new MedicineDose[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "MedicineDose{" +
+                "medForm='" + medForm + '\'' +
+                ", medDose='" + medDose + '\'' +
+                ", doseTimeInMilliSec=" + doseTimeInMilliSec +
+                '}';
+    }
+    protected MedicineDose(Parcel in){
+        medForm = in.readString();
+        medDose = in.readInt();
+        doseTimeInMilliSec=in.readLong();
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int i) {
+        dest.writeString(medForm);
+        dest.writeInt(medDose);
+        dest.writeLong(doseTimeInMilliSec);
     }
 }

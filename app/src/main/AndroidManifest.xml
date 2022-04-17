@@ -11,7 +11,9 @@
         android:theme="@style/Theme.Remedicine">
         <activity
             android:name=".EditMed.View.EditMed"
-            android:exported="false" />
+            android:exported="false" >
+
+        </activity>
         <activity
             android:name=".register.view.RegisterActivity"
             android:exported="false" />

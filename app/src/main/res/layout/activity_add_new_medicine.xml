@@ -101,15 +101,14 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="16dp"
-                        android:background="@drawable/border"
                         android:elevation="8dp"
+                        android:background="@drawable/border"
                         app:boxBackgroundColor="#FFF"
                         app:boxStrokeColor="#FFF"
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
                         app:hintEnabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
-
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_name_txt">
 
@@ -136,48 +135,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_name_edt" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_dose_edt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/border"
-                        android:elevation="8dp"
-                        app:boxBackgroundColor="#FFF"
-                        app:boxStrokeColor="#FFF"
-                        app:boxStrokeWidth="0dp"
-                        app:boxStrokeWidthFocused="0dp"
-                        app:hintEnabled="false"
-                        app:layout_constraintEnd_toStartOf="@+id/medication_strength_unit_spinner"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_form_txt">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/border"
-                            android:fontFamily="@font/poppins_regular"
-                            android:hint="Medication Dose"
-                            android:inputType="numberDecimal"
-                            android:textColor="#000"
-                            tools:ignore="SpeakableTextPresentCheck" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <Spinner
                         android:id="@+id/medication_form_spinner"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="16dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/border"
                         android:contentDescription="Medication Form"
                         android:elevation="8dp"
                         android:fontFamily="@font/poppins_regular"
                         android:spinnerMode="dropdown"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_form_txt" />
 
                     <TextView
@@ -206,7 +178,7 @@
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
                         app:hintEnabled="false"
-                        app:layout_constraintEnd_toStartOf="@id/medication_form_spinner"
+                        app:layout_constraintEnd_toStartOf="@id/medication_strength_unit_spinner"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/medication_strength_txt">
 
@@ -277,6 +249,28 @@
                             android:textColor="#000"
                             tools:ignore="SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/reminders_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Reminders"
+                        android:textColor="#595959"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/medication_Reoccurrence_spinner" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/edit_med_time_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintStart_toStartOf="@id/reminders_tv"
+                        app:layout_constraintTop_toBottomOf="@id/reminders_tv" />
 
                     <TextView
                         android:id="@+id/medication_instruction_txt"
@@ -357,7 +351,7 @@
                         android:text="Medication Reoccurrence Interval:"
                         android:textColor="#000"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_Reoccurrence_spinner" />
+                        app:layout_constraintTop_toBottomOf="@id/edit_med_time_recyclerview" />
 
                     <Spinner
                         android:id="@+id/medication_Reoccurrence_interval_spinner"

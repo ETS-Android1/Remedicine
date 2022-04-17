@@ -55,10 +55,15 @@ public class ViewHolder extends RecyclerView.ViewHolder{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 //        holder.medTime.setText(myMeds.get(position).getMedName());
-        holder.medTime.setText(myMeds.get(position).getHour()+":"+myMeds.get(position).getMinute());
-        holder.medDose.setText("Take "+myMeds.get(position).getDose()+" "+myMeds.get(position).getName()+"(s)");
+        holder.medTime.setText(millisToTimeAsString(myMeds.get(position).getDoseTimeInMilliSec()));
+        holder.medDose.setText("Take "+myMeds.get(position).getMedDose()+" "+ myMeds.get(position).getMedForm() +"(s)");
 
        // holder.medDose.setText(myMeds.get(position).getMedStrength()+" "+ myMeds.get(position).getMedUnit()+" Take 1 Pill(s)"+myMeds.get(position).getMedInstructions());
+    }
+    public String millisToTimeAsString(long timeInMillis){
+        int minutes = (int) ((timeInMillis / (1000*60)) % 60);
+        int hours   = (int) ((timeInMillis / (1000*60*60)) % 24);
+        return (hours+":"+minutes);
     }
 
     @Override
