@@ -542,7 +542,11 @@
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/border"
                         android:elevation="8dp"
-                        app:boxBackgroundMode="none"
+                        app:boxBackgroundColor="#FFF"
+                        app:boxStrokeColor="#FFF"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:hintEnabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/guideline"
                         app:layout_constraintTop_toBottomOf="@id/medication_refill_reminder_txt">
