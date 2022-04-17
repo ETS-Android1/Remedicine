@@ -17,6 +17,7 @@ import com.iti.mad42.remedicine.AddDose.View.AddDose;
 import com.iti.mad42.remedicine.EditMed.View.EditMed;
 import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.Model.MedicineDose;
+import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.R;
 
 import java.util.ArrayList;
@@ -60,20 +61,22 @@ public class MedDetails extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MedDetails.this, AddDose.class));            }
+                startActivity(new Intent(MedDetails.this, AddDose.class));
+            }
         });
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("TAG", "onClick: ");
-                startActivity(new Intent(MedDetails.this, EditMed.class));            }
+                startActivity(new Intent(MedDetails.this, EditMed.class));
+            }
         });
     }
 
     void addDummyData() {
-        medDose.add(new MedicineDose("Pill", 3, 9, 30));
-        medDose.add(new MedicineDose("Pill", 3, 9, 30));
-        medDose.add(new MedicineDose("Pill", 3, 9, 30));
+        medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
+        medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
+        medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
 
     }
 
