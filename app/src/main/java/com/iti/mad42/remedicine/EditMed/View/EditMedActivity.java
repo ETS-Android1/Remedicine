@@ -1,51 +1,33 @@
 package com.iti.mad42.remedicine.EditMed.View;
 
-import static com.iti.mad42.remedicine.Model.Utility.longToDateAsString;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.longToDateAsString;
 
-import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
-import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
-import static com.iti.mad42.remedicine.Model.Utility.medStrengthUnit;
-import static com.iti.mad42.remedicine.Model.Utility.millisToTimeAsString;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.medReminderPerDayList;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.medReminderPerWeekList;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.medStrengthUnit;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.millisToTimeAsString;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
 import com.iti.mad42.remedicine.EditMed.Presenter.EditMedPresenter;
 import com.iti.mad42.remedicine.EditMed.Presenter.EditMedPresenterInterface;
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
-import com.iti.mad42.remedicine.Model.Utility;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class EditMedActivity extends AppCompatActivity implements  EditMedActivityInterface{

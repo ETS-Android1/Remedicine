@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,27 +15,29 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.core.Repo;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
-import com.iti.mad42.remedicine.Model.MedState;
-import com.iti.mad42.remedicine.Model.Medication;
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.MedState;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowMedicationsFragment extends Fragment {
+public class ShowMedicationsFragment extends Fragment implements ShowMedicationFragmentInterface{
 
     RecyclerView activeMedsRecycler;
     RecyclerView inActiveMedsRecycler;
     ActiveMedicationsAdapter activeAdapter, inactiveAdapter;
-    List<MedicationPojo> myMeds = new ArrayList<>();
     FloatingActionButton addMedBtn;
-    List<MedicineDose> medsDose = new ArrayList<>();
-    List<String> medDays = new ArrayList<>();
-    List<MedState> medStates = new ArrayList<>();
+
+    List<MedicationPojo> myMeds = new ArrayList<>();
+    Repository repository;
 
     public ShowMedicationsFragment() {
         // Required empty public constructor
@@ -42,19 +46,8 @@ public class ShowMedicationsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        medsDose.add(new MedicineDose("Pill", 2, 1650234756160L));
-        medsDose.add(new MedicineDose("Pill", 2, 1650234756160L));
-        medsDose.add(new MedicineDose("Pill", 2, 1650234756160L));
-        medDays.add("Saturday");
-        medDays.add("Monday");
-        medStates.add(new MedState(1652740553000L, "none"));
-        medStates.add(new MedState(1652740553000L, "none"));
-        myMeds.add(new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medsDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
-        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
-        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
-        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
-        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
-
+        repository = Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()));
+        repository.updateActiveStateForMedication(Utility.dateToLong(Utility.getCurrentDay()));
     }
 
     @Override
@@ -78,7 +71,7 @@ public class ShowMedicationsFragment extends Fragment {
         activeMedsRecycler.setHasFixedSize(true);
         inActiveMedsRecycler.setHasFixedSize(true);
 
-        activeAdapter = new ActiveMedicationsAdapter(getContext(), myMeds);
+
         inactiveAdapter = new ActiveMedicationsAdapter(getContext(), myMeds);
 
         LinearLayoutManager activeLayoutManager = new LinearLayoutManager(getContext());
@@ -102,12 +95,22 @@ public class ShowMedicationsFragment extends Fragment {
                 goToMedDetails.putExtra("fromActiveToDetails", myMeds.get(position));
                 startActivity(goToMedDetails);
 
-                Toast.makeText(getContext(),myMeds.get(position).getName()+" Pressed", Toast.LENGTH_SHORT).show();
-
             }
         });
 
 
         return view;
+    }
+
+    @Override
+    public void showActiveMedications(LiveData<List<MedicationPojo>> meds) {
+        meds.observe(this, new Observer<List<MedicationPojo>>() {
+            @Override
+            public void onChanged(List<MedicationPojo> medicationPojos) {
+                activeAdapter = new ActiveMedicationsAdapter(getContext(), medicationPojos);
+                activeAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 }
