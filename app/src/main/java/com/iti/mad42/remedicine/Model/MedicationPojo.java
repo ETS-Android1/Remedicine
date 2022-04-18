@@ -3,9 +3,10 @@ package com.iti.mad42.remedicine.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MedicationPojo implements Parcelable {
+public class MedicationPojo implements Serializable {
     String name;
     int formIndex;
     String strength;
@@ -205,78 +206,46 @@ public class MedicationPojo implements Parcelable {
                 ", medState=" + medState +
                 '}';
     }
-    protected MedicationPojo(Parcel in) {
-        name = in.readString();
-        formIndex = in.readInt();
-        strength = in.readString();
-        strengthUnitIndex=in.readInt();
-        reason =in.readString();
-        instructions=in.readString();
-        recurrencePerDayIndex=in.readInt();
-        medDoseReminders=in.createTypedArrayList(new Creator<MedicineDose>() {
-            @Override
-            public MedicineDose createFromParcel(Parcel parcel) {
-                return new MedicineDose(parcel);
-            }
+//    protected MedicationPojo(Parcel in) {
+//        name = in.readString();
+//        formIndex = in.readInt();
+//        strength = in.readString();
+//        strengthUnitIndex=in.readInt();
+//        reason =in.readString();
+//        instructions=in.readString();
+//        recurrencePerDayIndex=in.readInt();
+//        medDoseReminders=in.createTypedArrayList(new Creator<MedicineDose>() {
+//            @Override
+//            public MedicineDose createFromParcel(Parcel parcel) {
+//                return new MedicineDose(parcel);
+//            }
+//
+//            @Override
+//            public MedicineDose[] newArray(int i) {
+//                return new MedicineDose[i];
+//            }
+//        });
+//        recurrencePerWeekIndex = in.readInt();
+//        startDate = in.readLong();
+//        endDate = in.readLong();
+//        medDays = in.createStringArrayList();
+//        medQty = in.readInt();
+//        reminderMedQtyLeft = in.readInt();
+//        refillReminderTimeInMilliSec = in.readLong();
+//        isActive = in.readByte() != 0;
+//        medState = in.createTypedArrayList(new Creator<MedState>() {
+//            @Override
+//            public MedState createFromParcel(Parcel parcel) {
+//                return new MedState(in);
+//            }
+//
+//            @Override
+//            public MedState[] newArray(int i) {
+//                return new MedState[i];
+//            }
+//        });
+//    }
 
-            @Override
-            public MedicineDose[] newArray(int i) {
-                return new MedicineDose[0];
-            }
-        });
-        recurrencePerWeekIndex = in.readInt();
-        startDate = in.readLong();
-        endDate = in.readLong();
-        medDays = in.createStringArrayList();
-        medQty = in.readInt();
-        reminderMedQtyLeft = in.readInt();
-        refillReminderTimeInMilliSec = in.readLong();
-        isActive = in.readByte() != 0;
-        medState = in.createTypedArrayList(new Creator<MedState>() {
-            @Override
-            public MedState createFromParcel(Parcel parcel) {
-                return new MedState(in);
-            }
 
-            @Override
-            public MedState[] newArray(int i) {
-                return new MedState[i];
-            }
-        });
-    }
 
-    public static final Creator<MedicationPojo> CREATOR = new Creator<MedicationPojo>() {
-        @Override
-        public MedicationPojo createFromParcel(Parcel in) {
-            return new MedicationPojo(in);
-        }
-
-        @Override
-        public MedicationPojo[] newArray(int size) {
-            return new MedicationPojo[size];
-        }
-    };
-    @Override
-    public int describeContents() {
-        return hashCode();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-        dest.writeString(name);
-        dest.writeInt(formIndex);
-        dest.writeString(strength);
-        dest.writeInt(strengthUnitIndex);
-        dest.writeString(reason);
-        dest.writeInt(recurrencePerDayIndex);
-        dest.writeTypedList(medDoseReminders);
-        dest.writeInt(recurrencePerWeekIndex);
-        dest.writeLong(startDate);
-        dest.writeLong(endDate);
-        dest.writeStringList(medDays);
-        dest.writeInt(medQty);
-        dest.writeInt(reminderMedQtyLeft);
-        dest.writeLong(refillReminderTimeInMilliSec);
-        dest.writeByte((byte) (isActive ? 1 : 0));
-    }
 }

@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.iti.mad42.remedicine.EditMed.View.EditMed;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.Model.MedicationPojo;

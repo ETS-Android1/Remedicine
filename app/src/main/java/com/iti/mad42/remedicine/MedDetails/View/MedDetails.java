@@ -14,21 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
-import com.iti.mad42.remedicine.EditMed.View.EditMed;
+import com.iti.mad42.remedicine.EditMed.View.EditMedActivity;
+import com.iti.mad42.remedicine.Model.MedState;
 import com.iti.mad42.remedicine.Model.MedicationPojo;
 import com.iti.mad42.remedicine.Model.MedicineDose;
 import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.R;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MedDetails extends AppCompatActivity {
@@ -54,23 +48,17 @@ public class MedDetails extends AppCompatActivity {
     private TextView howToUseLabel;
     private Button add;
     private TextView lastTimeTakenLabel;
-    MedicationPojo myMed;
-
-    @Override
+    List<String> medDays = new ArrayList<>();
+    List<MedState>medStates = new ArrayList<>();
+    MedicationPojo medicationPojo;
+       @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_med_details);
         initView();
-        //addDummyData();
-        myMed = getIntent().getParcelableExtra("fromActiveToDetails");
-        Log.i("TAG", ""+myMed.getName());
-        Log.i("TAG", ""+myMed.getInstructions());
-        Log.i("TAG", ""+myMed.getMedDoseReminders());
-        Log.i("TAG", ""+myMed.getRecurrencePerWeekIndex());
-        medicationNameLabel.setText(myMed.getName());
+        addDummyData();
+        medicationPojo = new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates);
 
-        medicationStrengthLabel.setText(myMed.getStrength()+" "+Utility.medStrengthUnit[myMed.getStrengthUnitIndex()]);
-        medDurationLabel.setText(Utility.medReminderPerWeekList[myMed.getRecurrencePerWeekIndex()]+", for "+calcIntervalDays()+" days.");
         medTimeRecyclerview.setHasFixedSize(true);
         adapter = new RemindersRecyclerAdapter(this, medDose);
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -79,38 +67,31 @@ public class MedDetails extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MedDetails.this, AddDose.class));
+                Intent intent = new Intent(MedDetails.this, AddDose.class);
+                startActivity(intent);
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("TAG", "onClick: ");
-                startActivity(new Intent(MedDetails.this, EditMed.class));
+                Intent intent = new Intent(MedDetails.this, EditMedActivity.class);
+                intent.putExtra("fromDetailsToEdit",(Serializable) medicationPojo);
+                startActivity(intent);
             }
         });
     }
 
     void addDummyData() {
-        medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
-        medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
-        medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
 
-    }
+        medDose.add(new MedicineDose("Pill", 2, 1650234756160L));
+        medDose.add(new MedicineDose("Pill", 2, 1650234756160L));
+        medDose.add(new MedicineDose("Pill", 2, 1650234756160L));
 
-    public String longToDateAsString(long dateInMillis){
+        medDays.add("Saturday");
+        medDays.add("Monday");
 
-        Date d = new Date(dateInMillis);
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return dateFormat.format(d);
-    }
-
-    public long calcIntervalDays(){
-        final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
-        final LocalDate start = dtf.parseLocalDate(longToDateAsString(myMed.getStartDate()));
-        final LocalDate end = dtf.parseLocalDate(longToDateAsString(myMed.getEndDate())).plusDays(1);
-
-        return Days.daysBetween(new LocalDate(start), new LocalDate(end)).getDays();
+        medStates.add(new MedState(1652740553000L, "none"));
+        medStates.add(new MedState(1652740553000L, "none"));
 
     }
 
