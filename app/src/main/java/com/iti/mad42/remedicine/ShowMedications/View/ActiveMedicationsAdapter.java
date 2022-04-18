@@ -2,22 +2,30 @@ package com.iti.mad42.remedicine.ShowMedications.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.iti.mad42.remedicine.EditMed.View.EditMed;
+import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.Medication;
+import com.iti.mad42.remedicine.Model.MedicationPojo;
+import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.R;
 import java.util.List;
 
 public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicationsAdapter.ViewHolder> {
     private final Context context;
-    private List<Medication> myMeds;
+    private List<MedicationPojo> myMeds;
     OnItemClickListener mListener;
 
 
@@ -36,7 +44,7 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
 
     }
 
-    public ActiveMedicationsAdapter(Context _context, List<Medication> myMeds){
+    public ActiveMedicationsAdapter(Context _context, List<MedicationPojo> myMeds){
         this.context = _context;
         this.myMeds = myMeds;
     }
@@ -54,8 +62,9 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-        holder.medName.setText(myMeds.get(position).getMedName());
-        holder.medSubtitle.setText(myMeds.get(position).getMedStrength()+" "+ myMeds.get(position).getMedUnit()+" Take 1 Pill(s)"+myMeds.get(position).getMedInstructions());
+        Log.i("TAG", "size is: "+myMeds.size());
+        holder.medName.setText(myMeds.get(position).getName());
+        holder.medSubtitle.setText(myMeds.get(position).getStrength()+" "+ Utility.medStrengthUnit[myMeds.get(position).getStrengthUnitIndex()] +" Take "+ myMeds.get(position).getMedDoseReminders().get(0).getMedDose()+" "+myMeds.get(position).getMedDoseReminders().get(0).getMedForm()+" (s)"+myMeds.get(position).getInstructions());
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +81,7 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
 
     @Override
     public int getItemCount() {
+        Log.i("TAG", "size is: "+myMeds.size());
         return myMeds.size();
     }
     public void setOnItemClickListener(OnItemClickListener listener){

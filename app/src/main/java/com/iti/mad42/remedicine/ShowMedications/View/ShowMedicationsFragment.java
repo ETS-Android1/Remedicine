@@ -15,7 +15,10 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
+import com.iti.mad42.remedicine.Model.MedState;
 import com.iti.mad42.remedicine.Model.Medication;
+import com.iti.mad42.remedicine.Model.MedicationPojo;
+import com.iti.mad42.remedicine.Model.MedicineDose;
 import com.iti.mad42.remedicine.R;
 
 import java.util.ArrayList;
@@ -26,8 +29,11 @@ public class ShowMedicationsFragment extends Fragment {
     RecyclerView activeMedsRecycler;
     RecyclerView inActiveMedsRecycler;
     ActiveMedicationsAdapter activeAdapter, inactiveAdapter;
-    List<Medication> myMeds = new ArrayList<>();
+    List<MedicationPojo> myMeds = new ArrayList<>();
     FloatingActionButton addMedBtn;
+    List<MedicineDose> medsDose = new ArrayList<>();
+    List<String> medDays = new ArrayList<>();
+    List<MedState> medStates = new ArrayList<>();
 
     public ShowMedicationsFragment() {
         // Required empty public constructor
@@ -36,13 +42,19 @@ public class ShowMedicationsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
+        medsDose.add(new MedicineDose("Pill", 2, 1650234756160L));
+        medsDose.add(new MedicineDose("Pill", 2, 1650234756160L));
+        medsDose.add(new MedicineDose("Pill", 2, 1650234756160L));
+        medDays.add("Saturday");
+        medDays.add("Monday");
+        medStates.add(new MedState(1652740553000L, "none"));
+        medStates.add(new MedState(1652740553000L, "none"));
+        myMeds.add(new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medsDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
+        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
+        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
+        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
+        myMeds.add(new MedicationPojo("Parasetamol", 1,"1000",1,"Headache", "After Eating", 3,medsDose,2,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates));
+
     }
 
     @Override
@@ -86,9 +98,11 @@ public class ShowMedicationsFragment extends Fragment {
         activeAdapter.setOnItemClickListener(new ActiveMedicationsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(new Intent(getActivity(), MedDetails.class));
+                Intent goToMedDetails = new Intent(getActivity(), MedDetails.class);
+                goToMedDetails.putExtra("fromActiveToDetails", myMeds.get(position));
+                startActivity(goToMedDetails);
 
-                Toast.makeText(getContext(),myMeds.get(position).getMedName()+" Pressed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),myMeds.get(position).getName()+" Pressed", Toast.LENGTH_SHORT).show();
 
             }
         });

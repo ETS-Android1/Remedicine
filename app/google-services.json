@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "168462159171",
+    "project_id": "remedicine",
+    "storage_bucket": "remedicine.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168462159171:android:fb400eaf4f431b714cf3f6",
+        "android_client_info": {
+          "package_name": "com.iti.mad42.remedicine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168462159171-ng0b2fgsuvd61id0q49qat619d4c90sn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHLQDx3dwJuLbFS3nK1gwELdJ_-STvx6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168462159171-ng0b2fgsuvd61id0q49qat619d4c90sn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,7 @@
 package com.iti.mad42.remedicine.AddNewMedicine.View;
 
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
 import static com.iti.mad42.remedicine.Model.Utility.dateToLong;
 import static com.iti.mad42.remedicine.Model.Utility.medReoccurrence;
 import static com.iti.mad42.remedicine.Model.Utility.medReoccurrenceInterval;

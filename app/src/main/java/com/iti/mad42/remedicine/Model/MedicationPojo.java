@@ -13,7 +13,7 @@ public class MedicationPojo implements Serializable {
     int strengthUnitIndex;
     String reason;
     String instructions;
-    int recurrencePerDayIndex;
+    int recurrencePerDayIndex; // kam mara fel youm
     List<MedicineDose> medDoseReminders;
     int  recurrencePerWeekIndex;
     long startDate;
