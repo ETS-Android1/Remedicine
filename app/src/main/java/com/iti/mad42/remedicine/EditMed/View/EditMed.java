@@ -1,10 +1,7 @@
 package com.iti.mad42.remedicine.EditMed.View;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,19 +13,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
-import com.iti.mad42.remedicine.MedDetails.View.RemindersRecyclerAdapter;
 import com.iti.mad42.remedicine.Model.MedicineDose;
 import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.R;
 
-import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -37,16 +30,11 @@ import org.joda.time.format.DateTimeFormatter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EditMed extends AppCompatActivity {
 
@@ -117,7 +105,7 @@ public class EditMed extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(EditMed.this, android.R.layout.simple_spinner_dropdown_item, Utility.medReoccurrence);
+        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(EditMed.this, android.R.layout.simple_spinner_dropdown_item, Utility.medReminderPerDayList);
         editMedicationReoccurrenceSpinner.setAdapter(medReoccurrenceAdapter);
         editMedicationReoccurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -125,7 +113,7 @@ public class EditMed extends AppCompatActivity {
 //                selectedTime = times.get(position);
 //                selectedTimeIndex = position;
                 medDose = new ArrayList<>();
-                recurrencePerDay = Utility.medReoccurrence[position];
+                recurrencePerDay = Utility.medReminderPerDayList[position];
                 switch (position){
                     case 0  :
                         medDose.add(new MedicineDose(form,1, 1650153600000L));
@@ -154,14 +142,14 @@ public class EditMed extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(EditMed.this, android.R.layout.simple_spinner_dropdown_item, Utility.medReoccurrenceInterval);
+        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(EditMed.this, android.R.layout.simple_spinner_dropdown_item, Utility.medReminderPerWeekList);
         editMedicationReoccurrenceIntervalSpinner.setAdapter(medReoccurrenceIntervalAdapter);
         editMedicationReoccurrenceIntervalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                selectedTime = times.get(position);
 //                selectedTimeIndex = position;
-                recurrencePerWeek = Utility.medReoccurrenceInterval[position];
+                recurrencePerWeek = Utility.medReminderPerWeekList[position];
                 switch (position){
                     case 0  :
                         interval = 1;
