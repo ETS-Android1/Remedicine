@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Remedicine">
         <activity
-            android:name=".EditMed.View.EditMed"
+            android:name=".EditMed.View.EditMedActivity"
             android:exported="false" >
 
         </activity>

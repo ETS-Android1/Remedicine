@@ -36,6 +36,7 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     Context context;
     AddNewMedicineActivityInterface view;
 
+
     public AddNewMedicineActivityPresenter(Context context, AddNewMedicineActivityInterface view) {
         this.context = context;
         this.view = view;
@@ -70,7 +71,6 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     public List<MedicineDose> getMedDose(int pos){
         medDose = new ArrayList<>();
         med.setRecurrencePerDayIndex(pos);
-
         switch (pos){
             case 0  :
                 medDose.add(new MedicineDose(form,1, 1650153600000L));

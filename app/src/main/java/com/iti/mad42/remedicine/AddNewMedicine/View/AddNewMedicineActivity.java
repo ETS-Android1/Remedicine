@@ -196,13 +196,9 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         medicationTreatmentDurationToEdt.getEditText().setText(endDate);
     }
 
-
-
-
-   public void setRefillTime(String time){
+    public void setRefillTime(String time){
        medicationRefillReminderTimeEdt.getEditText().setText(time);
-
-   }
+    }
 
     public List<MedicineDose> getDoseFromAdapter(){
         return adapter.getMyMeds();

@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
         this.context = _context;
         this.myMeds = myMeds;
         timeDoseDialog = new Dialog(_context);
+        Log.e("mando", "EditRemindersRecyclerAdapter: " +myMeds.size() );
     }
     @NonNull
     @Override
@@ -59,6 +61,7 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
         holder.medTime.setText(millisToTimeAsString(myMeds.get(position).getDoseTimeInMilliSec()));
         holder.medDose.setText("Take "+myMeds.get(position).getMedDose()+" "+ myMeds.get(position).getMedForm() +"(s)");
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
