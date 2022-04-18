@@ -1,5 +1,8 @@
 package com.iti.mad42.remedicine.EditMed.View;
 
+import static com.iti.mad42.remedicine.Model.Utility.millisToTimeAsString;
+import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -62,25 +65,10 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
             @Override
             public void onClick(View view) {
                 openTimeDoseDialog(holder,position);
-                //Toast.makeText(context,myMeds.get(position).getName()+" Pressed", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    public long timeToMillis(int hour , int min){
-        return ((hour*60)+min) * 60 * 1000;
-    }
 
-    public String millisToTimeAsString(long timeInMillis){
-        int minutes = (int) ((timeInMillis / (1000*60)) % 60);
-        int hours   = (int) ((timeInMillis / (1000*60*60)) % 24);
-        return (hours+":"+minutes);
-    }
-    public String longToDateAsString(long dateInMillis){
-
-        Date d = new Date(dateInMillis);
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return dateFormat.format(d);
-    }
 
     public void openTimeDoseDialog(ViewHolder holder , int pos){
         timeDoseDialog.setContentView(R.layout.time_dose_dialouge);
@@ -98,7 +86,6 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
         Button saveBtn;
         TextView doseAmountText;
         TimePicker timePicker;
-        //Calendar calendar = Calendar.getInstance();
 
         increaseBtn = timeDoseDialog.findViewById(R.id.increaseBtn);
         decreaseBtn = timeDoseDialog.findViewById(R.id.decreaseBtn);
@@ -106,17 +93,11 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
         timePicker = timeDoseDialog.findViewById(R.id.doseTimePicker);
         doseAmountText = timeDoseDialog.findViewById(R.id.doseAmount);
 
-//        calendar.get(Calendar.HOUR_OF_DAY)
-//                , calendar.get(Calendar.MINUTE)
-//        timePicker.setIs24HourView(true);
-//        timePicker.setHour(calendar.get(Calendar.HOUR_OF_DAY));
-
         increaseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.counter++;
                 doseAmountText.setText(holder.counter+"");
-                //Toast.makeText(getContext(),"Send Btn Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -127,7 +108,6 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
                     holder.counter--;
                     doseAmountText.setText(holder.counter+"");
                 }
-               // Toast.makeText(getContext(),"Cancel Btn Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -138,10 +118,8 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
                 holder.medTime.setText(timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute());
                 holder.medDose.setText("Take "+doseAmountText.getText().toString()+" "+myMeds.get(pos).getMedForm()+"(s)");
                 timeDoseDialog.dismiss();
-                // Toast.makeText(getContext(),"Cancel Btn Clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         timeDoseDialog.show();
     }
@@ -168,7 +146,6 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
             medTime = layout.findViewById(R.id.med_time_in_hrs);
             medDose = layout.findViewById(R.id.med_dose_per_time);
             counter = 1;
-
         }
     }
 }
