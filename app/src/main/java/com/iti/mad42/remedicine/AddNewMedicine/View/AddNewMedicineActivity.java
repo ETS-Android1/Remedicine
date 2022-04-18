@@ -3,8 +3,7 @@ package com.iti.mad42.remedicine.AddNewMedicine.View;
 import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
 import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
 import static com.iti.mad42.remedicine.Model.Utility.dateToLong;
-import static com.iti.mad42.remedicine.Model.Utility.medReoccurrence;
-import static com.iti.mad42.remedicine.Model.Utility.medReoccurrenceInterval;
+
 import static com.iti.mad42.remedicine.Model.Utility.medStrengthUnit;
 import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
 
@@ -34,6 +33,8 @@ import com.iti.mad42.remedicine.Model.MedicationPojo;
 import com.iti.mad42.remedicine.Model.MedicineDose;
 import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.R;
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -183,10 +184,10 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         ArrayAdapter<String> medStrengthUnitAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medStrengthUnit);
         medicationStrengthUnitSpinner.setAdapter(medStrengthUnitAdapter);
 
-        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrence);
+        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReminderPerDayList);
         medicationReoccurrenceSpinner.setAdapter(medReoccurrenceAdapter);
 
-        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrenceInterval);
+        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReminderPerWeekList);
         medicationReoccurrenceIntervalSpinner.setAdapter(medReoccurrenceIntervalAdapter);
     }
 

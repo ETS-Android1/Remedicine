@@ -1,8 +1,9 @@
 package com.iti.mad42.remedicine.EditMed.View;
 
 import static com.iti.mad42.remedicine.Model.Utility.longToDateAsString;
-import static com.iti.mad42.remedicine.Model.Utility.medReoccurrence;
-import static com.iti.mad42.remedicine.Model.Utility.medReoccurrenceInterval;
+
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
 import static com.iti.mad42.remedicine.Model.Utility.medStrengthUnit;
 import static com.iti.mad42.remedicine.Model.Utility.millisToTimeAsString;
 
@@ -212,10 +213,10 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
         ArrayAdapter<String> medStrengthUnitAdapter = new ArrayAdapter<>(EditMedActivity.this, android.R.layout.simple_spinner_dropdown_item, medStrengthUnit);
         editMedicationStrengthUnitSpinner.setAdapter(medStrengthUnitAdapter);
 
-        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(EditMedActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrence);
+        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(EditMedActivity.this, android.R.layout.simple_spinner_dropdown_item, medReminderPerDayList);
         editMedicationReoccurrenceSpinner.setAdapter(medReoccurrenceAdapter);
 
-        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(EditMedActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrenceInterval);
+        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(EditMedActivity.this, android.R.layout.simple_spinner_dropdown_item, medReminderPerWeekList);
         editMedicationReoccurrenceIntervalSpinner.setAdapter(medReoccurrenceIntervalAdapter);
     }
 
