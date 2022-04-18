@@ -1,7 +1,7 @@
 package com.iti.mad42.remedicine.EditMed.Presenter;
 
-import static com.iti.mad42.remedicine.Model.Utility.dateToLong;
-import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.dateToLong;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.timeToMillis;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -10,10 +10,10 @@ import android.util.Log;
 import android.widget.TimePicker;
 
 import com.iti.mad42.remedicine.EditMed.View.EditMedActivityInterface;
-import com.iti.mad42.remedicine.Model.MedState;
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
-import com.iti.mad42.remedicine.Model.Utility;
+import com.iti.mad42.remedicine.Model.pojo.MedState;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;

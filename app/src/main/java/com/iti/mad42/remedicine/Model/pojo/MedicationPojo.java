@@ -1,13 +1,18 @@
-package com.iti.mad42.remedicine.Model;
+package com.iti.mad42.remedicine.Model.pojo;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Entity(tableName = "medication")
 public class MedicationPojo implements Serializable {
+    @NonNull
+    @PrimaryKey
     String name;
+
     int formIndex;
     String strength;
     int strengthUnitIndex;
@@ -24,11 +29,12 @@ public class MedicationPojo implements Serializable {
     long refillReminderTimeInMilliSec;
     boolean isActive;
     List<MedState> medState;
+    String medOwnerEmail;
 
     public MedicationPojo() {
     }
 
-    public MedicationPojo(String name, int formIndex, String strength, int strengthUnitIndex, String reason, String instructions, int recurrencePerDayIndex, List<MedicineDose> medDoseReminders, int recurrencePerWeekIndex, long startDate, long endDate, List<String> medDays, int medQty, int reminderMedQtyLeft, long refillReminderTimeInMilliSec, boolean isActive, List<MedState> medState) {
+    public MedicationPojo(String name, int formIndex, String strength, int strengthUnitIndex, String reason, String instructions, int recurrencePerDayIndex, List<MedicineDose> medDoseReminders, int recurrencePerWeekIndex, long startDate, long endDate, List<String> medDays, int medQty, int reminderMedQtyLeft, long refillReminderTimeInMilliSec, boolean isActive, List<MedState> medState, String medOwnerEmail) {
         this.name = name;
         this.formIndex = formIndex;
         this.strength = strength;
@@ -46,6 +52,7 @@ public class MedicationPojo implements Serializable {
         this.refillReminderTimeInMilliSec = refillReminderTimeInMilliSec;
         this.isActive = isActive;
         this.medState = medState;
+        this.medOwnerEmail = medOwnerEmail;
     }
 
     public String getName() {
@@ -184,6 +191,14 @@ public class MedicationPojo implements Serializable {
         this.medState = medState;
     }
 
+    public String getMedOwnerEmail() {
+        return medOwnerEmail;
+    }
+
+    public void setMedOwnerEmail(String medOwnerEmail) {
+        this.medOwnerEmail = medOwnerEmail;
+    }
+
     @Override
     public String toString() {
         return "MedicationPojo{" +
@@ -204,48 +219,8 @@ public class MedicationPojo implements Serializable {
                 ", refillReminderTimeInMilliSec=" + refillReminderTimeInMilliSec +
                 ", isActive=" + isActive +
                 ", medState=" + medState +
+                ", medOwnerEmail=" + medOwnerEmail +
                 '}';
     }
-//    protected MedicationPojo(Parcel in) {
-//        name = in.readString();
-//        formIndex = in.readInt();
-//        strength = in.readString();
-//        strengthUnitIndex=in.readInt();
-//        reason =in.readString();
-//        instructions=in.readString();
-//        recurrencePerDayIndex=in.readInt();
-//        medDoseReminders=in.createTypedArrayList(new Creator<MedicineDose>() {
-//            @Override
-//            public MedicineDose createFromParcel(Parcel parcel) {
-//                return new MedicineDose(parcel);
-//            }
-//
-//            @Override
-//            public MedicineDose[] newArray(int i) {
-//                return new MedicineDose[i];
-//            }
-//        });
-//        recurrencePerWeekIndex = in.readInt();
-//        startDate = in.readLong();
-//        endDate = in.readLong();
-//        medDays = in.createStringArrayList();
-//        medQty = in.readInt();
-//        reminderMedQtyLeft = in.readInt();
-//        refillReminderTimeInMilliSec = in.readLong();
-//        isActive = in.readByte() != 0;
-//        medState = in.createTypedArrayList(new Creator<MedState>() {
-//            @Override
-//            public MedState createFromParcel(Parcel parcel) {
-//                return new MedState(in);
-//            }
-//
-//            @Override
-//            public MedState[] newArray(int i) {
-//                return new MedState[i];
-//            }
-//        });
-//    }
-
-
 
 }

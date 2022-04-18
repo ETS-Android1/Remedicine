@@ -8,16 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.R;
-
-import java.util.ArrayList;
 
 public class RequestsViewActivity extends AppCompatActivity {
 
     RecyclerView requestsRecycler;
     RequestScreenAdapter requestAdapter;
-    ArrayList<Medication> myMeds = new ArrayList<>();
+    //ArrayList<Medication> myMeds = new ArrayList<>();
     ImageView backBtn;
 
     @Override
@@ -32,13 +29,13 @@ public class RequestsViewActivity extends AppCompatActivity {
                 finish();
             }
         });
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
-        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
+//        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
+//        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
+//        myMeds.add(new Medication("Panadol", "500","g", "After Eating", "15"));
 
         requestsRecycler = findViewById(R.id.requestsRecycler);
         requestsRecycler.setHasFixedSize(true);
-        requestAdapter = new RequestScreenAdapter(RequestsViewActivity.this, myMeds);
+        //requestAdapter = new RequestScreenAdapter(RequestsViewActivity.this, myMeds);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);

@@ -2,7 +2,6 @@ package com.iti.mad42.remedicine.MedDetails.View;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
 import com.iti.mad42.remedicine.EditMed.View.EditMedActivity;
-import com.iti.mad42.remedicine.Model.MedState;
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
-import com.iti.mad42.remedicine.Model.Utility;
+import com.iti.mad42.remedicine.Model.pojo.MedState;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.R;
 
 import java.io.Serializable;
@@ -57,7 +55,7 @@ public class MedDetails extends AppCompatActivity {
         setContentView(R.layout.activity_med_details);
         initView();
         addDummyData();
-        medicationPojo = new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates);
+        medicationPojo = new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates, "sandra@gmail.com");
 
         medTimeRecyclerview.setHasFixedSize(true);
         adapter = new RemindersRecyclerAdapter(this, medDose);

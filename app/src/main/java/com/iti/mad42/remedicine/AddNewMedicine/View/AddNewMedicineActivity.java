@@ -1,24 +1,17 @@
 package com.iti.mad42.remedicine.AddNewMedicine.View;
 
-import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
-import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
-import static com.iti.mad42.remedicine.Model.Utility.dateToLong;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.medReminderPerDayList;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.medReminderPerWeekList;
 
-import static com.iti.mad42.remedicine.Model.Utility.medStrengthUnit;
-import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.medStrengthUnit;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,25 +21,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.iti.mad42.remedicine.AddNewMedicine.Presenter.AddNewMedicineActivityPresenter;
 import com.iti.mad42.remedicine.AddNewMedicine.Presenter.AddNewMedicineActivityPresenterInterface;
 import com.iti.mad42.remedicine.EditMed.View.EditRemindersRecyclerAdapter;
-import com.iti.mad42.remedicine.Model.MedState;
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
-import com.iti.mad42.remedicine.Model.Utility;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
-import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
-import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class AddNewMedicineActivity extends AppCompatActivity implements AddNewMedicineActivityInterface {
@@ -82,7 +62,7 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         initRecyclerView();
         setAdapters();
         setListeners();
-        presenter = new AddNewMedicineActivityPresenter(this,this);
+        presenter = new AddNewMedicineActivityPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this)));
 
     }
 
@@ -171,7 +151,7 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.getData();
+                presenter.insertMedication();
             }
         });
 

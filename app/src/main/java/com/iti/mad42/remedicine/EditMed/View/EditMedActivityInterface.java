@@ -1,7 +1,7 @@
 package com.iti.mad42.remedicine.EditMed.View;
 
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.iti.mad42.remedicine.EditMed.View;
 
-import static com.iti.mad42.remedicine.Model.Utility.millisToTimeAsString;
-import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.millisToTimeAsString;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.timeToMillis;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -16,22 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.iti.mad42.remedicine.MedDetails.View.RemindersRecyclerAdapter;
-import com.iti.mad42.remedicine.Model.MedicineDose;
-import com.iti.mad42.remedicine.Model.Utility;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.R;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemindersRecyclerAdapter.ViewHolder>{

@@ -5,27 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.iti.mad42.remedicine.Model.Medication;
 import com.iti.mad42.remedicine.R;
 
 import java.util.List;
 
 public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdapter.ViewHolder> {
+//
+//    private final Context context;
 
-    private final Context context;
-    private List<Medication> myMeds;
-
-    public RequestScreenAdapter(Context _context, List<Medication> myMeds){
-        this.context = _context;
-        this.myMeds = myMeds;
-    }
+//    public RequestScreenAdapter(Context _context, List<Medication> myMeds){
+//        this.context = _context;
+//        this.myMeds = myMeds;
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -52,7 +49,7 @@ public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.userName.setText(myMeds.get(position).getMedName());
+        //holder.userName.setText(myMeds.get(position).getMedName());
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +66,8 @@ public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdap
 
     @Override
     public int getItemCount() {
-        return myMeds.size();
+
+        return 0;
     }
 
 

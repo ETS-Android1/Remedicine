@@ -6,16 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.iti.mad42.remedicine.Model.Medication;
-import com.iti.mad42.remedicine.Model.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.R;
-import com.iti.mad42.remedicine.ShowMedications.View.ActiveMedicationsAdapter;
 
 import java.util.List;
 

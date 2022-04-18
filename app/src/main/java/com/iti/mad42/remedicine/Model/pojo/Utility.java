@@ -1,4 +1,4 @@
-package com.iti.mad42.remedicine.Model;
+package com.iti.mad42.remedicine.Model.pojo;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,5 +37,11 @@ public class Utility {
             e.printStackTrace();
         }
         return milliseconds;
+    }
+
+    public static String getCurrentDay(){
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }

@@ -1,4 +1,4 @@
-package com.iti.mad42.remedicine.Model;
+package com.iti.mad42.remedicine.Model.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;

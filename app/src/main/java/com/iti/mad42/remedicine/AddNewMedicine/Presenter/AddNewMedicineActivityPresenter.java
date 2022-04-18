@@ -1,21 +1,21 @@
 package com.iti.mad42.remedicine.AddNewMedicine.Presenter;
 
-import static com.iti.mad42.remedicine.Model.Utility.dateToLong;
-import static com.iti.mad42.remedicine.Model.Utility.timeToMillis;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.dateToLong;
+import static com.iti.mad42.remedicine.Model.pojo.Utility.timeToMillis;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivityInterface;
-import com.iti.mad42.remedicine.Model.MedState;
-import com.iti.mad42.remedicine.Model.MedicationPojo;
-import com.iti.mad42.remedicine.Model.MedicineDose;
-import com.iti.mad42.remedicine.Model.Utility;
+import com.iti.mad42.remedicine.Model.pojo.MedState;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
+import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -35,11 +35,13 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     MedicationPojo med = new MedicationPojo();
     Context context;
     AddNewMedicineActivityInterface view;
+    private RepositoryInterface repository;
 
 
-    public AddNewMedicineActivityPresenter(Context context, AddNewMedicineActivityInterface view) {
+    public AddNewMedicineActivityPresenter(Context context, AddNewMedicineActivityInterface view, RepositoryInterface repository) {
         this.context = context;
         this.view = view;
+        this.repository = repository;
     }
     public void setMedicineForm(int pos){
         form = Utility.medForm[pos];
@@ -110,7 +112,6 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.getDatePicker().setMinDate(now + (1000 * 60 * 60));
-
         datePickerDialog.show();
     }
 
@@ -131,6 +132,7 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
         }
         med.setMedState(medStates);
         med.setActive(true);
+        med.setMedOwnerEmail("sandra@gmail.com");
         Log.i("mando", "onClick: "+ med );
     }
     public void openTimePicker() {
@@ -149,6 +151,7 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
                 , true);
         timePickerDialog.show();
     }
+
     public List<String> getDays(String startDate, String endDate , int x){
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
         final LocalDate start = dtf.parseLocalDate(startDate);
@@ -164,6 +167,13 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
             Log.e("mando", "printDays: "+date );
         }
         return myDays;
+    }
+
+
+    @Override
+    public void insertMedication() {
+        getData();
+        repository.insertMedication(med);
     }
 
 }
