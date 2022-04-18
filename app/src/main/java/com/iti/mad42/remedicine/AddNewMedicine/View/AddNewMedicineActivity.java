@@ -1,7 +1,7 @@
 package com.iti.mad42.remedicine.AddNewMedicine.View;
 
-import static com.iti.mad42.remedicine.Model.Utility.medReoccurrence;
-import static com.iti.mad42.remedicine.Model.Utility.medReoccurrenceInterval;
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerDayList;
+import static com.iti.mad42.remedicine.Model.Utility.medReminderPerWeekList;
 import static com.iti.mad42.remedicine.Model.Utility.medStrengthUnit;
 
 import android.app.DatePickerDialog;
@@ -113,7 +113,7 @@ public class AddNewMedicineActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrence);
+        ArrayAdapter<String> medReoccurrenceAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReminderPerDayList);
         medicationReoccurrenceSpinner.setAdapter(medReoccurrenceAdapter);
         medicationReoccurrenceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,7 +147,7 @@ public class AddNewMedicineActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReoccurrenceInterval);
+        ArrayAdapter<String> medReoccurrenceIntervalAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, medReminderPerWeekList);
         medicationReoccurrenceIntervalSpinner.setAdapter(medReoccurrenceIntervalAdapter);
         medicationReoccurrenceIntervalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

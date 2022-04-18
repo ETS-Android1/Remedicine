@@ -15,12 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
 import com.iti.mad42.remedicine.EditMed.View.EditMed;
-import com.iti.mad42.remedicine.Model.Medication;
+import com.iti.mad42.remedicine.Model.MedicationPojo;
 import com.iti.mad42.remedicine.Model.MedicineDose;
 import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.R;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MedDetails extends AppCompatActivity {
@@ -46,13 +54,23 @@ public class MedDetails extends AppCompatActivity {
     private TextView howToUseLabel;
     private Button add;
     private TextView lastTimeTakenLabel;
+    MedicationPojo myMed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_med_details);
         initView();
-        addDummyData();
+        //addDummyData();
+        myMed = getIntent().getParcelableExtra("fromActiveToDetails");
+        Log.i("TAG", ""+myMed.getName());
+        Log.i("TAG", ""+myMed.getInstructions());
+        Log.i("TAG", ""+myMed.getMedDoseReminders());
+        Log.i("TAG", ""+myMed.getRecurrencePerWeekIndex());
+        medicationNameLabel.setText(myMed.getName());
+
+        medicationStrengthLabel.setText(myMed.getStrength()+" "+Utility.medStrengthUnit[myMed.getStrengthUnitIndex()]);
+        medDurationLabel.setText(Utility.medReminderPerWeekList[myMed.getRecurrencePerWeekIndex()]+", for "+calcIntervalDays()+" days.");
         medTimeRecyclerview.setHasFixedSize(true);
         adapter = new RemindersRecyclerAdapter(this, medDose);
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -77,6 +95,22 @@ public class MedDetails extends AppCompatActivity {
         medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
         medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
         medDose.add(new MedicineDose(Utility.medForm[0],1,1650153600000L ));
+
+    }
+
+    public String longToDateAsString(long dateInMillis){
+
+        Date d = new Date(dateInMillis);
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return dateFormat.format(d);
+    }
+
+    public long calcIntervalDays(){
+        final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
+        final LocalDate start = dtf.parseLocalDate(longToDateAsString(myMed.getStartDate()));
+        final LocalDate end = dtf.parseLocalDate(longToDateAsString(myMed.getEndDate())).plusDays(1);
+
+        return Days.daysBetween(new LocalDate(start), new LocalDate(end)).getDays();
 
     }
 
