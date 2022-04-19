@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.core.Repo;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;

@@ -54,7 +54,6 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
 
     RecyclerView.LayoutManager layoutManager;
     EditRemindersRecyclerAdapter adapter;
-
     AddNewMedicineActivityPresenterInterface presenter;
 
 
