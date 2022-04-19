@@ -85,7 +85,4 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
     public void setList(List<MedicationPojo> meds){
         this.myMeds = meds;
     }
-
-
-
 }
