@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.iti.mad42.remedicine.Model.Utility;
 import com.iti.mad42.remedicine.login.view.presenter.LoginPresenterInterface;
 
 public class AuthenticationHandler implements AuthenticationHandlerInterface {
@@ -29,6 +30,7 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
     private FirebaseAuth.AuthStateListener authStateListener;
     private AccessTokenTracker tracker;
     private LoginPresenterInterface loginPresenterInterface;
+    private FirebaseUser user;
 
     public AuthenticationHandler(Context context, CallbackManager callbackManager, LoginPresenterInterface loginPresenterInterface) {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -37,7 +39,7 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
         FacebookSdk.sdkInitialize(context.getApplicationContext());
         callbackManager = callbackManager;
         authStateListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+            user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 getUserInfo(user);
             }else {
@@ -73,6 +75,7 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "sign in with credential: successful ");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
+                    loginPresenterInterface.saveString(Utility.myCredentials,user.getEmail().toString().trim());
                     loginPresenterInterface.navigateToHome();
                 }else {
                     Log.i(TAG, "sign in with credential: failed ",task.getException());
