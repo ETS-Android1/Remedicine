@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.login.view.presenter.LoginPresenterInterface;
@@ -38,11 +39,14 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     private FirebaseUser user;
     private static RemoteDataSource instance = null;
     private DatabaseReference databaseReferenceUser;
+    private DatabaseReference databaseReferenceMedication;
+
 
     private RemoteDataSource(Context context, CallbackManager callbackManager) {
         firebaseAuth = FirebaseAuth.getInstance();
         this.context = context;
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
+        databaseReferenceMedication = FirebaseDatabase.getInstance().getReference("meds");
         FacebookSdk.sdkInitialize(context.getApplicationContext());
         callbackManager = callbackManager;
         authStateListener = firebaseAuth -> {
@@ -124,5 +128,25 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
+    public void addMedicationToFirebase(MedicationPojo med){
+        String id = databaseReferenceMedication.push().getKey();
+        databaseReferenceMedication.orderByChild("name").equalTo(med.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Toast.makeText(context,"This Medication is already added",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    databaseReferenceMedication.child(id).setValue(med);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
 }

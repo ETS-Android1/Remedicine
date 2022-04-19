@@ -1,11 +1,13 @@
 package com.iti.mad42.remedicine.AddNewMedicine.Presenter;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.iti.mad42.remedicine.Model.pojo.Utility.dateToLong;
 import static com.iti.mad42.remedicine.Model.pojo.Utility.timeToMillis;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.TimePicker;
 
@@ -111,7 +113,7 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
 
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.getDatePicker().setMinDate(now + (1000 * 60 * 60));
+        //datePickerDialog.getDatePicker().setMinDate(now + (1000 * 60 * 60));
         datePickerDialog.show();
     }
 
@@ -132,7 +134,7 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
         }
         med.setMedState(medStates);
         med.setActive(true);
-        med.setMedOwnerEmail("sandra@gmail.com");
+        med.setMedOwnerEmail(getString(Utility.myCredentials));
         Log.i("mando", "onClick: "+ med );
     }
     public void openTimePicker() {
@@ -174,6 +176,12 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     public void insertMedication() {
         getData();
         repository.insertMedication(med);
+        repository.addMedicationToFirebase(med);
+    }
+    public String getString(String key){
+        SharedPreferences sharedPreferences=
+                context.getSharedPreferences("LoginTest",MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
     }
 
 }

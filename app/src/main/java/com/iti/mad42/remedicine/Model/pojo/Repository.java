@@ -87,4 +87,7 @@ public class Repository implements RepositoryInterface{
     public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate) {
         remoteDataSource.handleFacebookToken(token,networkDelegate);
     }
+    public void addMedicationToFirebase(MedicationPojo med){
+        remoteDataSource.addMedicationToFirebase(med);
+    }
 }
