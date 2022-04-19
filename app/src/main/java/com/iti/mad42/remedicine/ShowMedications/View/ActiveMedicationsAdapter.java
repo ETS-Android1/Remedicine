@@ -2,6 +2,7 @@ package com.iti.mad42.remedicine.ShowMedications.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
@@ -20,7 +22,7 @@ import java.util.List;
 public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicationsAdapter.ViewHolder> {
     private final Context context;
     private List<MedicationPojo> myMeds;
-    OnItemClickListener mListener;
+    private OnItemClickListenerInterface mListener;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -62,14 +64,13 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mListener!=null){
-                    int pos=position;
-                    if(pos!=RecyclerView.NO_POSITION){
-                        mListener.onItemClick(pos);
+                if (mListener!=null) {
+                    int pos = position;
+                    if (pos != RecyclerView.NO_POSITION) {
+                        mListener.onItemClick(myMeds.get(position));
                     }
                 }
-                }
-
+            }
         });
     }
 
@@ -78,11 +79,13 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
         Log.i("TAG", "size is: "+myMeds.size());
         return myMeds.size();
     }
-    public void setOnItemClickListener(OnItemClickListener listener){
-        mListener=listener;
+    public void setOnItemClickListener(OnItemClickListenerInterface listener){
+        mListener = listener;
     }
-    public interface OnItemClickListener{
-        void onItemClick(int position);
+    public void setList(List<MedicationPojo> meds){
+        this.myMeds = meds;
     }
+
+
 
 }

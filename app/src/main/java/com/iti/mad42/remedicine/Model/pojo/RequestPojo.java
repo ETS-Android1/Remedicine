@@ -1,9 +1,8 @@
 package com.iti.mad42.remedicine.Model.pojo;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class RequestPojo implements Parcelable {
+public class RequestPojo implements Serializable {
     private String senderEmail;
     private String senderId;
     private String recieverEmail;
@@ -21,17 +20,6 @@ public class RequestPojo implements Parcelable {
         this.state = state;
     }
 
-    public static final Creator<RequestPojo> CREATOR = new Creator<RequestPojo>() {
-        @Override
-        public RequestPojo createFromParcel(Parcel in) {
-            return new RequestPojo(in);
-        }
-
-        @Override
-        public RequestPojo[] newArray(int size) {
-            return new RequestPojo[size];
-        }
-    };
 
     public String getSenderEmail() {
         return senderEmail;
@@ -73,14 +61,6 @@ public class RequestPojo implements Parcelable {
         this.state = state;
     }
 
-    protected RequestPojo(Parcel in){
-        senderEmail = in.readString();
-        senderId = in.readString();
-        recieverEmail = in.readString();
-        recieverId = in.readString();
-        state = in.readString();
-    }
-
     @Override
     public String toString() {
         return "RequestPojo{" +
@@ -90,19 +70,5 @@ public class RequestPojo implements Parcelable {
                 ", recieverId='" + recieverId + '\'' +
                 ", state='" + state + '\'' +
                 '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return hashCode();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-        dest.writeString(senderEmail);
-        dest.writeString(senderId);
-        dest.writeString(recieverEmail);
-        dest.writeString(recieverId);
-        dest.writeString(state);
     }
 }

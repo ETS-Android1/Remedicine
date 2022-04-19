@@ -23,7 +23,7 @@ public class Converters {
         if (medDoseRemindersString == null) {
             return Collections.emptyList();
         } else {
-            Type list = new TypeToken<List<Boolean>>() {
+            Type list = new TypeToken<List<MedicineDose>>() {
             }.getType();
             return gson.fromJson(medDoseRemindersString, list);
         }
@@ -41,7 +41,7 @@ public class Converters {
         if (medDaysString == null) {
             return Collections.emptyList();
         } else {
-            Type list = new TypeToken<List<Boolean>>() {
+            Type list = new TypeToken<List<String>>() {
             }.getType();
             return gson.fromJson(medDaysString, list);
         }
@@ -59,7 +59,7 @@ public class Converters {
         if (medStateString == null) {
             return Collections.emptyList();
         } else {
-            Type list = new TypeToken<List<Boolean>>() {
+            Type list = new TypeToken<List<MedState>>() {
             }.getType();
             return gson.fromJson(medStateString, list);
         }

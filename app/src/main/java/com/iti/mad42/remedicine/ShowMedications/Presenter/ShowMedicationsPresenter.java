@@ -1,5 +1,7 @@
 package com.iti.mad42.remedicine.ShowMedications.Presenter;
 
+import androidx.lifecycle.LiveData;
+
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.ShowMedications.View.ShowMedicationFragmentInterface;
@@ -16,12 +18,12 @@ public class ShowMedicationsPresenter implements ShowMedicationsPresenterInterfa
     }
 
     @Override
-    public void getActiveMedications(long currentDate) {
-         repository.getActiveMedications(currentDate);
+    public LiveData<List<MedicationPojo>> getActiveMedications(long currentDate) {
+         return repository.getActiveMedications(currentDate);
     }
 
     @Override
-    public void getInActiveMedications(long currentDate) {
-        repository.getInActiveMedication(currentDate);
+    public LiveData<List<MedicationPojo>> getInActiveMedications(long currentDate) {
+        return repository.getInActiveMedication(currentDate);
     }
 }
