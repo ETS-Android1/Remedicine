@@ -20,7 +20,7 @@
 
         </activity>
         <activity
-            android:name=".register.view.RegisterActivity"
+            android:name=".register.view.view.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".login.view.view.LoginActivity"

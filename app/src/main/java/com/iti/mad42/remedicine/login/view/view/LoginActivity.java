@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -16,12 +17,14 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.R;
-import com.iti.mad42.remedicine.data.FacebookAuthentication.AuthenticationHandler;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
 import com.iti.mad42.remedicine.login.view.presenter.LoginPresenter;
 import com.iti.mad42.remedicine.login.view.presenter.LoginPresenterInterface;
-import com.iti.mad42.remedicine.register.view.RegisterActivity;
+import com.iti.mad42.remedicine.register.view.view.RegisterActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
     private Intent intent;
     private CallbackManager callbackManager;
     private LoginPresenterInterface presenter;
-    private TextView emailTV, passwordTV;
+    private TextView emailTV, passwordTV, emailErrorMessage;
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -43,13 +46,12 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         initUI();
         setBtnsListener();
         btnLoginWithFacebook.setReadPermissions("email","public_profile");
         callbackManager = CallbackManager.Factory.create();
         setRegisterCallback();
-        presenter = new LoginPresenter(this,this,callbackManager);
+        presenter = new LoginPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this,callbackManager)));
 
     }
 
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
         btnSignup = findViewById(R.id.btnSignUp);
         emailTV = findViewById(R.id.txtViewEmailLogin);
         passwordTV = findViewById(R.id.txtViewPasswordLogin);
+        emailErrorMessage = findViewById(R.id.txtViewEmailErrorMessageLogin);
     }
 
 
@@ -84,7 +87,10 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
 
         btnLogin.setOnClickListener(view -> {
             if (isValidUsernameAndPassword()) {
-                navigateToHome();
+
+                String email = emailTV.getText().toString().trim();
+                String password = passwordTV.getText().toString().trim();
+                presenter.tryToLogin(email,password);
             }
         });
 
@@ -100,18 +106,18 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
         btnLoginWithFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.i(AuthenticationHandler.TAG, "onSuccess: "+loginResult);
+                Log.i(RemoteDataSource.TAG, "onSuccess: "+loginResult);
                 presenter.handleFacebookToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Log.i(AuthenticationHandler.TAG, "onCancel: ");
+                Log.i(RemoteDataSource.TAG, "onCancel: ");
             }
 
             @Override
             public void onError(@NonNull FacebookException e) {
-                Log.i(AuthenticationHandler.TAG, "onError: "+e);
+                Log.i(RemoteDataSource.TAG, "onError: "+e);
             }
         });
     }
@@ -129,6 +135,27 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
         }else {
             Toast.makeText(this,"Invalid email or password",Toast.LENGTH_SHORT).show();
             return false;
+        }
+    }
+
+    public void updateUIToShowError(String message) {
+        emailTV.requestFocus();
+        emailErrorMessage.setText(message);
+        emailErrorMessage.setTextColor(Color.RED);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void requestFocusFor(String viewName) {
+        if (viewName.equals("email")){
+            emailTV.requestFocus();
+        }else if (viewName.equals("pass")) {
+            passwordTV.requestFocus();
         }
     }
 

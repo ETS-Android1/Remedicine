@@ -5,6 +5,7 @@ import static com.iti.mad42.remedicine.Model.pojo.Utility.medReminderPerWeekList
 
 import static com.iti.mad42.remedicine.Model.pojo.Utility.medStrengthUnit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,10 +14,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.CallbackManager;
 import com.google.android.material.textfield.TextInputLayout;
 import com.iti.mad42.remedicine.AddNewMedicine.Presenter.AddNewMedicineActivityPresenter;
 import com.iti.mad42.remedicine.AddNewMedicine.Presenter.AddNewMedicineActivityPresenterInterface;
@@ -26,6 +29,7 @@ import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.util.List;
 
@@ -62,7 +66,12 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         initRecyclerView();
         setAdapters();
         setListeners();
-        presenter = new AddNewMedicineActivityPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this)));
+        presenter = new AddNewMedicineActivityPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, new CallbackManager() {
+            @Override
+            public boolean onActivityResult(int i, int i1, @Nullable Intent intent) {
+                return false;
+            }
+        })));
 
     }
 

@@ -4,25 +4,30 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.facebook.AccessToken;
 import com.iti.mad42.remedicine.Model.database.AppDataBase;
 import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
 import com.iti.mad42.remedicine.Model.database.MedicineDAO;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.NetworkDelegate;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSourceInterface;
 
 import java.util.List;
 
 public class Repository implements RepositoryInterface{
     private Context context;
     private LocalDatabaseSourceInterface localDatabaseSource;
-    private static  Repository repository = null;
+    private RemoteDataSourceInterface remoteDataSource;
+    private static Repository repository = null;
 
-    private Repository(Context context, LocalDatabaseSourceInterface localDatabaseSource){
+    private Repository(Context context, LocalDatabaseSourceInterface localDatabaseSource, RemoteDataSourceInterface remoteDataSource){
         this.context = context;
         this.localDatabaseSource = localDatabaseSource;
+        this.remoteDataSource = remoteDataSource;
     }
 
-    public static Repository getInstance(Context context, LocalDatabaseSourceInterface localDatabaseSource){
+    public static Repository getInstance(Context context, LocalDatabaseSourceInterface localDatabaseSource, RemoteDataSourceInterface remoteDataSource){
         if(repository == null){
-            repository = new Repository(context, localDatabaseSource);
+            repository = new Repository(context, localDatabaseSource, remoteDataSource);
         }
         return repository;
     }
@@ -45,11 +50,13 @@ public class Repository implements RepositoryInterface{
 
     @Override
     public void updateMedication(MedicationPojo med) {
+
         localDatabaseSource.updateMedication(med);
     }
 
     @Override
     public void deleteMedication(MedicationPojo med) {
+
         localDatabaseSource.deleteMedication(med);
     }
 
@@ -66,5 +73,18 @@ public class Repository implements RepositoryInterface{
     @Override
     public void updateActiveStateForMedication(long currentDate) {
         localDatabaseSource.updateActiveStateForMedication(currentDate);
+    }
+
+    public void registerListeners() {
+        remoteDataSource.registerListeners();
+    }
+
+    public void unregisterListeners() {
+        remoteDataSource.unregisterListeners();
+
+    }
+
+    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate) {
+        remoteDataSource.handleFacebookToken(token,networkDelegate);
     }
 }

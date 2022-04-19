@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.core.Repo;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
@@ -28,6 +30,7 @@ import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.ShowMedications.Presenter.ShowMedicationsPresenter;
 import com.iti.mad42.remedicine.ShowMedications.Presenter.ShowMedicationsPresenterInterface;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +84,12 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
 
     }
     private void setPresenter(){
-        repository = Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()));
+        repository = Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()), RemoteDataSource.getInstance(getContext(), new CallbackManager() {
+            @Override
+            public boolean onActivityResult(int i, int i1, @Nullable Intent intent) {
+                return false;
+            }
+        }));
         repository.updateActiveStateForMedication(Utility.dateToLong(Utility.getCurrentDay()));
         presenter = new ShowMedicationsPresenter(this,repository);
 

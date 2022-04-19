@@ -3,6 +3,7 @@ package com.iti.mad42.remedicine.data.FacebookAuthentication;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,26 +19,34 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.iti.mad42.remedicine.Model.pojo.User;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.login.view.presenter.LoginPresenterInterface;
 
-public class AuthenticationHandler implements AuthenticationHandlerInterface {
+public class RemoteDataSource implements RemoteDataSourceInterface {
 
-    Context context;
-    private CallbackManager callbackManager;
+    private Context context;
     private FirebaseAuth firebaseAuth;
     public static final String TAG = "Facebook Authentication";
     private FirebaseAuth.AuthStateListener authStateListener;
     private AccessTokenTracker tracker;
-    private LoginPresenterInterface loginPresenterInterface;
+    private FirebaseUser user;
+    private static RemoteDataSource instance = null;
+    private DatabaseReference databaseReferenceUser;
 
-    public AuthenticationHandler(Context context, CallbackManager callbackManager, LoginPresenterInterface loginPresenterInterface) {
+    private RemoteDataSource(Context context, CallbackManager callbackManager) {
         firebaseAuth = FirebaseAuth.getInstance();
         this.context = context;
-        this.loginPresenterInterface = loginPresenterInterface;
+        databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
         FacebookSdk.sdkInitialize(context.getApplicationContext());
         callbackManager = callbackManager;
         authStateListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+            user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 getUserInfo(user);
             }else {
@@ -54,6 +63,12 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
         };
     }
 
+    public static RemoteDataSource getInstance(Context context, CallbackManager callbackManager) {
+        if (instance == null) {
+            instance = new RemoteDataSource(context,callbackManager);
+        }
+        return  instance;
+    }
     public void registerListeners() {
         firebaseAuth.addAuthStateListener(authStateListener);
     }
@@ -64,7 +79,7 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
         }   
     }
 
-    public void handleFacebookToken(AccessToken token) {
+    public void handleFacebookToken(AccessToken token,NetworkDelegate networkDelegate) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
@@ -73,10 +88,9 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "sign in with credential: successful ");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    loginPresenterInterface.navigateToHome();
+                    addUserToFirebase(networkDelegate , new User(user.getEmail(),user.getDisplayName(),""));
                 }else {
                     Log.i(TAG, "sign in with credential: failed ",task.getException());
-
                 }
             }
         });
@@ -90,6 +104,25 @@ public class AuthenticationHandler implements AuthenticationHandlerInterface {
             Log.i(TAG, "updateUI with: " + user.getProviderId() );
             Log.i(TAG, "updateUI with: " + user.getPhoneNumber() );
         }
+    }
+
+    private void addUserToFirebase(NetworkDelegate networkDelegate,User user) {
+        String id = databaseReferenceUser.push().getKey();
+        databaseReferenceUser.orderByChild("email")
+                .equalTo(user.getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(context,"This email is already registered",Toast.LENGTH_SHORT).show();
+                }else {
+                    databaseReferenceUser.child(id).setValue(user);
+                    networkDelegate.saveString(Utility.myCredentials,user.getEmail().toString().trim());
+                    networkDelegate.navigateToHome();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
     }
 
 }
