@@ -220,7 +220,7 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
     public MedicationPojo getMedicationObject(){
 
 
-        return (MedicationPojo) getIntent().getSerializableExtra("fromDetailsToEdit");
+        return (MedicationPojo) getIntent().getSerializableExtra("fromDetailsToEdit");////////////////////////////////////
     }
 
     public String getMedNameTextView(){

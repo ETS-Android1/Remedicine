@@ -2,6 +2,7 @@ package com.iti.mad42.remedicine.MedDetails.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,11 +55,16 @@ public class MedDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_med_details);
         initView();
-        addDummyData();
-        medicationPojo = new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates, "sandra@gmail.com");
 
+        medicationPojo = (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails");
+//        addDummyData();
+//        medicationPojo = new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates, "sandra@gmail.com");
+
+        Log.i("sandra", "Med Details Name:" + medicationPojo.getName());
+        medicationNameLabel.setText(medicationPojo.getName());
+        medicationStrengthLabel.setText(medicationPojo.getStrength());
         medTimeRecyclerview.setHasFixedSize(true);
-        adapter = new RemindersRecyclerAdapter(this, medDose);
+        adapter = new RemindersRecyclerAdapter(this, medicationPojo.getMedDoseReminders());
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         medTimeRecyclerview.setLayoutManager(layoutManager);
         medTimeRecyclerview.setAdapter(adapter);

@@ -7,5 +7,6 @@ import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import java.util.List;
 
 public interface ShowMedicationFragmentInterface {
-    public void showActiveMedications(LiveData<List<MedicationPojo>> meds);
+    public void showActiveMedications(List<MedicationPojo> meds);
+    public void showInActiveMedications(List<MedicationPojo> meds);
 }

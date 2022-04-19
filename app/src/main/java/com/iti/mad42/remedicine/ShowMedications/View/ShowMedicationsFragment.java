@@ -1,6 +1,7 @@
 package com.iti.mad42.remedicine.ShowMedications.View;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,18 +26,20 @@ import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.ShowMedications.Presenter.ShowMedicationsPresenter;
+import com.iti.mad42.remedicine.ShowMedications.Presenter.ShowMedicationsPresenterInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ShowMedicationsFragment extends Fragment implements ShowMedicationFragmentInterface{
+public class ShowMedicationsFragment extends Fragment implements ShowMedicationFragmentInterface, OnItemClickListenerInterface{
 
     RecyclerView activeMedsRecycler;
     RecyclerView inActiveMedsRecycler;
     ActiveMedicationsAdapter activeAdapter, inactiveAdapter;
+    ShowMedicationsPresenterInterface presenter;
     FloatingActionButton addMedBtn;
-
-    List<MedicationPojo> myMeds = new ArrayList<>();
     Repository repository;
 
     public ShowMedicationsFragment() {
@@ -46,8 +49,7 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        repository = Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()));
-        repository.updateActiveStateForMedication(Utility.dateToLong(Utility.getCurrentDay()));
+
     }
 
     @Override
@@ -56,7 +58,11 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_show_medications, container, false);
 
-        addMedBtn = view.findViewById(R.id.btnAddMedicineHome);
+        initUI(view);
+        setPresenter();
+        setActiveAdapter();
+        setInactiveAdapter();
+
         addMedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,52 +71,76 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
             }
         });
 
-        activeMedsRecycler = view.findViewById(R.id.activeMedsRecycler);
-        inActiveMedsRecycler = view.findViewById(R.id.inactiveMedsRecycler);
-
-        activeMedsRecycler.setHasFixedSize(true);
-        inActiveMedsRecycler.setHasFixedSize(true);
-
-
-        inactiveAdapter = new ActiveMedicationsAdapter(getContext(), myMeds);
-
-        LinearLayoutManager activeLayoutManager = new LinearLayoutManager(getContext());
-        LinearLayoutManager inactiveLayoutManager = new LinearLayoutManager(getContext());
-
-        activeLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        inactiveLayoutManager.setOrientation(RecyclerView.VERTICAL);
-
-        activeMedsRecycler.setLayoutManager(activeLayoutManager);
-        inActiveMedsRecycler.setLayoutManager(inactiveLayoutManager);
-
-        inActiveMedsRecycler.setAdapter(inactiveAdapter);
-        activeMedsRecycler.setAdapter(activeAdapter);
-
-        activeAdapter.notifyDataSetChanged();
-        inactiveAdapter.notifyDataSetChanged();
-        activeAdapter.setOnItemClickListener(new ActiveMedicationsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent goToMedDetails = new Intent(getActivity(), MedDetails.class);
-                goToMedDetails.putExtra("fromActiveToDetails", myMeds.get(position));
-                startActivity(goToMedDetails);
-
-            }
-        });
-
-
         return view;
     }
 
-    @Override
-    public void showActiveMedications(LiveData<List<MedicationPojo>> meds) {
-        meds.observe(this, new Observer<List<MedicationPojo>>() {
+    private void initUI(View view){
+        addMedBtn = view.findViewById(R.id.btnAddMedicineHome);
+        activeMedsRecycler = view.findViewById(R.id.activeMedsRecycler);
+        inActiveMedsRecycler = view.findViewById(R.id.inactiveMedsRecycler);
+
+    }
+    private void setPresenter(){
+        repository = Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()));
+        repository.updateActiveStateForMedication(Utility.dateToLong(Utility.getCurrentDay()));
+        presenter = new ShowMedicationsPresenter(this,repository);
+
+    }
+
+    private void setActiveAdapter(){
+        LinearLayoutManager activeLayoutManager = new LinearLayoutManager(getContext());
+        activeAdapter = new ActiveMedicationsAdapter(getContext(), new ArrayList<>());
+        activeAdapter.setOnItemClickListener(this);
+        activeMedsRecycler.setHasFixedSize(true);
+        activeLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        activeMedsRecycler.setLayoutManager(activeLayoutManager);
+        activeMedsRecycler.setAdapter(activeAdapter);
+        presenter.getActiveMedications(Utility.dateToLong(Utility.getCurrentDay())).observe(getViewLifecycleOwner(), new Observer<List<MedicationPojo>>() {
             @Override
             public void onChanged(List<MedicationPojo> medicationPojos) {
-                activeAdapter = new ActiveMedicationsAdapter(getContext(), medicationPojos);
+                showActiveMedications(medicationPojos);
                 activeAdapter.notifyDataSetChanged();
             }
         });
+    }
 
+    private void setInactiveAdapter(){
+        LinearLayoutManager inactiveLayoutManager = new LinearLayoutManager(getContext());
+        inactiveAdapter = new ActiveMedicationsAdapter(getContext(), new ArrayList<>());
+        inactiveAdapter.setOnItemClickListener(this);
+        inActiveMedsRecycler.setHasFixedSize(true);
+        inactiveLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        inActiveMedsRecycler.setLayoutManager(inactiveLayoutManager);
+        inActiveMedsRecycler.setAdapter(inactiveAdapter);
+        presenter.getInActiveMedications(Utility.dateToLong(Utility.getCurrentDay())).observe(getViewLifecycleOwner(), new Observer<List<MedicationPojo>>() {
+            @Override
+            public void onChanged(List<MedicationPojo> medicationPojos) {
+                showInActiveMedications(medicationPojos);
+                inactiveAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void gotToMedicationDetails(MedicationPojo medDetails){
+        Intent goToMedDetails = new Intent(getActivity(), MedDetails.class);
+        goToMedDetails.putExtra("fromActiveToDetails", medDetails);
+        startActivity(goToMedDetails);
+    }
+
+    @Override
+    public void showActiveMedications(List<MedicationPojo> meds) {
+        activeAdapter.setList(meds);
+        activeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showInActiveMedications(List<MedicationPojo> meds) {
+        inactiveAdapter.setList(meds);
+        inactiveAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(MedicationPojo med) {
+        gotToMedicationDetails(med);
     }
 }
