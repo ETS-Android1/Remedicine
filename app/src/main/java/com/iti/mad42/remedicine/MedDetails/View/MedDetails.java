@@ -56,10 +56,6 @@ public class MedDetails extends AppCompatActivity {
         setContentView(R.layout.activity_med_details);
         initView();
 
-        medicationPojo = (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails");
-//        addDummyData();
-//        medicationPojo = new MedicationPojo("Parasetamol", 0,"1000",0,"Headache", "After Eating", 2,medDose,1,1650234953000L,1652826953000L,medDays ,30,3,1652740553000L, true,medStates, "sandra@gmail.com");
-
         Log.i("sandra", "Med Details Name:" + medicationPojo.getName());
         medicationNameLabel.setText(medicationPojo.getName());
         medicationStrengthLabel.setText(medicationPojo.getStrength());
@@ -79,7 +75,7 @@ public class MedDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MedDetails.this, EditMedActivity.class);
-                intent.putExtra("fromDetailsToEdit",(Serializable) medicationPojo);
+                intent.putExtra("fromDetailsToEdit",(Serializable) (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails"));
                 startActivity(intent);
             }
         });
