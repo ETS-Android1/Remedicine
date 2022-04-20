@@ -7,6 +7,7 @@ import static com.iti.mad42.remedicine.Model.pojo.Utility.medReminderPerWeekList
 import static com.iti.mad42.remedicine.Model.pojo.Utility.medStrengthUnit;
 import static com.iti.mad42.remedicine.Model.pojo.Utility.millisToTimeAsString;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,17 +17,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.CallbackManager;
 import com.google.android.material.textfield.TextInputLayout;
 import com.iti.mad42.remedicine.EditMed.Presenter.EditMedPresenter;
 import com.iti.mad42.remedicine.EditMed.Presenter.EditMedPresenterInterface;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
+import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
 
 import java.util.List;
 
@@ -64,7 +71,13 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
         initRecyclerView();
         setAdapters();
         setListeners();
-        presenter = new EditMedPresenter(this,this);
+        presenter = new EditMedPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, new CallbackManager() {
+            @Override
+            public boolean onActivityResult(int i, int i1, @Nullable Intent intent) {
+                return false;
+            }
+        })));
+
 
     }
 
@@ -182,7 +195,9 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
         saveEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.getData();
+                presenter.updateMedication();
+                startActivity(new Intent(EditMedActivity.this, HomeRecyclerView.class));
+                finish();
             }
         });
 
@@ -241,6 +256,16 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
 
     public int getMedQtyTextView(){
         return Integer.parseInt(editMedicationLeftEdt.getEditText().getText().toString());
+    }
+
+    @Override
+    public String getStartDateTextView() {
+        return editMedicationTreatmentDurationFromEdt.getEditText().getText().toString();
+    }
+
+    @Override
+    public String getEndDateTextView() {
+        return editMedicationTreatmentDurationToEdt.getEditText().getText().toString();
     }
 
     public int getMedReminderQtyTextView(){

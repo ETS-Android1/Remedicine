@@ -9,7 +9,6 @@ public interface AddNewMedicineActivityInterface {
     public void setEndDateTextView(String endDate);
     public List<MedicineDose> getDoseFromAdapter();
     public String getMedNameTextView();
-
     public String getMedStrengthTextView();
 
     public String getMedReasonTextView();

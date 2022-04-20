@@ -94,6 +94,10 @@ public class Repository implements RepositoryInterface{
         remoteDataSource.addMedicationToFirebase(med);
     }
 
+    public void updateMedicationToFirebase(MedicationPojo med) {
+            remoteDataSource.updateMedicationToFirebase(med);
+    }
+
     @Override
     public void sendRequest(RequestPojo request) {
         remoteDataSource.sendRequest(request);
@@ -109,4 +113,5 @@ public class Repository implements RepositoryInterface{
         this.networkDelegate = networkDelegate;
         remoteDataSource.setNetworkDelegate(networkDelegate);
     }
+    
 }

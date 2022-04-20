@@ -22,6 +22,7 @@ public interface RepositoryInterface {
     public void unregisterListeners();
     public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate);
     public void addMedicationToFirebase(MedicationPojo med);
+    public void updateMedicationToFirebase(MedicationPojo med);
     //functions for Firebase-RealTime
     public void sendRequest(RequestPojo request);
     public void getAllRequests(String receiverEmail);

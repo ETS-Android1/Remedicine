@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.R;
@@ -58,7 +61,14 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
     @Override
     protected void onStart() {
         super.onStart();
+
         presenter.registerListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initConnectionListener();
     }
 
     @Override
@@ -82,6 +92,11 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
         emailErrorMessage = findViewById(R.id.txtViewEmailErrorMessageLogin);
     }
 
+    private void initConnectionListener(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new NetworkChangeReceiver(), intentFilter);
+    }
 
     private void setBtnsListener() {
 
