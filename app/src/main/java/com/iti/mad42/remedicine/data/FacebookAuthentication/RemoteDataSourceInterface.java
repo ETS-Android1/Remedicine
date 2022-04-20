@@ -16,4 +16,9 @@ public interface RemoteDataSourceInterface {
     public void deleteMedicationFromFirebase(MedicationPojo med);
 
 
+    public void sendRequest(RequestPojo request);
+    public void getAllRequestsForReceiver(String receiverEmail);
+    public void setNetworkDelegate(NetworkDelegate networkDelegate);
+    public void changeRequestStateWhenAccept(RequestPojo request);
+    public void rejectRequest(RequestPojo request);
 }

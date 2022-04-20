@@ -28,9 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.login.view.presenter.LoginPresenterInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RemoteDataSource implements RemoteDataSourceInterface {
 
@@ -43,6 +47,8 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     private static RemoteDataSource instance = null;
     private DatabaseReference databaseReferenceUser;
     private DatabaseReference databaseReferenceMedication;
+    private DatabaseReference databaseReferenceRequests;
+    private NetworkDelegate networkDelegate;
 
 
     private RemoteDataSource(Context context, CallbackManager callbackManager) {
@@ -50,6 +56,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         this.context = context;
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
         databaseReferenceMedication = FirebaseDatabase.getInstance().getReference("meds");
+        databaseReferenceRequests = FirebaseDatabase.getInstance().getReference("requests");
         FacebookSdk.sdkInitialize(context.getApplicationContext());
         callbackManager = callbackManager;
         authStateListener = firebaseAuth -> {
@@ -76,6 +83,11 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         }
         return  instance;
     }
+
+    @Override
+    public void setNetworkDelegate(NetworkDelegate networkDelegate) {
+        this.networkDelegate = networkDelegate;
+    }
     public void registerListeners() {
         firebaseAuth.addAuthStateListener(authStateListener);
     }
@@ -83,7 +95,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     public void unregisterListeners() {
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
-        }   
+        }
     }
 
     public void handleFacebookToken(AccessToken token,NetworkDelegate networkDelegate) {
@@ -200,5 +212,113 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         return sharedPreferences.getString(key,null);
     }
 
+
+
+    @Override
+    public void sendRequest(RequestPojo request) {
+        String id = databaseReferenceRequests.push().getKey();
+        databaseReferenceUser.orderByChild("email")
+                .equalTo(request.getRecieverEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                boolean isFound = false;
+                                Log.i("sandra", "Error Here before for" + snapshot.toString());
+                                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                                    RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
+                                    if(request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                                        isFound = true;
+                                        Log.i("sandra", "request exists");
+                                        Toast.makeText(context,"Request is already exists" ,Toast.LENGTH_SHORT).show();
+                                        break;
+                                    }
+                                }
+                                if(!isFound){
+                                    Log.i("sandra", "in small IF");
+                                    databaseReferenceRequests.child(id).setValue(request);
+                                }
+                            }else {
+                                Log.i("sandra", "in big ELSE");
+                                databaseReferenceRequests.child(id).setValue(request);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(context,"Something went wrong. Error is: "+error ,Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(context,"This Email Doesn't Exist." ,Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+    }
+
+    @Override
+    public void getAllRequestsForReceiver(String receiverEmail) {
+        List<RequestPojo> requests = new ArrayList<>();
+        databaseReferenceRequests.orderByChild("recieverEmail").equalTo(receiverEmail).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    requests.clear();
+                    for (DataSnapshot requestsSnapshot: snapshot.getChildren()){
+                        RequestPojo request = requestsSnapshot.getValue(RequestPojo.class);
+                        requests.add(request);
+                    }
+                }else {
+                    Toast.makeText(context,"There is no requests to show.",Toast.LENGTH_SHORT).show();
+                }
+                //call method that will set the adapter with the list requests.
+                networkDelegate.successReturnRequests(requests);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void changeRequestStateWhenAccept(RequestPojo request) {
+
+    }
+
+    @Override
+    public void rejectRequest(RequestPojo request) {
+        databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                    Log.e("sandra", "before if receiver email");
+                    Log.e("sandra", "before if receiver email :"+request.getRecieverEmail());
+                    Log.e("sandra", "before if sender email"+request.getSenderEmail());
+                    Log.e("sandra", "before if sender email : "+snapshot.getValue(RequestPojo.class).getSenderEmail());
+                    RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
+                    if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                        String id = snapshot1.getKey();
+                        Log.e("sandra", "Request id : "+id);
+                        databaseReferenceRequests.child(id).removeValue();
+                        Toast.makeText(context,"Request has been rejected.",Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }
