@@ -22,6 +22,7 @@ public class RequestsPresenter implements RequestsPresenterInterface, NetworkDel
         repository.getAllRequests(receiverEmail);
     }
 
+
     @Override
     public void saveString(String key, String value) {
 
@@ -36,5 +37,10 @@ public class RequestsPresenter implements RequestsPresenterInterface, NetworkDel
     public void successReturnRequests(List<RequestPojo> requests) {
 
         view.getAllRequests(requests);
+    }
+
+    @Override
+    public void rejectRequest(RequestPojo request) {
+        repository.rejectRequest(request);
     }
 }

@@ -95,7 +95,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     public void unregisterListeners() {
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
-        }   
+        }
     }
 
     public void handleFacebookToken(AccessToken token,NetworkDelegate networkDelegate) {
@@ -206,22 +206,22 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()){
                                 boolean isFound = false;
-                                Log.i("TAG", "Error Here before for" + snapshot.toString());
+                                Log.i("sandra", "Error Here before for" + snapshot.toString());
                                 for (DataSnapshot snapshot1 : snapshot.getChildren()){
                                     RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
                                     if(request.getSenderEmail().equals(requestPojo.getSenderEmail())){
                                         isFound = true;
-                                        Log.i("TAG", "request exists");
+                                        Log.i("sandra", "request exists");
                                         Toast.makeText(context,"Request is already exists" ,Toast.LENGTH_SHORT).show();
                                         break;
                                     }
                                 }
                                 if(!isFound){
-                                    Log.i("TAG", "in small IF");
+                                    Log.i("sandra", "in small IF");
                                     databaseReferenceRequests.child(id).setValue(request);
                                 }
                             }else {
-                                Log.i("TAG", "in big ELSE");
+                                Log.i("sandra", "in big ELSE");
                                 databaseReferenceRequests.child(id).setValue(request);
                             }
                         }
@@ -256,9 +256,41 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                 }else {
                     Toast.makeText(context,"There is no requests to show.",Toast.LENGTH_SHORT).show();
                 }
-
                 //call method that will set the adapter with the list requests.
                 networkDelegate.successReturnRequests(requests);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void changeRequestStateWhenAccept(RequestPojo request) {
+
+    }
+
+    @Override
+    public void rejectRequest(RequestPojo request) {
+        databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                    Log.e("sandra", "before if receiver email");
+                    Log.e("sandra", "before if receiver email :"+request.getRecieverEmail());
+                    Log.e("sandra", "before if sender email"+request.getSenderEmail());
+                    Log.e("sandra", "before if sender email : "+snapshot.getValue(RequestPojo.class).getSenderEmail());
+                    RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
+                    if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                        String id = snapshot1.getKey();
+                        Log.e("sandra", "Request id : "+id);
+                        databaseReferenceRequests.child(id).removeValue();
+                        Toast.makeText(context,"Request has been rejected.",Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -268,24 +300,4 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         });
     }
 
-
-
-
-//    databaseReference
-//            .orderByChild("recieverEmail")
-//                .equalTo(getString(Utility.myCredentials)).addValueEventListener
-
-//    if (snapshot.exists()){
-//        Toast.makeText(context,"This Medication is already added",Toast.LENGTH_SHORT).show();
-
-    //                     requests.clear();
-    //                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-    //                        Pill pill = postSnapshot.getValue(Pill.class);
-    //                        pills.add(pill);
-    //                    }
-    //                    adapter = new PillsFragmentHomePageAdapter(getContext(), pills);
-//    }
-//                else {
-//        databaseReferenceMedication.child(id).setValue(med);
-//    }
 }

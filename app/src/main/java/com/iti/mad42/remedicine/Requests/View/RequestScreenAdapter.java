@@ -67,6 +67,7 @@ public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdap
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Reject Button", Toast.LENGTH_SHORT).show();
                 listener.onClickRejectBtn(requests.get(position));
+                setList(requests);
             }
         });
     }

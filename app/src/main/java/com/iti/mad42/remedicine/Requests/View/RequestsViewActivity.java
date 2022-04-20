@@ -61,14 +61,15 @@ public class RequestsViewActivity extends AppCompatActivity implements RequestsV
     }
     void setAdapter(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-
         requestsRecycler.setHasFixedSize(true);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         requestsRecycler.setLayoutManager(layoutManager);
-
-
     }
 
+    public void updateListWhenReject(RequestPojo request){
+        presenter.rejectRequest(request);
+        requestAdapter.notifyDataSetChanged();
+    }
     @Override
     public void onClickAcceptBtn(RequestPojo request) {
 
@@ -76,7 +77,7 @@ public class RequestsViewActivity extends AppCompatActivity implements RequestsV
 
     @Override
     public void onClickRejectBtn(RequestPojo request) {
-
+        updateListWhenReject(request);
     }
 
     public String getString(String key){
