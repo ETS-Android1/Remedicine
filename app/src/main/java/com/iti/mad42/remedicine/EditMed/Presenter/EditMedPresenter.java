@@ -1,11 +1,13 @@
 package com.iti.mad42.remedicine.EditMed.Presenter;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.iti.mad42.remedicine.Model.pojo.Utility.dateToLong;
 import static com.iti.mad42.remedicine.Model.pojo.Utility.timeToMillis;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.TimePicker;
 
@@ -13,6 +15,7 @@ import com.iti.mad42.remedicine.EditMed.View.EditMedActivityInterface;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 
 import org.joda.time.Days;
@@ -38,10 +41,12 @@ public class EditMedPresenter implements EditMedPresenterInterface {
     Context context;
     EditMedActivityInterface view;
     MedicationPojo med;
+    private RepositoryInterface repository;
 
-    public EditMedPresenter(Context context, EditMedActivityInterface view) {
+    public EditMedPresenter(Context context, EditMedActivityInterface view, RepositoryInterface repository) {
         this.context = context;
         this.view = view;
+        this.repository=repository;
         med = view.getMedicationObject();
         view.setDataToTextViews(med);
     }
@@ -141,9 +146,9 @@ public class EditMedPresenter implements EditMedPresenterInterface {
         medDose = view.getDoseFromAdapter();
         med.setMedDoseReminders(medDose);
         if (startDate == null)
-            startDate = getCurrentDay();
+            startDate = view.getStartDateTextView();
         if (endDate == null)
-            endDate = getCurrentDay();
+            endDate = view.getEndDateTextView();
         med.setMedDays(getDays(startDate, endDate, interval));
 
         for (int i = 0; i < medDose.size(); i++) {
@@ -151,6 +156,8 @@ public class EditMedPresenter implements EditMedPresenterInterface {
         }
         med.setMedState(medStates);
         med.setActive(true);
+        med.setMedOwnerEmail(getString(Utility.myCredentials));
+
         Log.e("mando", "onClick: saved " + med);
     }
 
@@ -171,6 +178,13 @@ public class EditMedPresenter implements EditMedPresenterInterface {
         timePickerDialog.show();
     }
 
+    @Override
+    public void updateMedication() {
+        getData();
+        repository.updateMedication(med);
+        repository.updateMedicationToFirebase(med);
+    }
+
     public List<String> getDays(String startDate, String endDate, int x) {
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("dd-MM-yyyy");
         final LocalDate start = dtf.parseLocalDate(startDate);
@@ -186,6 +200,12 @@ public class EditMedPresenter implements EditMedPresenterInterface {
             Log.e("mando", "printDays: " + date);
         }
         return myDays;
+    }
+
+    public String getString(String key){
+        SharedPreferences sharedPreferences=
+                context.getSharedPreferences("LoginTest",MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
     }
 }
 

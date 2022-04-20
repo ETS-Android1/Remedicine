@@ -19,6 +19,8 @@ public interface EditMedActivityInterface {
     public String getMedInstructionTextView();
 
     public int getMedQtyTextView();
+    public String getStartDateTextView();
+    public String getEndDateTextView();
 
     public int getMedReminderQtyTextView();
     public void setRefillTime(String time);
