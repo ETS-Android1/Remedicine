@@ -113,5 +113,9 @@ public class Repository implements RepositoryInterface{
         this.networkDelegate = networkDelegate;
         remoteDataSource.setNetworkDelegate(networkDelegate);
     }
-    
+
+    @Override
+    public void rejectRequest(RequestPojo request) {
+        remoteDataSource.rejectRequest(request);
+    }
 }

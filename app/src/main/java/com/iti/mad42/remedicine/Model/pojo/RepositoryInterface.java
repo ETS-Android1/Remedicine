@@ -27,4 +27,5 @@ public interface RepositoryInterface {
     public void sendRequest(RequestPojo request);
     public void getAllRequests(String receiverEmail);
     public void setNetworkDelegate(NetworkDelegate networkDelegate);
+    public void rejectRequest(RequestPojo request);
 }

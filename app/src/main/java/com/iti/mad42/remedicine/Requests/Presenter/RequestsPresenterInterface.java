@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RequestsPresenterInterface {
     public void getAllRequests(String receiverEmail);
+    public void rejectRequest(RequestPojo request);
 }
