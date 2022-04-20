@@ -13,6 +13,7 @@ public interface RemoteDataSourceInterface {
 
     public void addMedicationToFirebase(MedicationPojo med);
     public void updateMedicationToFirebase(MedicationPojo med);
+    public void deleteMedicationFromFirebase(MedicationPojo med);
 
 
 }

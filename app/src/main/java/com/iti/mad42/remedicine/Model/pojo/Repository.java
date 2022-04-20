@@ -95,4 +95,7 @@ public class Repository implements RepositoryInterface{
     public void updateMedicationToFirebase(MedicationPojo med) {
         remoteDataSource.updateMedicationToFirebase(med);
     }
+    public void deleteMedicationFromFirebase(MedicationPojo med) {
+        remoteDataSource.deleteMedicationFromFirebase(med);
+    }
 }
