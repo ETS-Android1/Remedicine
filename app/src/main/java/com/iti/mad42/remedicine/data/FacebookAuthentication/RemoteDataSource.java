@@ -1,7 +1,10 @@
 package com.iti.mad42.remedicine.data.FacebookAuthentication;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -146,6 +149,34 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
             }
         });
+    }
+
+    @Override
+    public void updateMedicationToFirebase(MedicationPojo med) {
+        databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(getString(Utility.myCredentials)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        MedicationPojo medicationPojo = postSnapshot.getValue(MedicationPojo.class);
+                        if (medicationPojo.getName().equals(med.getName())){
+                            databaseReferenceMedication.child(postSnapshot.getKey()).setValue(med);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public String getString(String key){
+        SharedPreferences sharedPreferences=
+                context.getSharedPreferences("LoginTest",MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
     }
 
 

@@ -56,10 +56,15 @@ public class HomeRecyclerView extends AppCompatActivity {
 
     }
 
-
     private void replaceFragments(Fragment fragment) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainer,fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 }

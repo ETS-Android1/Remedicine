@@ -90,4 +90,9 @@ public class Repository implements RepositoryInterface{
     public void addMedicationToFirebase(MedicationPojo med){
         remoteDataSource.addMedicationToFirebase(med);
     }
+
+    @Override
+    public void updateMedicationToFirebase(MedicationPojo med) {
+        remoteDataSource.updateMedicationToFirebase(med);
+    }
 }

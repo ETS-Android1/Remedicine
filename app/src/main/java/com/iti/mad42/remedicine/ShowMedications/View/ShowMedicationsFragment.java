@@ -62,8 +62,7 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
 
         initUI(view);
         setPresenter();
-        setActiveAdapter();
-        setInactiveAdapter();
+
 
         addMedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +73,13 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setActiveAdapter();
+        setInactiveAdapter();
     }
 
     private void initUI(View view){

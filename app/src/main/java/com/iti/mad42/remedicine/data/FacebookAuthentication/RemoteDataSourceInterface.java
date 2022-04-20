@@ -12,5 +12,7 @@ public interface RemoteDataSourceInterface {
     public void handleFacebookToken(AccessToken token,NetworkDelegate networkDelegate);
 
     public void addMedicationToFirebase(MedicationPojo med);
+    public void updateMedicationToFirebase(MedicationPojo med);
+
 
 }

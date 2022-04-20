@@ -12,4 +12,5 @@ public interface EditMedPresenterInterface {
     public void openDatePicker(String state);
     public void getData();
     public void openTimePicker();
+    public void updateMedication();
 }
