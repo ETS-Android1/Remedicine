@@ -118,4 +118,7 @@ public class Repository implements RepositoryInterface{
     public void rejectRequest(RequestPojo request) {
         remoteDataSource.rejectRequest(request);
     }
+    public void deleteMedicationFromFirebase(MedicationPojo med) {
+        remoteDataSource.deleteMedicationFromFirebase(med);
+    }
 }

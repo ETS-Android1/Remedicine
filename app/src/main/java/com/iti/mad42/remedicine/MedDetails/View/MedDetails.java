@@ -1,34 +1,47 @@
 package com.iti.mad42.remedicine.MedDetails.View;
 
+import static com.iti.mad42.remedicine.Model.pojo.Utility.timeToMillis;
+
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.CallbackManager;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
 import com.iti.mad42.remedicine.EditMed.View.EditMedActivity;
+import com.iti.mad42.remedicine.MedDetails.Presenter.MedDetailsPresenter;
+import com.iti.mad42.remedicine.MedDetails.Presenter.MedDetailsPresenterInterface;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedDetails extends AppCompatActivity {
+public class MedDetails extends AppCompatActivity implements MedDetailsInterface {
 
-    RemindersRecyclerAdapter adapter;
-    List<MedicineDose>medDose = new ArrayList<>();
-    RecyclerView.LayoutManager layoutManager;
     private ImageView back;
     private ImageView delete;
     private ImageView edit;
@@ -47,23 +60,80 @@ public class MedDetails extends AppCompatActivity {
     private TextView howToUseLabel;
     private Button add;
     private TextView lastTimeTakenLabel;
-    List<String> medDays = new ArrayList<>();
-    List<MedState>medStates = new ArrayList<>();
-    MedicationPojo medicationPojo;
-       @Override
+    MedDetailsPresenterInterface presenter;
+    Dialog refillDialog;
+
+    RemindersRecyclerAdapter adapter;
+    RecyclerView.LayoutManager layoutManager;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_med_details);
         initView();
+        refillDialog = new Dialog(this);
+        presenter = new MedDetailsPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, new CallbackManager() {
+            @Override
+            public boolean onActivityResult(int i, int i1, @Nullable Intent intent) {
+                return false;
+            }
+        })));
+        setListeners();
+        presenter.setData();
 
-        Log.i("sandra", "Med Details Name:" + medicationPojo.getName());
-        medicationNameLabel.setText(medicationPojo.getName());
-        medicationStrengthLabel.setText(medicationPojo.getStrength());
+    }
+
+    public MedicationPojo getMedObject() {
+        return (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails");
+    }
+
+    public void setMedTimeRecyclerview(List<MedicineDose> medDose) {
         medTimeRecyclerview.setHasFixedSize(true);
-        adapter = new RemindersRecyclerAdapter(this, medicationPojo.getMedDoseReminders());
+        adapter = new RemindersRecyclerAdapter(this, medDose);
         layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         medTimeRecyclerview.setLayoutManager(layoutManager);
         medTimeRecyclerview.setAdapter(adapter);
+    }
+
+    public void setMedicationNameLabel(String medName) {
+        medicationNameLabel.setText(medName);
+    }
+
+    public void setPrescriptionRefillLabel(String prescriptionRefill) {
+        prescriptionRefillLabel.setText(prescriptionRefill);
+    }
+
+    public void setHowToUseLabel(String howToUse) {
+        howToUseLabel.setText(howToUse);
+    }
+
+    public void setPillsLeftLabel(String pillsLeft) {
+        pillsLeftLabel.setText(pillsLeft);
+    }
+
+    public void setMedReasonLabel(String medReason) {
+        medReasonLabel.setText(medReason);
+    }
+
+    public void setMedDurationLabel(String medDuration) {
+        medDurationLabel.setText(medDuration);
+    }
+
+    public void setMedicationStrengthLabel(String medicationStrength) {
+        medicationStrengthLabel.setText(medicationStrength);
+    }
+
+    public void setSuspendBtnText(String state){
+        suspendBtn.setText(state);
+    }
+
+    void setListeners() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,26 +145,68 @@ public class MedDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MedDetails.this, EditMedActivity.class);
-                intent.putExtra("fromDetailsToEdit",(Serializable) (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails"));
+                intent.putExtra("fromDetailsToEdit",(Serializable) presenter.getMedication());
                 startActivity(intent);
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.deleteMed();
+                finish();
+            }
+        });
+        suspendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.suspendMed();
+            }
+        });
+        refillBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRefillDialog();
             }
         });
     }
 
-    void addDummyData() {
+    void openRefillDialog(){
 
-        medDose.add(new MedicineDose("Pill", 2, 1650234756160L));
-        medDose.add(new MedicineDose("Pill", 2, 1650234756160L));
-        medDose.add(new MedicineDose("Pill", 2, 1650234756160L));
+        refillDialog.setContentView(R.layout.refill_med_dialog);
+        refillDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        medDays.add("Saturday");
-        medDays.add("Monday");
+        Button refillBtn,cancelBtn;
+        TextInputLayout refillEdt;
+        ImageView closeDialog = refillDialog.findViewById(R.id.dialogCloseBtn);
+        closeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refillDialog.dismiss();
+            }
+        });
 
-        medStates.add(new MedState(1652740553000L, "none"));
-        medStates.add(new MedState(1652740553000L, "none"));
+        refillBtn = refillDialog.findViewById(R.id.refillBtn);
+        cancelBtn = refillDialog.findViewById(R.id.cancelMedBtn);
+        refillEdt = refillDialog.findViewById(R.id.refillEdit);
 
+        refillBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               presenter.setRefillAmount(Integer.parseInt(refillEdt.getEditText().getText().toString()));
+               presenter.refillMed();
+               refillDialog.dismiss();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refillDialog.dismiss();
+            }
+        });
+
+        refillDialog.show();
     }
-
     private void initView() {
         back = (ImageView) findViewById(R.id.back);
         delete = (ImageView) findViewById(R.id.delete);

@@ -160,6 +160,7 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
             @Override
             public void onClick(View view) {
                 presenter.insertMedication();
+                finish();
             }
         });
 
@@ -236,6 +237,5 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         medicationRefillReminderTimeEdt = (TextInputLayout) findViewById(R.id.medication_refill_reminder_time_edt);
         add = (Button) findViewById(R.id.add);
         editMedTimeRecyclerview = (RecyclerView) findViewById(R.id.edit_med_time_recyclerview);
-
     }
 }

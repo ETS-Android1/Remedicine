@@ -185,6 +185,27 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             }
         });
     }
+    public void deleteMedicationFromFirebase(MedicationPojo med){
+        databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(getString(Utility.myCredentials)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        MedicationPojo medicationPojo = postSnapshot.getValue(MedicationPojo.class);
+                        if (medicationPojo.getName().equals(med.getName())){
+                            databaseReferenceMedication.child(postSnapshot.getKey()).removeValue();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     public String getString(String key){
         SharedPreferences sharedPreferences=
                 context.getSharedPreferences("LoginTest",MODE_PRIVATE);
