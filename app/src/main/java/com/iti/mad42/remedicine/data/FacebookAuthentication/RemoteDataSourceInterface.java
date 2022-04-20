@@ -2,6 +2,7 @@ package com.iti.mad42.remedicine.data.FacebookAuthentication;
 
 import com.facebook.AccessToken;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 
 public interface RemoteDataSourceInterface {
 
