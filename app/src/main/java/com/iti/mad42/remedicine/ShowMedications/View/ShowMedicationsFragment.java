@@ -62,8 +62,6 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
 
         initUI(view);
         setPresenter();
-
-
         addMedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
