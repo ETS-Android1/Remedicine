@@ -15,12 +15,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
+import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.NetworkDelegate;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSourceInterface;
 import com.iti.mad42.remedicine.login.view.view.LoginActivityInterface;
+
+import java.util.List;
 
 public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate {
 
@@ -53,6 +56,8 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
     public void navigateToHome() {
         view.navigateToHome();
     }
+
+
 
     @Override
     public void tryToLogin(String email, String password) {
@@ -88,5 +93,8 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
         editor.putString(key,value);
         editor.apply();
     }
+    @Override
+    public void successReturnRequests(List<RequestPojo> requests) {
 
+    }
 }

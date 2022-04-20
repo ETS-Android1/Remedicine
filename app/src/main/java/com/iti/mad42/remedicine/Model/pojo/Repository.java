@@ -17,6 +17,7 @@ public class Repository implements RepositoryInterface{
     private Context context;
     private LocalDatabaseSourceInterface localDatabaseSource;
     private RemoteDataSourceInterface remoteDataSource;
+    private NetworkDelegate networkDelegate;
     private static Repository repository = null;
 
     private Repository(Context context, LocalDatabaseSourceInterface localDatabaseSource, RemoteDataSourceInterface remoteDataSource){
@@ -75,6 +76,8 @@ public class Repository implements RepositoryInterface{
         localDatabaseSource.updateActiveStateForMedication(currentDate);
     }
 
+    //Firebase Methods
+
     public void registerListeners() {
         remoteDataSource.registerListeners();
     }
@@ -89,5 +92,21 @@ public class Repository implements RepositoryInterface{
     }
     public void addMedicationToFirebase(MedicationPojo med){
         remoteDataSource.addMedicationToFirebase(med);
+    }
+
+    @Override
+    public void sendRequest(RequestPojo request) {
+        remoteDataSource.sendRequest(request);
+    }
+
+    @Override
+    public void getAllRequests(String receiverEmail) {
+        remoteDataSource.getAllRequestsForReceiver(receiverEmail);
+    }
+
+    @Override
+    public void setNetworkDelegate(NetworkDelegate networkDelegate) {
+        this.networkDelegate = networkDelegate;
+        remoteDataSource.setNetworkDelegate(networkDelegate);
     }
 }

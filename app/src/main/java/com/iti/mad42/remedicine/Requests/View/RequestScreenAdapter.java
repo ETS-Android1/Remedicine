@@ -1,5 +1,6 @@
 package com.iti.mad42.remedicine.Requests.View;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +12,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.R;
 
 import java.util.List;
 
 public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdapter.ViewHolder> {
-//
-//    private final Context context;
 
-//    public RequestScreenAdapter(Context _context, List<Medication> myMeds){
-//        this.context = _context;
-//        this.myMeds = myMeds;
-//    }
+    private final Context context;
+    private List<RequestPojo> requests;
+    private OnClickListenerInterface listener;
+
+    public RequestScreenAdapter(Context _context, List<RequestPojo> requests, OnClickListenerInterface listener){
+        this.context = _context;
+        this.requests = requests;
+        this.listener = listener;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -48,27 +53,30 @@ public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //holder.userName.setText(myMeds.get(position).getMedName());
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.userName.setText(requests.get(position).getSenderEmail().split("[@.]")[0]);
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Accept Button", Toast.LENGTH_SHORT).show();
+                listener.onClickAcceptBtn(requests.get(position));
             }
         });
         holder.rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Reject Button", Toast.LENGTH_SHORT).show();
+                listener.onClickRejectBtn(requests.get(position));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-
-        return 0;
+        return requests.size();
     }
 
-
+    public void setList(List<RequestPojo> requests){
+        this.requests = requests;
+    }
 }
