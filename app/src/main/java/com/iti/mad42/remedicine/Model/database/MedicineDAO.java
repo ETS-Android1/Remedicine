@@ -41,7 +41,6 @@ public interface MedicineDAO {
     void updateActiveStateForMedication(long currentDate);
 
     // User Database Methods
-    @Query("INSERT INTO users (email, username, password) VALUES (:email, null, null)")
-    void insertMedfriendUser(String email);
+
 
 }

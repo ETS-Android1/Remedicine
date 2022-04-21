@@ -118,7 +118,6 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     }
 
     public void getData(){
-
         med.setName(view.getMedNameTextView());
         med.setStrength(view.getMedStrengthTextView());
         med.setReason(view.getMedReasonTextView());

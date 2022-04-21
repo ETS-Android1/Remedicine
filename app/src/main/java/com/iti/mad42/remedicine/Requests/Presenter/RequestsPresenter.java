@@ -51,9 +51,8 @@ public class RequestsPresenter implements RequestsPresenterInterface, NetworkDel
     @Override
     public void insertMedFriend(User user) {
         repository.setNetworkDelegate(this);
-        Log.e("sandra", "user from presenter is  "+user.getEmail());
+        Log.e("sandra", "user from presenter calll is  "+user.getEmail());
         repository.insertMedfriendUser(user);
-
     }
 
     @Override

@@ -300,21 +300,27 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
     @Override
     public void changeRequestStateWhenAccept(RequestPojo request) {
-        databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addValueEventListener(new ValueEventListener() {
+        Log.e(TAG, "changeRequestStateWhenAccept: "+ request.getSenderEmail() );
+        databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                RequestPojo requestPojo = snapshot.getValue(RequestPojo.class);
-                if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
-                    String id = snapshot.getKey();
-                    Log.e("sandra", "Request id : "+id);
-                    requestPojo.setState("friend");
-                    databaseReferenceRequests.child(id).setValue(requestPojo);
-                    saveString(Utility.currentMedFriend,requestPojo.getSenderEmail());
-                    String medEmail = getString(Utility.currentMedFriend);
-                    Log.e("sandra", "medEmail is : "+medEmail);
-                    networkDelegate.insertMedFriend(new User(medEmail, "",""));
-                    Toast.makeText(context,"Request accepted.",Toast.LENGTH_SHORT).show();
+                if(snapshot.exists()){
+                    for (DataSnapshot requestsSnapshot: snapshot.getChildren()){
+                        RequestPojo requestPojo = requestsSnapshot.getValue(RequestPojo.class);
+                        if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                            String id = requestsSnapshot.getKey();
+                            Log.e("sandra", "Request id : "+id);
+                            requestPojo.setState("friend");
+                            databaseReferenceRequests.child(id).setValue(requestPojo);
+                            saveString(Utility.currentMedFriend,requestPojo.getSenderEmail());
+                            String medEmail = getString(Utility.currentMedFriend);
+                            Log.e("sandra", "medEmail is : "+medEmail);
+                            networkDelegate.insertMedFriend(new User(medEmail, "",""));
+                            Toast.makeText(context,"Request accepted.",Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
+
             }
 
             @Override
