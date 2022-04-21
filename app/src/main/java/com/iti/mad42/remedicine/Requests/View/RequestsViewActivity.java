@@ -79,7 +79,7 @@ public class RequestsViewActivity extends AppCompatActivity implements RequestsV
     public void onClickAcceptBtn(RequestPojo request) {
         updateListWhenAccept(request);
         presenter.insertMedFriend(new User(getString(Utility.currentMedFriend), "",""));
-        presenter.updateStateWhenAcceptRequest(request);
+       // presenter.updateStateWhenAcceptRequest(request);
     }
 
     @Override
