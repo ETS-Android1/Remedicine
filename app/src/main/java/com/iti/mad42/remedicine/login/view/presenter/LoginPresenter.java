@@ -97,4 +97,9 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
     public void successReturnRequests(List<RequestPojo> requests) {
 
     }
+
+    @Override
+    public void insertMedFriend(User user) {
+
+    }
 }

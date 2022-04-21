@@ -40,7 +40,7 @@ import com.iti.mad42.remedicine.login.view.view.LoginActivity;
 public class MyAccountFragment extends Fragment implements MyAccountFragmentInterface {
 
     ConstraintLayout myRequestsConst, addMedfriendConst, switchAcc, logoutConst;
-    Dialog addMedfrienDialog, showReminderDialog;
+    Dialog addMedfriendDialog, switchAccountDialog;
     Intent intent;
     MyAccountPresenterInterface presenter;
 
@@ -77,8 +77,8 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         addMedfriendConst = view.findViewById(R.id.onClickAddMedfriend);
         switchAcc = view.findViewById(R.id.onClickSwitch);
         logoutConst = view.findViewById(R.id.onClickLogout);
-        addMedfrienDialog = new Dialog(getContext());
-        showReminderDialog = new Dialog(getContext());
+        addMedfriendDialog = new Dialog(getContext());
+        switchAccountDialog = new Dialog(getContext());
     }
 
     private void goToMyRequestsScreen(){
@@ -104,7 +104,7 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         switchAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openReminderDialog();
+                openSwitchAccountListDialog();
             }
         });
     }
@@ -119,18 +119,18 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
     }
 
     public void openAddMedfriendDialog(){
-        addMedfrienDialog.setContentView(R.layout.add_medfriend_dialog);
-        addMedfrienDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        addMedfriendDialog.setContentView(R.layout.add_medfriend_dialog);
+        addMedfriendDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Button sendBtn, cancelBtn;
         EditText receiverEmailEdt;
-        sendBtn = addMedfrienDialog.findViewById(R.id.sendMedBtn);
-        cancelBtn = addMedfrienDialog.findViewById(R.id.cancelMedBtn);
-        receiverEmailEdt = addMedfrienDialog.findViewById(R.id.sendRequestEdt);
-        ImageView closeDialog = addMedfrienDialog.findViewById(R.id.dialogCloseBtn);
+        sendBtn = addMedfriendDialog.findViewById(R.id.sendMedBtn);
+        cancelBtn = addMedfriendDialog.findViewById(R.id.cancelMedBtn);
+        receiverEmailEdt = addMedfriendDialog.findViewById(R.id.sendRequestEdt);
+        ImageView closeDialog = addMedfriendDialog.findViewById(R.id.dialogCloseBtn);
         closeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addMedfrienDialog.dismiss();
+                addMedfriendDialog.dismiss();
             }
         });
 
@@ -138,32 +138,32 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
             @Override
             public void onClick(View view) {
                 presenter.sendRequest(new RequestPojo(getString(Utility.myCredentials), receiverEmailEdt.getText().toString(), "notFriend"));
-                addMedfrienDialog.dismiss();
+                addMedfriendDialog.dismiss();
             }
         });
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addMedfrienDialog.dismiss();
+                addMedfriendDialog.dismiss();
             }
         });
 
-        addMedfrienDialog.show();
+        addMedfriendDialog.show();
     }
-    public void openReminderDialog(){
-        showReminderDialog.setContentView(R.layout.medication_reminder_dialog);
-        showReminderDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    public void openSwitchAccountListDialog(){
+        switchAccountDialog.setContentView(R.layout.medfriends_list);
+        switchAccountDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ImageView closeDialog = showReminderDialog.findViewById(R.id.reminderDialogCloseBtn);
+        ImageView closeDialog = switchAccountDialog.findViewById(R.id.medfriensListCloseBtn);
         closeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showReminderDialog.dismiss();
+                switchAccountDialog.dismiss();
             }
         });
 
 
-        showReminderDialog.show();
+        switchAccountDialog.show();
     }
 
     public String getString(String key){

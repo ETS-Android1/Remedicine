@@ -15,6 +15,7 @@ import com.facebook.CallbackManager;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
+import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.Requests.Presenter.RequestsPresenter;
@@ -52,7 +53,7 @@ public class RequestsViewActivity extends AppCompatActivity implements RequestsV
         });
     }
     void setPresenter(){
-        presenter = new RequestsPresenter(this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, new CallbackManager() {
+        presenter = new RequestsPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, new CallbackManager() {
             @Override
             public boolean onActivityResult(int i, int i1, @Nullable Intent intent) {
                 return false;
@@ -70,9 +71,15 @@ public class RequestsViewActivity extends AppCompatActivity implements RequestsV
         presenter.rejectRequest(request);
         requestAdapter.notifyDataSetChanged();
     }
+    public void updateListWhenAccept(RequestPojo request){
+        presenter.updateStateWhenAcceptRequest(request);
+        requestAdapter.notifyDataSetChanged();
+    }
     @Override
     public void onClickAcceptBtn(RequestPojo request) {
-
+        updateListWhenAccept(request);
+        presenter.insertMedFriend(new User(getString(Utility.currentMedFriend), "",""));
+        presenter.updateStateWhenAcceptRequest(request);
     }
 
     @Override
@@ -89,7 +96,6 @@ public class RequestsViewActivity extends AppCompatActivity implements RequestsV
     public void getAllRequests(List<RequestPojo> requests) {
         requestAdapter = new RequestScreenAdapter(RequestsViewActivity.this, requests, this);
         requestsRecycler.setAdapter(requestAdapter);
-
         requestAdapter.setList(requests);
         requestAdapter.notifyDataSetChanged();
     }

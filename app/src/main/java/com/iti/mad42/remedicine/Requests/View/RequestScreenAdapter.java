@@ -2,6 +2,7 @@ package com.iti.mad42.remedicine.Requests.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.R;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdapter.ViewHolder> {
 
@@ -60,6 +62,7 @@ public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdap
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Accept Button", Toast.LENGTH_SHORT).show();
                 listener.onClickAcceptBtn(requests.get(position));
+                setList(requests);
             }
         });
         holder.rejectBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +77,7 @@ public class RequestScreenAdapter extends RecyclerView.Adapter<RequestScreenAdap
 
     @Override
     public int getItemCount() {
+        Log.e("sandra" , "requests list size : "+ requests.size());
         return requests.size();
     }
 

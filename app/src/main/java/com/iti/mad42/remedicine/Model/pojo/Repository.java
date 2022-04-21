@@ -1,6 +1,10 @@
 package com.iti.mad42.remedicine.Model.pojo;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -31,6 +35,12 @@ public class Repository implements RepositoryInterface{
             repository = new Repository(context, localDatabaseSource, remoteDataSource);
         }
         return repository;
+    }
+
+    public String getString(String key){
+        SharedPreferences sharedPreferences=
+                context.getSharedPreferences("LoginTest",MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
     }
 
     /// Room Database Methods
@@ -115,10 +125,33 @@ public class Repository implements RepositoryInterface{
     }
 
     @Override
+    public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource) {
+        this.localDatabaseSource = localDataSource;
+        remoteDataSource.setLocalDataSource(localDataSource);
+    }
+
+    @Override
     public void rejectRequest(RequestPojo request) {
         remoteDataSource.rejectRequest(request);
     }
+
+    @Override
+    public void updateRequestStateWhenAccept(RequestPojo request) {
+        //remoteDataSource.getUserData(getString(Utility.currentMedFriend));
+        Log.e("sandra", ""+getString(Utility.currentMedFriend));
+        remoteDataSource.changeRequestStateWhenAccept(request);
+
+    }
+
+
     public void deleteMedicationFromFirebase(MedicationPojo med) {
         remoteDataSource.deleteMedicationFromFirebase(med);
+    }
+
+    @Override
+    public void insertMedfriendUser(User user) {
+        Log.e("sanra", "USer from repo "+ user.getEmail());
+
+        localDatabaseSource.insertMedfriendUser(user);
     }
 }

@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.User;
 
 import java.util.List;
 
@@ -38,5 +39,9 @@ public interface MedicineDAO {
 
     @Query("UPDATE medication SET isActive =0 WHERE (:currentDate > endDate)")
     void updateActiveStateForMedication(long currentDate);
+
+    // User Database Methods
+    @Query("INSERT INTO users (email, username, password) VALUES (:email, null, null)")
+    void insertMedfriendUser(String email);
 
 }
