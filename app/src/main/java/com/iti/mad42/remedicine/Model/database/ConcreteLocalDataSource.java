@@ -1,10 +1,12 @@
 package com.iti.mad42.remedicine.Model.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.User;
 
 import java.util.List;
 
@@ -87,5 +89,16 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
                 medicineDAO.updateActiveStateForMedication(currentDate);
             }
         }).start();
+    }
+
+    @Override
+    public void insertMedfriendUser(User user) {
+        Log.e("sanra", "USer from local source "+ user.getEmail());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                medicineDAO.insertMedfriendUser(user.getEmail());
+            }
+        });
     }
 }

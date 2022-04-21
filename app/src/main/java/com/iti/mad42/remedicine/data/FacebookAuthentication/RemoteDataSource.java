@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
@@ -49,6 +50,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     private DatabaseReference databaseReferenceMedication;
     private DatabaseReference databaseReferenceRequests;
     private NetworkDelegate networkDelegate;
+    private LocalDatabaseSourceInterface localDatabaseSource;
 
 
     private RemoteDataSource(Context context, CallbackManager callbackManager) {
@@ -87,6 +89,10 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     @Override
     public void setNetworkDelegate(NetworkDelegate networkDelegate) {
         this.networkDelegate = networkDelegate;
+    }
+    @Override
+    public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource) {
+        this.localDatabaseSource = localDataSource;
     }
     public void registerListeners() {
         firebaseAuth.addAuthStateListener(authStateListener);
@@ -213,6 +219,11 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     }
 
 
+    public void saveString (String key ,String value){
+        SharedPreferences.Editor editor = context.getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
+        editor.putString(key,value);
+        editor.apply();
+    }
 
     @Override
     public void sendRequest(RequestPojo request) {
@@ -232,17 +243,14 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                                     RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
                                     if(request.getSenderEmail().equals(requestPojo.getSenderEmail())){
                                         isFound = true;
-                                        Log.i("sandra", "request exists");
                                         Toast.makeText(context,"Request is already exists" ,Toast.LENGTH_SHORT).show();
                                         break;
                                     }
                                 }
                                 if(!isFound){
-                                    Log.i("sandra", "in small IF");
                                     databaseReferenceRequests.child(id).setValue(request);
                                 }
                             }else {
-                                Log.i("sandra", "in big ELSE");
                                 databaseReferenceRequests.child(id).setValue(request);
                             }
                         }
@@ -272,7 +280,9 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                     requests.clear();
                     for (DataSnapshot requestsSnapshot: snapshot.getChildren()){
                         RequestPojo request = requestsSnapshot.getValue(RequestPojo.class);
-                        requests.add(request);
+                        if(!request.getState().equals("friend")){
+                            requests.add(request);
+                        }
                     }
                 }else {
                     Toast.makeText(context,"There is no requests to show.",Toast.LENGTH_SHORT).show();
@@ -290,7 +300,28 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
     @Override
     public void changeRequestStateWhenAccept(RequestPojo request) {
+        databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                RequestPojo requestPojo = snapshot.getValue(RequestPojo.class);
+                if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                    String id = snapshot.getKey();
+                    Log.e("sandra", "Request id : "+id);
+                    requestPojo.setState("friend");
+                    databaseReferenceRequests.child(id).setValue(requestPojo);
+                    saveString(Utility.currentMedFriend,requestPojo.getSenderEmail());
+                    String medEmail = getString(Utility.currentMedFriend);
+                    Log.e("sandra", "medEmail is : "+medEmail);
+                    networkDelegate.insertMedFriend(new User(medEmail, "",""));
+                    Toast.makeText(context,"Request accepted.",Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -320,5 +351,30 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             }
         });
     }
+
+//    @Override
+//    public void getUserData(String senderEmail) {
+//        databaseReferenceUser.orderByChild("email").equalTo(senderEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.exists()){
+//                    for (DataSnapshot snapshot1 : snapshot.getChildren()){
+//                        if(senderEmail.equals(snapshot1.getValue(User.class).getEmail())){
+//                            User senderUser = snapshot1.getValue(User.class);
+//                            Log.e("sandra", "User is : "+senderUser);
+//                            Log.e("sandra", "local : "+networkDelegate);
+//                            networkDelegate.insertMedFriend(senderUser);
+//                        }
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+
+
 
 }

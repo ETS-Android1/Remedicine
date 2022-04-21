@@ -48,5 +48,4 @@ public class Utility {
         Date date = new Date();
         return dateFormat.format(date);
     }
-
 }

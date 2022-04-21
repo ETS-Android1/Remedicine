@@ -3,7 +3,9 @@ package com.iti.mad42.remedicine.Model.pojo;
 import androidx.lifecycle.LiveData;
 
 import com.facebook.AccessToken;
+import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.NetworkDelegate;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSourceInterface;
 
 import java.util.List;
 
@@ -24,9 +26,12 @@ public interface RepositoryInterface {
     public void addMedicationToFirebase(MedicationPojo med);
     public void updateMedicationToFirebase(MedicationPojo med);
     public void deleteMedicationFromFirebase(MedicationPojo med);
+    public void insertMedfriendUser(User user);
     //functions for Firebase-RealTime
     public void sendRequest(RequestPojo request);
     public void getAllRequests(String receiverEmail);
     public void setNetworkDelegate(NetworkDelegate networkDelegate);
     public void rejectRequest(RequestPojo request);
+    public void updateRequestStateWhenAccept(RequestPojo request);
+    public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource);
 }
