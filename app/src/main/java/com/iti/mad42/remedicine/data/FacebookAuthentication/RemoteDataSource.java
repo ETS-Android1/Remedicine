@@ -65,7 +65,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 getUserInfo(user);
-            }else {
+            } else {
                 getUserInfo(null);
             }
         };
@@ -81,19 +81,21 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
     public static RemoteDataSource getInstance(Context context, CallbackManager callbackManager) {
         if (instance == null) {
-            instance = new RemoteDataSource(context,callbackManager);
+            instance = new RemoteDataSource(context, callbackManager);
         }
-        return  instance;
+        return instance;
     }
 
     @Override
     public void setNetworkDelegate(NetworkDelegate networkDelegate) {
         this.networkDelegate = networkDelegate;
     }
+
     @Override
     public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource) {
         this.localDatabaseSource = localDataSource;
     }
+
     public void registerListeners() {
         firebaseAuth.addAuthStateListener(authStateListener);
     }
@@ -104,7 +106,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         }
     }
 
-    public void handleFacebookToken(AccessToken token,NetworkDelegate networkDelegate) {
+    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
@@ -113,9 +115,9 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "sign in with credential: successful ");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    addUserToFirebase(networkDelegate , new User(user.getEmail(),user.getDisplayName(),""));
-                }else {
-                    Log.i(TAG, "sign in with credential: failed ",task.getException());
+                    addUserToFirebase(networkDelegate, new User(user.getEmail(), user.getDisplayName(), ""));
+                } else {
+                    Log.i(TAG, "sign in with credential: failed ", task.getException());
                 }
             }
         });
@@ -123,41 +125,43 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
     private void getUserInfo(FirebaseUser user) {
         if (user != null) {
-            Log.i(TAG, "updateUI with: " + user.getEmail() );
-            Log.i(TAG, "updateUI with: " + user.getDisplayName() );
-            Log.i(TAG, "updateUI with: " + user.getUid() );
-            Log.i(TAG, "updateUI with: " + user.getProviderId() );
-            Log.i(TAG, "updateUI with: " + user.getPhoneNumber() );
+            Log.i(TAG, "updateUI with: " + user.getEmail());
+            Log.i(TAG, "updateUI with: " + user.getDisplayName());
+            Log.i(TAG, "updateUI with: " + user.getUid());
+            Log.i(TAG, "updateUI with: " + user.getProviderId());
+            Log.i(TAG, "updateUI with: " + user.getPhoneNumber());
         }
     }
 
-    private void addUserToFirebase(NetworkDelegate networkDelegate,User user) {
+    private void addUserToFirebase(NetworkDelegate networkDelegate, User user) {
         String id = databaseReferenceUser.push().getKey();
         databaseReferenceUser.orderByChild("email")
                 .equalTo(user.getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Toast.makeText(context,"This email is already registered",Toast.LENGTH_SHORT).show();
-                }else {
+                    Toast.makeText(context, "This email is already registered", Toast.LENGTH_SHORT).show();
+                } else {
                     databaseReferenceUser.child(id).setValue(user);
-                    networkDelegate.saveString(Utility.myCredentials,user.getEmail().toString().trim());
+                    networkDelegate.saveString(Utility.myCredentials, user.getEmail().toString().trim());
                     networkDelegate.navigateToHome();
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
-    public void addMedicationToFirebase(MedicationPojo med){
+
+    public void addMedicationToFirebase(MedicationPojo med) {
         String id = databaseReferenceMedication.push().getKey();
         databaseReferenceMedication.orderByChild("name").equalTo(med.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    Toast.makeText(context,"This Medication is already added",Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (snapshot.exists()) {
+                    Toast.makeText(context, "This Medication is already added", Toast.LENGTH_SHORT).show();
+                } else {
                     databaseReferenceMedication.child(id).setValue(med);
                 }
             }
@@ -174,10 +178,10 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(getString(Utility.myCredentials)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         MedicationPojo medicationPojo = postSnapshot.getValue(MedicationPojo.class);
-                        if (medicationPojo.getName().equals(med.getName())){
+                        if (medicationPojo.getName().equals(med.getName())) {
                             databaseReferenceMedication.child(postSnapshot.getKey()).setValue(med);
                             break;
                         }
@@ -191,14 +195,15 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             }
         });
     }
-    public void deleteMedicationFromFirebase(MedicationPojo med){
+
+    public void deleteMedicationFromFirebase(MedicationPojo med) {
         databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(getString(Utility.myCredentials)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         MedicationPojo medicationPojo = postSnapshot.getValue(MedicationPojo.class);
-                        if (medicationPojo.getName().equals(med.getName())){
+                        if (medicationPojo.getName().equals(med.getName())) {
                             databaseReferenceMedication.child(postSnapshot.getKey()).removeValue();
                             break;
                         }
@@ -212,16 +217,17 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             }
         });
     }
-    public String getString(String key){
-        SharedPreferences sharedPreferences=
-                context.getSharedPreferences("LoginTest",MODE_PRIVATE);
-        return sharedPreferences.getString(key,null);
+
+    public String getString(String key) {
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences("LoginTest", MODE_PRIVATE);
+        return sharedPreferences.getString(key, null);
     }
 
 
-    public void saveString (String key ,String value){
-        SharedPreferences.Editor editor = context.getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
-        editor.putString(key,value);
+    public void saveString(String key, String value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("LoginTest", MODE_PRIVATE).edit();
+        editor.putString(key, value);
         editor.apply();
     }
 
@@ -236,36 +242,38 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                     databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()){
+                            if (snapshot.exists()) {
                                 boolean isFound = false;
                                 Log.i("sandra", "Error Here before for" + snapshot.toString());
-                                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                     RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
-                                    if(request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                                    if (request.getSenderEmail().equals(requestPojo.getSenderEmail())) {
                                         isFound = true;
-                                        Toast.makeText(context,"Request is already exists" ,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Request is already exists", Toast.LENGTH_SHORT).show();
                                         break;
                                     }
                                 }
-                                if(!isFound){
+                                if (!isFound) {
                                     databaseReferenceRequests.child(id).setValue(request);
                                 }
-                            }else {
+                            } else {
                                 databaseReferenceRequests.child(id).setValue(request);
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(context,"Something went wrong. Error is: "+error ,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Something went wrong. Error is: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-                }else {
-                    Toast.makeText(context,"This Email Doesn't Exist." ,Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "This Email Doesn't Exist.", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
     }
@@ -276,20 +284,21 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         databaseReferenceRequests.orderByChild("recieverEmail").equalTo(receiverEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     requests.clear();
-                    for (DataSnapshot requestsSnapshot: snapshot.getChildren()){
+                    for (DataSnapshot requestsSnapshot : snapshot.getChildren()) {
                         RequestPojo request = requestsSnapshot.getValue(RequestPojo.class);
-                        if(!request.getState().equals("friend")){
+                        if (!request.getState().equals("friend")) {
                             requests.add(request);
                         }
                     }
-                }else {
-                    Toast.makeText(context,"There is no requests to show.",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "There is no requests to show.", Toast.LENGTH_SHORT).show();
                 }
                 //call method that will set the adapter with the list requests.
                 networkDelegate.successReturnRequests(requests);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -300,23 +309,23 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
     @Override
     public void changeRequestStateWhenAccept(RequestPojo request) {
-        Log.e(TAG, "changeRequestStateWhenAccept: "+ request.getSenderEmail() );
+        Log.e(TAG, "changeRequestStateWhenAccept: " + request.getSenderEmail());
         databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot requestsSnapshot: snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot requestsSnapshot : snapshot.getChildren()) {
                         RequestPojo requestPojo = requestsSnapshot.getValue(RequestPojo.class);
-                        if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                        if (request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())) {
                             String id = requestsSnapshot.getKey();
-                            Log.e("sandra", "Request id : "+id);
+                            Log.e("sandra", "Request id : " + id);
                             requestPojo.setState("friend");
                             databaseReferenceRequests.child(id).setValue(requestPojo);
-                            saveString(Utility.currentMedFriend,requestPojo.getSenderEmail());
+                            saveString(Utility.currentMedFriend, requestPojo.getSenderEmail());
                             String medEmail = getString(Utility.currentMedFriend);
-                            Log.e("sandra", "medEmail is : "+medEmail);
-                            networkDelegate.insertMedFriend(new User(medEmail, "",""));
-                            Toast.makeText(context,"Request accepted.",Toast.LENGTH_SHORT).show();
+                            Log.e("sandra", "medEmail is : " + medEmail);
+                            networkDelegate.insertMedFriend(new User(medEmail, "", ""));
+                            Toast.makeText(context, "Request accepted.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -335,17 +344,17 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         databaseReferenceRequests.orderByChild("recieverEmail").equalTo(request.getRecieverEmail()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Log.e("sandra", "before if receiver email");
-                    Log.e("sandra", "before if receiver email :"+request.getRecieverEmail());
-                    Log.e("sandra", "before if sender email"+request.getSenderEmail());
-                    Log.e("sandra", "before if sender email : "+snapshot.getValue(RequestPojo.class).getSenderEmail());
+                    Log.e("sandra", "before if receiver email :" + request.getRecieverEmail());
+                    Log.e("sandra", "before if sender email" + request.getSenderEmail());
+                    Log.e("sandra", "before if sender email : " + snapshot.getValue(RequestPojo.class).getSenderEmail());
                     RequestPojo requestPojo = snapshot1.getValue(RequestPojo.class);
-                    if(request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())){
+                    if (request.getRecieverEmail().equals(requestPojo.getRecieverEmail()) && request.getSenderEmail().equals(requestPojo.getSenderEmail())) {
                         String id = snapshot1.getKey();
-                        Log.e("sandra", "Request id : "+id);
+                        Log.e("sandra", "Request id : " + id);
                         databaseReferenceRequests.child(id).removeValue();
-                        Toast.makeText(context,"Request has been rejected.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Request has been rejected.", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -381,6 +390,44 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 //        });
 //    }
 
+
+    @Override
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail) {
+        List<MedicationPojo> friendMedications = new ArrayList<>();
+        databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(medOwnerEmail).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    friendMedications.clear();
+                    for (DataSnapshot medSnapshot : snapshot.getChildren()) {
+                        MedicationPojo medication = medSnapshot.getValue(MedicationPojo.class);
+                        String id = medSnapshot.getKey();
+                        if (medication.getMedOwnerEmail().equals(medOwnerEmail)) {
+                            friendMedications.add(medication);
+//                            Log.e("sandra", "meds for friend size : " + friendMedications.size());
+////
+//                            //just for test data
+//                            Log.e("sandra", "Medication for current medfriend is : " + friendMedications.get(friendMedications.size()-1).getName());
+//                            Log.e("sandra", "Medication for current medfriend is : ---- " + friendMedications.get(friendMedications.size()-1).getMedOwnerEmail());
+//                            Log.e("sandra", "snapshot size : "+snapshot.getChildrenCount());
+
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, "There is no Medications to show.", Toast.LENGTH_SHORT).show();
+                }
+                //call method that will set the adapter with the list of medications.
+                Log.e("sandra", "meds for friend size : " + friendMedications.size());
+                Log.e("sandra", "network delegate in getall meds : "+networkDelegate);
+                networkDelegate.successReturnMedications(friendMedications);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
 }
