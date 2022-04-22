@@ -18,6 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.facebook.CallbackManager;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,9 +33,11 @@ import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AddNewMedicineActivity extends AppCompatActivity implements AddNewMedicineActivityInterface {
 
@@ -160,6 +166,7 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
             @Override
             public void onClick(View view) {
                 presenter.insertMedication();
+                setWorkTimer();
                 finish();
             }
         });
@@ -219,7 +226,19 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
     public int getMedReminderQtyTextView(){
         return Integer.parseInt(medicationRefillReminderNumOfItemsEdt.getEditText().getText().toString());
     }
+    private void setWorkTimer() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build();
 
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWorkManger.class,
+                10, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+
+    }
     private void initView() {
         back = (ImageView) findViewById(R.id.back);
         medicationNameEdt = (TextInputLayout) findViewById(R.id.medication_name_edt);

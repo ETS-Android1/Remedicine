@@ -10,18 +10,22 @@ import com.iti.mad42.remedicine.Model.pojo.User;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
 
     private MedicineDAO medicineDAO;
     private UserDAO userDAO;
     private static ConcreteLocalDataSource localDataSource = null;
     private LiveData<List<MedicationPojo>> allMeds;
+    private Single<List<MedicationPojo>> medicationPojoList;
 
     private ConcreteLocalDataSource(Context context){
         AppDataBase db = AppDataBase.getInstance(context.getApplicationContext());
         medicineDAO = db.medicineDAO();
         userDAO = db.userDAO();
         allMeds = medicineDAO.getAllMedications();
+        medicationPojoList = medicineDAO.getAllMedicationsList();
     }
 
     public static ConcreteLocalDataSource getInstance(Context context){
@@ -36,6 +40,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     public LiveData<List<MedicationPojo>> getAllMedications() {
         return allMeds;
     }
+
 
     @Override
     public void insertMedication(MedicationPojo medication) {
@@ -102,5 +107,10 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
                 userDAO.insertMedfriendUser(user);
             }
         }).start();
+    }
+
+    @Override
+    public Single<List<MedicationPojo>>  getAllMedicationsList() {
+        return medicationPojoList;
     }
 }

@@ -17,6 +17,8 @@ import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSourceInte
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class Repository implements RepositoryInterface{
     private Context context;
     private LocalDatabaseSourceInterface localDatabaseSource;
@@ -48,6 +50,7 @@ public class Repository implements RepositoryInterface{
     public LiveData<List<MedicationPojo>> getAllMedications() {
         return localDatabaseSource.getAllMedications();
     }
+
 
     @Override
     public void insertMedication(MedicationPojo medication) {
@@ -128,6 +131,11 @@ public class Repository implements RepositoryInterface{
     public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource) {
         this.localDatabaseSource = localDataSource;
         remoteDataSource.setLocalDataSource(localDataSource);
+    }
+
+    @Override
+    public Single<List<MedicationPojo>> getAllMedicationsList() {
+        return localDatabaseSource.getAllMedicationsList();
     }
 
     @Override
