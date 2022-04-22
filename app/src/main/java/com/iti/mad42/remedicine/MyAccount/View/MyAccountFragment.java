@@ -32,6 +32,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
@@ -55,6 +56,7 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
     MyAccountPresenterInterface presenter;
     RecyclerView usersToSwitchLV;
     UsersToSwitchAdapter usersAdapter;
+    boolean isMyAccount;
 
     public MyAccountFragment() {
         // Required empty public constructor
@@ -187,6 +189,7 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
             @Override
             public void onChanged(List<User> users) {
                 showAllUsers(users);
+                usersAdapter.notifyDataSetChanged();
             }
         });
 
@@ -220,8 +223,45 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         usersAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClickRowItem() {
 
+    @Override
+    public void onClickRowItem(User user) {
+        if(user.getEmail().equals(getString(Utility.myCredentials))){
+            isMyAccount = true;
+            Toast.makeText(getContext(), "This is Already your Account, You can't switch to!", Toast.LENGTH_SHORT).show();
+        }else{
+            //save in shared pref the current medfriend
+            saveString(Utility.currentMedFriend, user.getEmail());
+            isMyAccount = false;
+            // make flag isMedfriendViewer
+            //isMyAccount true --> getFrom Room
+            //isMyAccount false --> getFrom Firebase with the currentMedfriend email --> in shaerd pref
+            checkISMyAccountAndGetMedData();
+        }
+    }
+
+
+    @Override
+    public void sendAllMedsToHomeScreen(List<MedicationPojo> meds) {
+        Log.e("sandra","meds in account view count is: "+ meds.size());
+        for(int i = 0;i<meds.size();i++){
+            Log.e("sandra","meds in account view name is : "+ meds.get(i).getName());
+            Log.e("sandra","meds in account view medOwner is: "+ meds.get(i).getMedOwnerEmail());
+            Log.e("sandra","meds in account view reason is: "+ meds.get(i).getReason());
+        }
+    }
+
+    public void saveString (String key ,String value){
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
+        editor.putString(key,value);
+        editor.apply();
+    }
+
+    public void checkISMyAccountAndGetMedData(){
+        if(!isMyAccount){
+            //get data from fb with current med friend
+            presenter.getAllMedsForMedfriend(getString(Utility.currentMedFriend));
+
+        }
     }
 }

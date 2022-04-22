@@ -55,7 +55,7 @@ public class UsersToSwitchAdapter extends RecyclerView.Adapter<UsersToSwitchAdap
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickRowItem();
+                listener.onClickRowItem(users.get(position));
             }
         });
     }
@@ -74,24 +74,3 @@ public class UsersToSwitchAdapter extends RecyclerView.Adapter<UsersToSwitchAdap
     }
 
 }
-//    public UsersToSwitchAdapter(@NonNull Context context, @NonNull List<User> users) {
-//        super(context, R.layout.user_accounts_to_switch_row, R.id.userNameTxt, users);
-//        this.context = context;
-//        this.users = users;
-//    }
-//
-//    public void setUsersList(List<User> users){
-//        this.users = users;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup listView) {
-//        super.getView(position, convertView, listView);
-//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view = inflater.inflate(R.layout.user_accounts_to_switch_row, listView, false);
-//        TextView userNameTxt = view.findViewById(R.id.userNameTxt);
-//        userNameTxt.setText(users.get(position).getEmail().split("[@.]")[0]);
-//        return view;
-//    }
-

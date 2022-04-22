@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
@@ -53,6 +54,11 @@ public class RequestsPresenter implements RequestsPresenterInterface, NetworkDel
         repository.setNetworkDelegate(this);
         Log.e("sandra", "user from presenter calll is  "+user.getEmail());
         repository.insertMedfriendUser(user);
+    }
+
+    @Override
+    public void successReturnMedications(List<MedicationPojo> meds) {
+
     }
 
     @Override

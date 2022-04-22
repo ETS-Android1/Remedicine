@@ -35,4 +35,5 @@ public interface RepositoryInterface {
     public void rejectRequest(RequestPojo request);
     public void updateRequestStateWhenAccept(RequestPojo request);
     public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource);
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail);
 }
