@@ -1,0 +1,97 @@
+package com.iti.mad42.remedicine.MyAccount.View;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.iti.mad42.remedicine.Model.pojo.User;
+import com.iti.mad42.remedicine.R;
+
+import java.util.List;
+
+public class UsersToSwitchAdapter extends RecyclerView.Adapter<UsersToSwitchAdapter.ViewHolder> {
+    private List<User> users;
+    private Context context;
+    private OnRowClickListenerInterface listener;
+
+    public UsersToSwitchAdapter(List<User> users, Context context) {
+        this.users = users;
+        this.context = context;
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        public TextView userNameTxt;
+        public ConstraintLayout constraintLayout;
+        public View layout;
+        public ViewHolder(@NonNull View layout) {
+            super(layout);
+            this.layout = layout;
+            userNameTxt = layout.findViewById(R.id.userNameTxt);
+            constraintLayout = layout.findViewById(R.id.userToSwitchConstraint);
+        }
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.user_accounts_to_switch_row, parent, false);
+        ViewHolder myViewHolder = new ViewHolder(view);
+        return myViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.userNameTxt.setText(users.get(position).getEmail().split("[@.]")[0]);
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickRowItem();
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return users.size();
+    }
+
+    public void setOnRowClickListener(OnRowClickListenerInterface listener){
+        this.listener = listener;
+    }
+
+    public void setUsersList(List<User> users){
+        this.users = users;
+    }
+
+}
+//    public UsersToSwitchAdapter(@NonNull Context context, @NonNull List<User> users) {
+//        super(context, R.layout.user_accounts_to_switch_row, R.id.userNameTxt, users);
+//        this.context = context;
+//        this.users = users;
+//    }
+//
+//    public void setUsersList(List<User> users){
+//        this.users = users;
+//    }
+//
+//    @NonNull
+//    @Override
+//    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup listView) {
+//        super.getView(position, convertView, listView);
+//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View view = inflater.inflate(R.layout.user_accounts_to_switch_row, listView, false);
+//        TextView userNameTxt = view.findViewById(R.id.userNameTxt);
+//        userNameTxt.setText(users.get(position).getEmail().split("[@.]")[0]);
+//        return view;
+//    }
+

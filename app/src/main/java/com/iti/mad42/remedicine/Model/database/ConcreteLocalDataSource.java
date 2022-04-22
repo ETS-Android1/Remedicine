@@ -16,12 +16,14 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     private UserDAO userDAO;
     private static ConcreteLocalDataSource localDataSource = null;
     private LiveData<List<MedicationPojo>> allMeds;
+    private LiveData<List<User>> allUsers;
 
     private ConcreteLocalDataSource(Context context){
         AppDataBase db = AppDataBase.getInstance(context.getApplicationContext());
         medicineDAO = db.medicineDAO();
         userDAO = db.userDAO();
         allMeds = medicineDAO.getAllMedications();
+        allUsers = userDAO.getAllUsers();
     }
 
     public static ConcreteLocalDataSource getInstance(Context context){
@@ -102,5 +104,10 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
                 userDAO.insertMedfriendUser(user);
             }
         }).start();
+    }
+
+    @Override
+    public LiveData<List<User>> getAllUsers() {
+        return allUsers;
     }
 }

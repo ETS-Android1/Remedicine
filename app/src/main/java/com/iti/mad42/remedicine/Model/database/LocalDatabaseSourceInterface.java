@@ -19,5 +19,6 @@ public interface LocalDatabaseSourceInterface {
 
     //User Database Methods
     void insertMedfriendUser(User user);
+    LiveData<List<User>> getAllUsers();
 
 }
