@@ -27,6 +27,7 @@ public interface RepositoryInterface {
     public void updateMedicationToFirebase(MedicationPojo med);
     public void deleteMedicationFromFirebase(MedicationPojo med);
     public void insertMedfriendUser(User user);
+    public LiveData<List<User>> getAllUsers();
     //functions for Firebase-RealTime
     public void sendRequest(RequestPojo request);
     public void getAllRequests(String receiverEmail);

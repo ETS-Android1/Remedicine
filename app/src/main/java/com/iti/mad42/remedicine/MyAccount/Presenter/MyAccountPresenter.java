@@ -5,9 +5,14 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.lifecycle.LiveData;
+
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
+import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.MyAccount.View.MyAccountFragmentInterface;
+
+import java.util.List;
 
 public class MyAccountPresenter implements MyAccountPresenterInterface {
 
@@ -30,6 +35,11 @@ public class MyAccountPresenter implements MyAccountPresenterInterface {
     @Override
     public void sendRequest(RequestPojo request) {
         repository.sendRequest(request);
+    }
+
+    @Override
+    public LiveData<List<User>> getAllUsers() {
+        return repository.getAllUsers();
     }
 
 }
