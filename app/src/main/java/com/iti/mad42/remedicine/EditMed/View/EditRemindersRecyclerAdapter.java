@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -110,15 +111,56 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myMeds.set(pos,new MedicineDose(myMeds.get(pos).getMedForm(),Integer.parseInt(doseAmountText.getText().toString()),timeToMillis(timePicker.getCurrentHour(),timePicker.getCurrentMinute())));
-                holder.medTime.setText(timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute());
-                holder.medDose.setText("Take "+doseAmountText.getText().toString()+" "+myMeds.get(pos).getMedForm()+"(s)");
-                timeDoseDialog.dismiss();
+                boolean flag =false;
+                switch (myMeds.size()){
+                    case 1 :
+                        myMeds.set(pos,new MedicineDose(myMeds.get(pos).getMedForm(),Integer.parseInt(doseAmountText.getText().toString()),timeToMillis(timePicker.getCurrentHour(),timePicker.getCurrentMinute())));
+                        holder.medTime.setText(timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute());
+                        holder.medDose.setText("Take "+doseAmountText.getText().toString()+" "+myMeds.get(pos).getMedForm()+"(s)");
+                        timeDoseDialog.dismiss();
+                        break;
+                    case 2:
+                        for (int i = 0; i < 2; i++) {
+                            if(timeToMillis(timePicker.getCurrentHour(),timePicker.getCurrentMinute())==myMeds.get(i).getDoseTimeInMilliSec()){
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (flag){
+                            Toast.makeText(context,"Cannot Enter The Same Time Twice",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            myMeds.set(pos,new MedicineDose(myMeds.get(pos).getMedForm(),Integer.parseInt(doseAmountText.getText().toString()),timeToMillis(timePicker.getCurrentHour(),timePicker.getCurrentMinute())));
+                            holder.medTime.setText(timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute());
+                            holder.medDose.setText("Take "+doseAmountText.getText().toString()+" "+myMeds.get(pos).getMedForm()+"(s)");
+                            timeDoseDialog.dismiss();
+                        }
+                        break;
+                    case 3:
+                        for (int i = 0; i < 3; i++) {
+                            if(timeToMillis(timePicker.getCurrentHour(),timePicker.getCurrentMinute())==myMeds.get(i).getDoseTimeInMilliSec()){
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (flag){
+                            Toast.makeText(context,"Cannot Enter The Same Time Twice",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            myMeds.set(pos,new MedicineDose(myMeds.get(pos).getMedForm(),Integer.parseInt(doseAmountText.getText().toString()),timeToMillis(timePicker.getCurrentHour(),timePicker.getCurrentMinute())));
+                            holder.medTime.setText(timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute());
+                            holder.medDose.setText("Take "+doseAmountText.getText().toString()+" "+myMeds.get(pos).getMedForm()+"(s)");
+                            timeDoseDialog.dismiss();
+                        }
+                        break;
+                }
             }
         });
 
         timeDoseDialog.show();
     }
+
+
 
 
     @Override

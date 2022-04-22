@@ -113,29 +113,15 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
 
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
-        //datePickerDialog.getDatePicker().setMinDate(now + (1000 * 60 * 60));
+        if(state.equals("from")){
+            datePickerDialog.getDatePicker().setMinDate(now - (1000 * 60 * 60 * 24 * 14));
+        } else{
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        }
         datePickerDialog.show();
     }
 
-    public void getData(){
-        med.setName(view.getMedNameTextView());
-        med.setStrength(view.getMedStrengthTextView());
-        med.setReason(view.getMedReasonTextView());
-        med.setInstructions(view.getMedInstructionTextView());
-        med.setMedQty(view.getMedQtyTextView());
-        med.setReminderMedQtyLeft(view.getMedReminderQtyTextView());
-        medDose =view.getDoseFromAdapter();
-        med.setMedDoseReminders(medDose);
-        med.setMedDays(getDays(startDate,endDate,interval));
 
-        for (int i = 0; i<medDose.size();i++){
-            medStates.add(new MedState(medDose.get(i).getDoseTimeInMilliSec(),"non"));
-        }
-        med.setMedState(medStates);
-        med.setActive(true);
-        med.setMedOwnerEmail(getString(Utility.myCredentials));
-        Log.i("mando", "onClick: "+ med );
-    }
     public void openTimePicker() {
         Calendar calendar = Calendar.getInstance();
 
@@ -165,15 +151,33 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
             LocalDate current = start.plusDays(i);
             String date = current.toDateTimeAtStartOfDay().toString("dd-MM-yyyy");
             myDays.add(date);
-            Log.e("mando", "printDays: "+date );
+            //Log.e("mando", "printDays: "+date );
         }
         return myDays;
     }
 
+    public void getData(){
+        med.setName(view.getMedNameTextView());
+        med.setStrength(view.getMedStrengthTextView());
+        med.setReason(view.getMedReasonTextView());
+        med.setInstructions(view.getMedInstructionTextView());
+        med.setMedQty(view.getMedQtyTextView());
+        med.setReminderMedQtyLeft(view.getMedReminderQtyTextView());
+        medDose =view.getDoseFromAdapter();
+        med.setMedDoseReminders(medDose);
+        med.setMedDays(getDays(startDate,endDate,interval));
+        for (int i = 0; i<medDose.size();i++){
+            medStates.add(new MedState(medDose.get(i).getDoseTimeInMilliSec(),"non"));
+        }
+        med.setMedState(medStates);
+        med.setActive(true);
+        med.setMedOwnerEmail(getString(Utility.myCredentials));
 
+    }
     @Override
     public void insertMedication() {
         getData();
+        Log.i("mando", "onClick: "+ med );
         repository.insertMedication(med);
         //repository.addMedicationToFirebase(med);
     }

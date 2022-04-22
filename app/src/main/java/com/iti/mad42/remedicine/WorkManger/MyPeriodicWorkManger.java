@@ -44,7 +44,6 @@ public class MyPeriodicWorkManger extends Worker {
     List<MedicationPojo> medList;
     Single<List<MedicationPojo>> medicationSingleList;
 
-
     public MyPeriodicWorkManger(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context= context;
@@ -55,6 +54,7 @@ public class MyPeriodicWorkManger extends Worker {
             }
         }));
     }
+
     @NonNull
     @Override
     public Result doWork() {

@@ -21,6 +21,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.facebook.CallbackManager;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,10 +36,12 @@ import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EditMedActivity extends AppCompatActivity implements  EditMedActivityInterface{
 
@@ -195,12 +201,29 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
         saveEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.updateMedication();
-                startActivity(new Intent(EditMedActivity.this, HomeRecyclerView.class));
-                finish();
+                if(isDataValid()){
+                    presenter.getData();
+                    presenter.updateMedication();
+                    setWorkTimer();
+                    startActivity(new Intent(EditMedActivity.this, HomeRecyclerView.class));
+                    finish();
+                }
             }
         });
 
+    }
+
+    private void setWorkTimer() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWorkManger.class,
+                15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
     }
 
     private void setAdapters(){
@@ -272,7 +295,112 @@ public class EditMedActivity extends AppCompatActivity implements  EditMedActivi
         return Integer.parseInt(editMedicationRefillReminderNumOfItemsEdt.getEditText().getText().toString());
     }
 
+    private boolean isDataValid(){
+        if (editMedicationStrengthUnitEdt.getEditText().getText().toString().length()==0){
+            editMedicationStrengthUnitEdt.requestFocus();
+            editMedicationStrengthUnitEdt.setError("Required Field");
+        }
+        else if(editMedicationReasonEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.requestFocus();
+            editMedicationReasonEdt.setError("Required Field");
+        }
+        else if(editMedicationInstructionEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.requestFocus();
+            editMedicationInstructionEdt.setError("Required Field");
+        }
+        else if(editMedicationTreatmentDurationFromEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.requestFocus();
+            editMedicationTreatmentDurationFromEdt.setError("Required Field");
+        }
+        else if(editMedicationTreatmentDurationToEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.requestFocus();
+            editMedicationTreatmentDurationToEdt.setError("Required Field");
+        }
+        else if(editMedicationLeftEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.setError(null);
+            editMedicationLeftEdt.requestFocus();
+            editMedicationLeftEdt.setError("Required Field");
+        }
+        else if(getMedQtyTextView()<=0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.setError(null);
+            editMedicationLeftEdt.requestFocus();
+            editMedicationLeftEdt.setError("Invalid Value");
+        }
+        else if(editMedicationRefillReminderNumOfItemsEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.setError(null);
+            editMedicationLeftEdt.setError(null);
+            editMedicationRefillReminderNumOfItemsEdt.requestFocus();
+            editMedicationRefillReminderNumOfItemsEdt.setError("Required Field");
+        }
+        else if(getMedReminderQtyTextView()<=0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.setError(null);
+            editMedicationLeftEdt.setError(null);
+            editMedicationRefillReminderNumOfItemsEdt.requestFocus();
+            editMedicationRefillReminderNumOfItemsEdt.setError("Invalid Value");
+        }
+        else if(getMedReminderQtyTextView()>=getMedQtyTextView()){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.setError(null);
+            editMedicationLeftEdt.setError(null);
+            editMedicationRefillReminderNumOfItemsEdt.requestFocus();
+            editMedicationRefillReminderNumOfItemsEdt.setError("Invalid Value");
+        }
+        else if(editMedicationRefillReminderTimeEdt.getEditText().getText().toString().length()==0){
+            editMedicationNameEdt.setError(null);
+            editMedicationStrengthUnitEdt.setError(null);
+            editMedicationReasonEdt.setError(null);
+            editMedicationInstructionEdt.setError(null);
+            editMedicationTreatmentDurationFromEdt.setError(null);
+            editMedicationTreatmentDurationToEdt.setError(null);
+            editMedicationLeftEdt.setError(null);
+            editMedicationRefillReminderNumOfItemsEdt.setError(null);
+            editMedicationRefillReminderTimeEdt.requestFocus();
+            editMedicationRefillReminderTimeEdt.setError("Required Field");
+        }
+        else {
+            return true;
+        }
 
+        return false;
+    }
     private void initView() {
         back = (ImageView) findViewById(R.id.back);
         editMedicationNameEdt = (TextInputLayout) findViewById(R.id.edit_medication_name_edt);
