@@ -125,17 +125,15 @@ public class EditMedPresenter implements EditMedPresenterInterface {
 
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.getDatePicker().setMinDate(now + (1000 * 60 * 60));
-
+        if(state.equals("from")){
+            datePickerDialog.getDatePicker().setMinDate(now - (1000 * 60 * 60 * 24 * 14));
+        } else{
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        }
         datePickerDialog.show();
     }
-    public String getCurrentDay(){
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-    public void getData() {
 
+    public void getData() {
         List<MedState> medStates = new ArrayList<>();
         med.setName(view.getMedNameTextView());
         med.setStrength(view.getMedStrengthTextView());
@@ -157,8 +155,6 @@ public class EditMedPresenter implements EditMedPresenterInterface {
         med.setMedState(medStates);
         med.setActive(true);
         med.setMedOwnerEmail(getString(Utility.myCredentials));
-
-        Log.e("mando", "onClick: saved " + med);
     }
 
     public void openTimePicker() {
@@ -175,6 +171,7 @@ public class EditMedPresenter implements EditMedPresenterInterface {
         }, calendar.get(Calendar.HOUR_OF_DAY)
                 , calendar.get(Calendar.MINUTE)
                 , true);
+
         timePickerDialog.show();
     }
 
@@ -182,7 +179,7 @@ public class EditMedPresenter implements EditMedPresenterInterface {
     public void updateMedication() {
         getData();
         repository.updateMedication(med);
-        repository.updateMedicationToFirebase(med);
+//        repository.updateMedicationToFirebase(med);
     }
 
     public List<String> getDays(String startDate, String endDate, int x) {
