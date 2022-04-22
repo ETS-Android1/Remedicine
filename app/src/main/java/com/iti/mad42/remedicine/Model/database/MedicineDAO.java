@@ -13,11 +13,16 @@ import com.iti.mad42.remedicine.Model.pojo.User;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 @Dao
 public interface MedicineDAO {
 
     @Query("SELECT * FROM medication")
     LiveData<List<MedicationPojo>> getAllMedications();
+
+    @Query("SELECT * FROM medication")
+    Single<List<MedicationPojo>> getAllMedicationsList();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMedication(MedicationPojo medication);

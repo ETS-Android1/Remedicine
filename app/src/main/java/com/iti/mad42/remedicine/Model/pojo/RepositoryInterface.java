@@ -9,6 +9,8 @@ import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSourceInte
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface RepositoryInterface {
 
     //functions for Room Database
@@ -35,5 +37,6 @@ public interface RepositoryInterface {
     public void rejectRequest(RequestPojo request);
     public void updateRequestStateWhenAccept(RequestPojo request);
     public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource);
+    Single<List<MedicationPojo>> getAllMedicationsList();
     public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail);
 }

@@ -175,7 +175,7 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     public void insertMedication() {
         getData();
         repository.insertMedication(med);
-        repository.addMedicationToFirebase(med);
+        //repository.addMedicationToFirebase(med);
     }
     public String getString(String key){
         SharedPreferences sharedPreferences=

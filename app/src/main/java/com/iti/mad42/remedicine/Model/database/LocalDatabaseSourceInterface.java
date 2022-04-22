@@ -7,6 +7,8 @@ import com.iti.mad42.remedicine.Model.pojo.User;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface LocalDatabaseSourceInterface {
     LiveData<List<MedicationPojo>> getAllMedications();
     void insertMedication(MedicationPojo medication);
@@ -20,5 +22,7 @@ public interface LocalDatabaseSourceInterface {
     //User Database Methods
     void insertMedfriendUser(User user);
     LiveData<List<User>> getAllUsers();
+
+    Single<List<MedicationPojo>> getAllMedicationsList();
 
 }
