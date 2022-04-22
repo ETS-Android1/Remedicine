@@ -18,6 +18,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     private UserDAO userDAO;
     private static ConcreteLocalDataSource localDataSource = null;
     private LiveData<List<MedicationPojo>> allMeds;
+    private LiveData<List<User>> allUsers;
     private Single<List<MedicationPojo>> medicationPojoList;
 
     private ConcreteLocalDataSource(Context context){
@@ -25,6 +26,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
         medicineDAO = db.medicineDAO();
         userDAO = db.userDAO();
         allMeds = medicineDAO.getAllMedications();
+        allUsers = userDAO.getAllUsers();
         medicationPojoList = medicineDAO.getAllMedicationsList();
     }
 
@@ -40,7 +42,6 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     public LiveData<List<MedicationPojo>> getAllMedications() {
         return allMeds;
     }
-
 
     @Override
     public void insertMedication(MedicationPojo medication) {
@@ -112,5 +113,10 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     @Override
     public Single<List<MedicationPojo>>  getAllMedicationsList() {
         return medicationPojoList;
+    }
+
+    @Override
+    public LiveData<List<User>> getAllUsers() {
+        return allUsers;
     }
 }

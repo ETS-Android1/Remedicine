@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
@@ -100,6 +101,11 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
 
     @Override
     public void insertMedFriend(User user) {
+
+    }
+
+    @Override
+    public void successReturnMedications(List<MedicationPojo> meds) {
 
     }
 }

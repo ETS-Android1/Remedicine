@@ -162,4 +162,16 @@ public class Repository implements RepositoryInterface{
 
         localDatabaseSource.insertMedfriendUser(user);
     }
+
+    @Override
+    public LiveData<List<User>> getAllUsers() {
+        return localDatabaseSource.getAllUsers();
+    }
+
+
+    @Override
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail) {
+        remoteDataSource.getAllMedicationFromFBForCurrentMedOwner(medOwnerEmail);
+    }
+
 }

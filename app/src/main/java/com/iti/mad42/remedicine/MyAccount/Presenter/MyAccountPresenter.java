@@ -5,11 +5,18 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.lifecycle.LiveData;
+
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
+import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.MyAccount.View.MyAccountFragmentInterface;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.NetworkDelegate;
 
-public class MyAccountPresenter implements MyAccountPresenterInterface {
+import java.util.List;
+
+public class MyAccountPresenter implements MyAccountPresenterInterface, NetworkDelegate {
 
     Context context;
     MyAccountFragmentInterface view;
@@ -30,6 +37,38 @@ public class MyAccountPresenter implements MyAccountPresenterInterface {
     @Override
     public void sendRequest(RequestPojo request) {
         repository.sendRequest(request);
+    }
+
+    @Override
+    public LiveData<List<User>> getAllUsers() {
+        return repository.getAllUsers();
+    }
+
+    @Override
+    public void getAllMedsForMedfriend(String medOwnerEmail) {
+        repository.setNetworkDelegate(this);
+        repository.getAllMedicationFromFBForCurrentMedOwner(medOwnerEmail);
+    }
+
+
+    @Override
+    public void navigateToHome() {
+
+    }
+
+    @Override
+    public void successReturnRequests(List<RequestPojo> requests) {
+
+    }
+
+    @Override
+    public void insertMedFriend(User user) {
+
+    }
+
+    @Override
+    public void successReturnMedications(List<MedicationPojo> meds) {
+        view.sendAllMedsToHomeScreen(meds);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.iti.mad42.remedicine.data.FacebookAuthentication;
 
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
 
@@ -10,4 +11,5 @@ public interface NetworkDelegate {
     public void navigateToHome();
     public void successReturnRequests(List<RequestPojo> requests);
     public void insertMedFriend(User user);
+    public void successReturnMedications(List<MedicationPojo> meds);
 }

@@ -26,4 +26,6 @@ public interface RemoteDataSourceInterface {
     public void rejectRequest(RequestPojo request);
     //public void getUserData(String senderEmail);
     public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource);
+
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail);
 }

@@ -12,22 +12,30 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
+import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.MyAccount.Presenter.MyAccountPresenter;
 import com.iti.mad42.remedicine.MyAccount.Presenter.MyAccountPresenterInterface;
@@ -36,13 +44,19 @@ import com.iti.mad42.remedicine.Requests.View.RequestsViewActivity;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 import com.iti.mad42.remedicine.login.view.view.LoginActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class MyAccountFragment extends Fragment implements MyAccountFragmentInterface {
+
+public class MyAccountFragment extends Fragment implements MyAccountFragmentInterface , OnRowClickListenerInterface{
 
     ConstraintLayout myRequestsConst, addMedfriendConst, switchAcc, logoutConst;
     Dialog addMedfriendDialog, switchAccountDialog;
     Intent intent;
     MyAccountPresenterInterface presenter;
+    RecyclerView usersToSwitchLV;
+    UsersToSwitchAdapter usersAdapter;
+    boolean isMyAccount;
 
     public MyAccountFragment() {
         // Required empty public constructor
@@ -153,6 +167,7 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
     public void openSwitchAccountListDialog(){
         switchAccountDialog.setContentView(R.layout.medfriends_list);
         switchAccountDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        usersToSwitchLV = switchAccountDialog.findViewById(R.id.usersListView);
 
         ImageView closeDialog = switchAccountDialog.findViewById(R.id.medfriensListCloseBtn);
         closeDialog.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +177,21 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
             }
         });
 
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        usersAdapter = new UsersToSwitchAdapter(new ArrayList<>(), getContext());
+        usersAdapter.setOnRowClickListener(this);
+        usersToSwitchLV.setHasFixedSize(true);
+        manager.setOrientation(RecyclerView.VERTICAL);
+        usersToSwitchLV.setLayoutManager(manager);
+        usersToSwitchLV.setAdapter(usersAdapter);
+
+        presenter.getAllUsers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                showAllUsers(users);
+                usersAdapter.notifyDataSetChanged();
+            }
+        });
 
         switchAccountDialog.show();
     }
@@ -185,5 +215,53 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void showAllUsers(List<User> users) {
+        usersAdapter.setUsersList(users);
+        usersAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onClickRowItem(User user) {
+        if(user.getEmail().equals(getString(Utility.myCredentials))){
+            isMyAccount = true;
+            Toast.makeText(getContext(), "This is Already your Account, You can't switch to!", Toast.LENGTH_SHORT).show();
+        }else{
+            //save in shared pref the current medfriend
+            saveString(Utility.currentMedFriend, user.getEmail());
+            isMyAccount = false;
+            // make flag isMedfriendViewer
+            //isMyAccount true --> getFrom Room
+            //isMyAccount false --> getFrom Firebase with the currentMedfriend email --> in shaerd pref
+            checkISMyAccountAndGetMedData();
+        }
+    }
+
+
+    @Override
+    public void sendAllMedsToHomeScreen(List<MedicationPojo> meds) {
+        Log.e("sandra","meds in account view count is: "+ meds.size());
+        for(int i = 0;i<meds.size();i++){
+            Log.e("sandra","meds in account view name is : "+ meds.get(i).getName());
+            Log.e("sandra","meds in account view medOwner is: "+ meds.get(i).getMedOwnerEmail());
+            Log.e("sandra","meds in account view reason is: "+ meds.get(i).getReason());
+        }
+    }
+
+    public void saveString (String key ,String value){
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
+        editor.putString(key,value);
+        editor.apply();
+    }
+
+    public void checkISMyAccountAndGetMedData(){
+        if(!isMyAccount){
+            //get data from fb with current med friend
+            presenter.getAllMedsForMedfriend(getString(Utility.currentMedFriend));
+
+        }
     }
 }
