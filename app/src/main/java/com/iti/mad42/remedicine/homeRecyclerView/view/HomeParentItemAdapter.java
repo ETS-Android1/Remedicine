@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.iti.mad42.remedicine.Model.pojo.HomeParentItem;
 import com.iti.mad42.remedicine.R;
 
 import java.util.List;
@@ -21,13 +22,17 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
     // between the child and
     // the parent RecyclerViews
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private HomeChildItemAdapter childItemAdapter;
     private List<HomeParentItem> itemList;
     private Context context;
+    private OnNodeListener onNodeListener;
+    private int position;
 
-    HomeParentItemAdapter(Context context, List<HomeParentItem> itemList)
+    HomeParentItemAdapter(Context context, List<HomeParentItem> itemList, OnNodeListener onNodeListener)
     {
         this.itemList = itemList;
         this.context = context;
+        this.onNodeListener = onNodeListener;
     }
 
     @NonNull
@@ -46,6 +51,7 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
 
         // Create an instance of the ParentItem
         // class for the given position
+        this.position = position;
         HomeParentItem parentItem = itemList.get(position);
 
         // For the created instance,
@@ -72,7 +78,7 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
         // Create an instance of the child
         // item view adapter and set its
         // adapter, layout manager and RecyclerViewPool
-        HomeChildItemAdapter childItemAdapter = new HomeChildItemAdapter(parentViewHolder.ChildRecyclerView.getContext(),parentItem.getChildItemList());
+        childItemAdapter = new HomeChildItemAdapter(parentViewHolder.ChildRecyclerView.getContext(),parentItem.getChildItemList(),onNodeListener);
         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
         parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);
         parentViewHolder.ChildRecyclerView.setRecycledViewPool(viewPool);
@@ -105,4 +111,5 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
             ChildRecyclerView = itemView.findViewById(R.id.child_recyclerview);
         }
     }
+
 }

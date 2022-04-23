@@ -4,23 +4,22 @@
     android:layout_height="wrap_content"
     android:id="@+id/med_reminders_item_constraint_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<TextView
-    android:id="@+id/med_time_in_hrs"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="8:00 AM"
-    android:textColor="#000"
-    android:fontFamily="@font/poppins_regular"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    />
+    <TextView
+        android:id="@+id/med_time_in_hrs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8:00 AM"
+        android:textColor="#000"
+        android:fontFamily="@font/poppins_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <TextView
         android:id="@+id/med_dose_per_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="take 1 pill(s)"
         android:fontFamily="@font/poppins_regular"
-
         android:textColor="#595959"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
