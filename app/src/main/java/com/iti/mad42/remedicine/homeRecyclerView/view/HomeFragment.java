@@ -2,13 +2,19 @@ package com.iti.mad42.remedicine.homeRecyclerView.view;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,72 +23,64 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.harrywhewell.scrolldatepicker.DayScrollDatePicker;
 import com.harrywhewell.scrolldatepicker.OnDateSelectedListener;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
+import com.iti.mad42.remedicine.Model.pojo.HomeParentItem;
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
+import com.iti.mad42.remedicine.homeRecyclerView.presenter.HomePresenter;
+import com.iti.mad42.remedicine.homeRecyclerView.presenter.HomePresenterInterface;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeFragmentInterface, OnNodeListener{
 
     private View view;
-    DayScrollDatePicker dayScrollDatePicker;
-    RecyclerView ParentRecyclerViewItem;
-    FloatingActionButton btnAddMedicine;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DayScrollDatePicker dayScrollDatePicker;
+    private RecyclerView ParentRecyclerViewItem;
+    private FloatingActionButton btnAddMedicine;
+    private HomePresenterInterface presenter;
+    private HomeParentItemAdapter parentItemAdapter;
+    private LinearLayoutManager layoutManager;
+    public List<MedicationPojo> medicines;
+    private List<HomeParentItem> homeParentItemList = new ArrayList<>();
+    private Dialog medicationAction;
+    private ImageButton btnClose, btnInfo, btnTakeMedicine;
+    private TextView medicationScheduleTV, pillStrengthTV, leftPillsTV, lastTakenTV, medicineNameDialogTV;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragmenet.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        SharedPreferences prefs = getContext().getSharedPreferences("LoginTest", MODE_PRIVATE);
-        String name = prefs.getString(Utility.myCredentials, "No user registered");//"No name defined" is the default value.
-        Log.i("SharedPrefs", "onCreate: " + name);
+        presenter = new HomePresenter(getContext(),this, Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()), RemoteDataSource.getInstance(getContext(), CallbackManager.Factory.create())));
+        getSharedPref();
+        presenter.setCurrentUser();
+        Log.i("Current user email", CurrentUser.getInstance().getEmail() +"");
+        presenter.getAlMedicines();
     }
 
     @Override
@@ -90,6 +88,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home_fragmenet,container,false);
+        medicationAction = new Dialog(getContext());
 
         return view;
     }
@@ -106,22 +105,9 @@ public class HomeFragment extends Fragment {
         });
         initScrollDatePicker();
         ParentRecyclerViewItem = view.findViewById(R.id.parent_recyclerview);
-        // Initialise the Linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
 
-        // Pass the arguments
-        // to the parentItemAdapter.
-        // These arguments are passed
-        // using a method ParentItemList()
-        HomeParentItemAdapter parentItemAdapter = new HomeParentItemAdapter(getActivity(),ParentItemList());
-
-        // Set the layout manager
-        // and adapter for items
-        // of the parent recyclerview
-        ParentRecyclerViewItem
-                .setAdapter(parentItemAdapter);
-        ParentRecyclerViewItem
-                .setLayoutManager(layoutManager);
+        ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
     }
 
@@ -136,42 +122,152 @@ public class HomeFragment extends Fragment {
         dayScrollDatePicker.getSelectedDate(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@Nullable Date date) {
-                Toast.makeText(getContext(),date.toString(),Toast.LENGTH_SHORT).show();
+                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                Toast.makeText(getContext(),dateFormat.format(date),Toast.LENGTH_SHORT).show();
+                filterMedicationByDay(medicines, dateFormat.format(date));
             }
         });
 
     }
 
 
-    private List<HomeParentItem> ParentItemList() {
+
+    private void getSharedPref() {
+        SharedPreferences prefs = getContext().getSharedPreferences("LoginTest", MODE_PRIVATE);
+        String name = prefs.getString(Utility.myCredentials, "No user registered");//"No name defined" is the default value.
+        Log.i("SharedPrefs", "onCreate: " + name);
+    }
+
+    @Override
+    public void showData(LiveData<List<MedicationPojo>> medicines) {
+        medicines.observe(this, new Observer<List<MedicationPojo>>() {
+            @Override
+            public void onChanged(List<MedicationPojo> medicationPojos) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    for (MedicationPojo m : medicationPojos){
+                        System.out.println(m);
+                    }
+                    HomeFragment.this.medicines = medicationPojos;
+                    filterMedicationByDay(medicationPojos,Utility.getCurrentDay());
+                }
+            }
+        });
+    }
+
+
+    public void filterMedicationByDay(List<MedicationPojo> medicationList, String date) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            List<MedicationPojo> medicinesPerDay = medicationList.stream().filter(medicine -> medicine.getMedDays().contains(date.trim())).collect(Collectors.toList());
+            for (MedicationPojo m : medicinesPerDay) {
+                System.out.println(m);
+            }
+            buildArrayOfTimes(medicinesPerDay);
+        }
+    }
+
+    public void buildArrayOfTimes(List<MedicationPojo> medicines) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            List<Long> arrayOdTimes = new ArrayList<Long>();
+            List<Long> distinctArrayOfTimes;
+            for (MedicationPojo m : medicines) {
+                for (MedicineDose medicineDose : m.getMedDoseReminders()) {
+                    arrayOdTimes.add(medicineDose.getDoseTimeInMilliSec());
+                }
+            }
+            distinctArrayOfTimes = arrayOdTimes.stream().distinct().collect(Collectors.toList());
+            Collections.sort(distinctArrayOfTimes);
+            for (Long m : distinctArrayOfTimes) {
+                System.out.println(Utility.millisToTimeAsString(m) + "<<<<<<<<<<<<<<<<<<<<<");
+            }
+            matchMedicineToTime(medicines,distinctArrayOfTimes);
+        }
+    }
+
+    public void matchMedicineToTime(List<MedicationPojo> medicines, List<Long> times) {
+        ArrayList<ArrayList<MedicationPojo>> listsOfMedicines = new ArrayList<ArrayList<MedicationPojo>>();
+        for (Long time : times) {
+            ArrayList<MedicationPojo> list = new ArrayList<MedicationPojo>();
+            for (MedicationPojo m : medicines) {
+                for (MedicineDose md : m.getMedDoseReminders()) {
+                    if (md.getDoseTimeInMilliSec() == time) {
+                        list.add(m);
+                    }
+                }
+            }
+            listsOfMedicines.add(list);
+        }
+        printLists(listsOfMedicines);
+        ParentItemList(listsOfMedicines,times);
+    }
+
+    public void printLists(ArrayList<ArrayList<MedicationPojo>> lists) {
+        for (ArrayList<MedicationPojo> l : lists) {
+            for (MedicationPojo m : l) {
+                System.out.println(m);
+            }
+            System.out.println("\n");
+        }
+    }
+
+    private void ParentItemList(ArrayList<ArrayList<MedicationPojo>> lists, List<Long> times ) {
 
         List<HomeParentItem> itemList = new ArrayList<>();
-
-        HomeParentItem item = new HomeParentItem("10:00 AM", ChildItemList());
-        itemList.add(item);
-        HomeParentItem item1 = new HomeParentItem("01:00 PM", ChildItemList());
-        itemList.add(item1);
-        HomeParentItem item2 = new HomeParentItem("05:00 PM", ChildItemList());
-        itemList.add(item2);
-        HomeParentItem item3 = new HomeParentItem("11:00 PM", ChildItemList());
-        itemList.add(item3);
-
-        return itemList;
+        for (int x = 0; x < times.size(); x++) {
+            HomeParentItem item = new HomeParentItem(Utility.millisToTimeAsString(times.get(x)), lists.get(x));
+            itemList.add(item);
+        }
+        homeParentItemList = itemList;
+        parentItemAdapter = new HomeParentItemAdapter(getActivity(),itemList, this);
+        ParentRecyclerViewItem.setAdapter(parentItemAdapter);
+        parentItemAdapter.notifyDataSetChanged();
     }
 
-    // Method to pass the arguments
-    // for the elements
-    // of child RecyclerView
-    private List<HomeChildItem> ChildItemList() {
+    @Override
+    public void getChosenMedicine(MedicationPojo medicine) {
+        System.out.println(medicine);
+        initDialogUI();
+        setDialogListeners();
+        medicineNameDialogTV.setText(medicine.getName().trim());
 
-        List<HomeChildItem> ChildItemList = new ArrayList<>();
 
-        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
-        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
-        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
-        ChildItemList.add(new HomeChildItem("Panadol","50g, Take 1 Pill(s) Before eating"));
 
-        return ChildItemList;
     }
 
+    private void initDialogUI() {
+        medicationAction.setContentView(R.layout.dialog_medicine_info);
+        medicationAction.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        medicineNameDialogTV = medicationAction.findViewById(R.id.txtViewMedicineNameDialog);
+        medicationScheduleTV = medicationAction.findViewById(R.id.txtViewMedicineSchedule);
+        pillStrengthTV = medicationAction.findViewById(R.id.txtViewPillStrengthDialog);
+        leftPillsTV = medicationAction.findViewById(R.id.txtViewLeftPills);
+        lastTakenTV = medicationAction.findViewById(R.id.txtViewLastTaken);
+        btnClose = medicationAction.findViewById(R.id.btnCloseDialog);
+        btnInfo = medicationAction.findViewById(R.id.btnMedicineInfoInDialog);
+        btnTakeMedicine = medicationAction.findViewById(R.id.btnTakeMedicine);
+        medicationAction.show();
+    }
+
+    private void setDialogListeners() {
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                medicationAction.dismiss();
+            }
+        });
+
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        btnTakeMedicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
 }

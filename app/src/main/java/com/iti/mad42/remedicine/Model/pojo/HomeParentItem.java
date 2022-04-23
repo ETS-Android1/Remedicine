@@ -1,16 +1,19 @@
-package com.iti.mad42.remedicine.homeRecyclerView.view;
+package com.iti.mad42.remedicine.Model.pojo;
 
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeParentItem {
 
     private String doseTime;
-    private List<HomeChildItem> childItemList;
+    private List<MedicationPojo> childItemList;
 
     public HomeParentItem() {
     }
 
-    public HomeParentItem(String doseTime, List<HomeChildItem> childItemList) {
+    public HomeParentItem(String doseTime, List<MedicationPojo> childItemList) {
         this.doseTime = doseTime;
         this.childItemList = childItemList;
     }
@@ -23,11 +26,11 @@ public class HomeParentItem {
         this.doseTime = doseTime;
     }
 
-    public List<HomeChildItem> getChildItemList() {
+    public List<MedicationPojo> getChildItemList() {
         return childItemList;
     }
 
-    public void setChildItemList(List<HomeChildItem> childItemList) {
+    public void setChildItemList(List<MedicationPojo> childItemList) {
         this.childItemList = childItemList;
     }
 

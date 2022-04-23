@@ -19,7 +19,18 @@ public class Utility {
     public static String millisToTimeAsString(long timeInMillis){
         int minutes = (int) ((timeInMillis / (1000*60)) % 60);
         int hours   = (int) ((timeInMillis / (1000*60*60)) % 24);
-        return (hours+":"+minutes);
+        if (hours > 11) {
+            if (minutes < 10) {
+                return (hours+":"+minutes+"0 PM");
+            }else {
+                return (hours+":"+minutes+" PM");
+            }
+        }else {
+            if (minutes < 10) {
+                return (hours+":"+minutes+"0 AM");
+            }else {
+                return (hours+":"+minutes+" AM");            }
+        }
     }
 
     public static String longToDateAsString(long dateInMillis){
