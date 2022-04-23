@@ -18,6 +18,7 @@ public interface LocalDatabaseSourceInterface {
     LiveData<List<MedicationPojo>> getActiveMedication(long currentDate);
     LiveData<List<MedicationPojo>> getInActiveMedications(long currentDate);
     void updateActiveStateForMedication(long currentDate);
+    Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime);
 
     //User Database Methods
     void insertMedfriendUser(User user);

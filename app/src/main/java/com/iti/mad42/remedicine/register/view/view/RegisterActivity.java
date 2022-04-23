@@ -43,7 +43,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterActiv
 
         presenter = new RegisterPresenter(this,this);
 
-
     }
 
     private void initUI() {

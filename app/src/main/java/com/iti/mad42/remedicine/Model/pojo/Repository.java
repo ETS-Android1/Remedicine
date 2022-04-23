@@ -174,4 +174,9 @@ public class Repository implements RepositoryInterface{
         remoteDataSource.getAllMedicationFromFBForCurrentMedOwner(medOwnerEmail);
     }
 
+    @Override
+    public Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime) {
+        return localDatabaseSource.getMedicationsToRefillReminder(refillTime);
+    }
+
 }

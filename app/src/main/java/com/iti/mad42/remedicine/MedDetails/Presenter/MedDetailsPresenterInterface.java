@@ -9,4 +9,5 @@ public interface MedDetailsPresenterInterface {
     public void deleteMed();
     public void setData();
     public void suspendMed();
+    public void addDose();
 }

@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.register.view.view.RegisterActivityInterface;
@@ -59,4 +60,6 @@ public class RegisterPresenter implements RegisterPresenterInterface {
         editor.putString(key,value);
         editor.apply();
     }
+
+
 }

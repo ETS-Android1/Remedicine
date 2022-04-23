@@ -24,6 +24,7 @@ import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.WorkManger.MedReminder.MyOneTimeWorkManger;
+import com.iti.mad42.remedicine.WorkManger.RefillReminder.RefillReminderOneTimeWorkManager;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.util.Calendar;
@@ -42,7 +43,9 @@ public class MyPeriodicWorkManger extends Worker {
     Repository repository;
     Context context;
     List<MedicationPojo> medList;
+    List<MedicationPojo> refillMedsList;
     Single<List<MedicationPojo>> medicationSingleList;
+    Single<List<MedicationPojo>> refillMedsSingleList;
 
     public MyPeriodicWorkManger(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -60,7 +63,9 @@ public class MyPeriodicWorkManger extends Worker {
     public Result doWork() {
 
         medicationSingleList = repository.getAllMedicationsList();
+        refillMedsSingleList = repository.getMedicationsToRefillReminder(Calendar.getInstance().getTimeInMillis());
         subscribeOnSingleForMedicationReminder();
+        subscribeOnSingleListForRefillReminder();
         getTimePeriod();
         getCurrentAlarms();
 
@@ -148,6 +153,51 @@ public class MyPeriodicWorkManger extends Worker {
     private String serializeToJason(MedicationPojo pojo) {
         Gson gson = new Gson();
         return gson.toJson(pojo);
+    }
+
+    private void subscribeOnSingleListForRefillReminder(){
+        refillMedsSingleList.subscribe(new SingleObserver<List<MedicationPojo>>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(@NonNull List<MedicationPojo> medicationPojos) {
+                refillMedsList = medicationPojos;
+                checkIsNeededToRefill();
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+
+    private void checkIsNeededToRefill(){
+        for (MedicationPojo med : refillMedsList){
+            if(med.getMedQty() <= med.getReminderMedQtyLeft()){
+                Log.e("sandra", "med to refill is: ----> "+med.getName());
+                setOneTimeRequestForRefillReminder(med);
+            }
+        }
+    }
+
+    private void setOneTimeRequestForRefillReminder(MedicationPojo med) {
+        Data data = new Data.Builder().putString(RefillReminderOneTimeWorkManager.REFILL_TAG, serializeToJason(med)).build();
+        Constraints constraints = new Constraints.Builder().setRequiresBatteryNotLow(true)
+                .build();
+        String tag = med.getName()+med.getMedQty()+med.getMedOwnerEmail();
+        OneTimeWorkRequest refillReminderOneTime = new OneTimeWorkRequest.Builder(RefillReminderOneTimeWorkManager.class)
+                .setInputData(data)
+                .setConstraints(constraints)
+                .setInitialDelay(3, TimeUnit.MINUTES)
+                .addTag(tag)
+                .build();
+
+        WorkManager.getInstance(context).enqueueUniqueWork(tag, ExistingWorkPolicy.REPLACE,refillReminderOneTime);
+
     }
 
 }

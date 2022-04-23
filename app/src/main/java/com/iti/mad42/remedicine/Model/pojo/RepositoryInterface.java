@@ -39,4 +39,5 @@ public interface RepositoryInterface {
     public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource);
     Single<List<MedicationPojo>> getAllMedicationsList();
     public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail);
+    public Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime);
 }

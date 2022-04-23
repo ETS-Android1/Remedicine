@@ -20,6 +20,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     private LiveData<List<MedicationPojo>> allMeds;
     private LiveData<List<User>> allUsers;
     private Single<List<MedicationPojo>> medicationPojoList;
+    //private Single<List<MedicationPojo>> refillReminderList;
 
     private ConcreteLocalDataSource(Context context){
         AppDataBase db = AppDataBase.getInstance(context.getApplicationContext());
@@ -28,6 +29,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
         allMeds = medicineDAO.getAllMedications();
         allUsers = userDAO.getAllUsers();
         medicationPojoList = medicineDAO.getAllMedicationsList();
+        //refillReminderList = medicineDAO.getMedicationsToRefillReminder(me);
     }
 
     public static ConcreteLocalDataSource getInstance(Context context){
@@ -99,6 +101,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
         }).start();
     }
 
+
     @Override
     public void insertMedfriendUser(User user) {
         Log.e("sanra", "USer from local source "+ user.getEmail());
@@ -118,5 +121,11 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     @Override
     public LiveData<List<User>> getAllUsers() {
         return allUsers;
+    }
+
+
+    @Override
+    public Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime) {
+        return medicineDAO.getMedicationsToRefillReminder(refillTime);
     }
 }
