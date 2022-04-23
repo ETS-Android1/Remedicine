@@ -176,7 +176,6 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
     }
     @Override
     public void insertMedication() {
-        getData();
         Log.i("mando", "onClick: "+ med );
         repository.insertMedication(med);
         //repository.addMedicationToFirebase(med);

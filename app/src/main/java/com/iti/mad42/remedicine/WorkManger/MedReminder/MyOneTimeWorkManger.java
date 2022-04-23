@@ -1,6 +1,10 @@
 package com.iti.mad42.remedicine.WorkManger.MedReminder;
 
+import static androidx.core.content.ContextCompat.startForegroundService;
+
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,7 +20,7 @@ public class MyOneTimeWorkManger extends Worker {
     Data data;
 
     public final static String MEDICINE_TAG = "MED";
-
+    public final static String MEDICINE_DOSE_INDEX = "MED_DOSE_INDEX";
 
     public MyOneTimeWorkManger(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -30,9 +34,8 @@ public class MyOneTimeWorkManger extends Worker {
     }
     private void getData() {
         data = getInputData();
-        Log.e("mando", "data recived: "+data.getString(MEDICINE_TAG));
+        Log.e("mando", "data recived: "+data.getString(MEDICINE_TAG)+" "+data.getInt(MEDICINE_DOSE_INDEX,0));
     }
-
     public MedicationPojo fomStringPojo(String pojoString) {
         Gson gson = new Gson();
         return gson.fromJson(pojoString, MedicationPojo.class);

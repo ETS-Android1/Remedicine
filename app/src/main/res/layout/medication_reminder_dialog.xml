@@ -1,177 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="380dp"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="#45323232"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
-        android:elevation="15dp"
-        >
+        app:cardElevation="15dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/reminderDialogCloseBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_close_btn"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_close_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/reminderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="6 : 00 PM"
                 android:fontFamily="@font/poppins_bold"
-                android:textSize="25sp"
                 android:textColor="@color/black"
-                android:layout_marginTop="16dp"
+                android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/pillImg"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:src="@drawable/ic_pills"
                 android:layout_margin="16dp"
-                app:layout_constraintTop_toBottomOf="@id/reminderTime"
+                android:src="@drawable/ic_pills"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/reminderTime" />
+
             <TextView
                 android:id="@+id/medRemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="24dp"
                 android:text="Panadol"
-                android:textSize="16sp"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/black"
-                android:layout_marginTop="24dp"
-                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/pillImg"
-                app:layout_constraintTop_toBottomOf="@id/reminderTime"
-                />
+                app:layout_constraintTop_toBottomOf="@id/reminderTime" />
+
             <TextView
                 android:id="@+id/reminderMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="@color/black"
                 android:layout_marginLeft="16dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="1000g, take 1 Pill(s) after eating"
-                app:layout_constraintTop_toBottomOf="@id/medRemName"
+                android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@id/pillImg"
-                />
+                app:layout_constraintTop_toBottomOf="@id/medRemName" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/pillImg"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginRight="24dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="24dp"
                 android:layout_marginBottom="24dp"
                 android:weightSum="3"
-                >
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pillImg">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    >
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_weight="1">
+
+                    <Button
                         android:id="@+id/skipBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
                         android:layout_margin="16dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/round"
                         android:backgroundTint="#D6D6D6"
+                        android:drawableLeft="@drawable/ic_close_btn"
+                        android:gravity="center"
+                        android:paddingLeft="12.5dp"
                         app:borderWidth="0dp"
-                        app:rippleColor="@color/main_app_color"
-                        android:src="@drawable/ic_close_btn"
-                        app:tint= "@color/main_app_color"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></Button>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SKIP"
-                        android:fontFamily="@font/poppins_regular"
-                        android:textColor="@color/main_app_color"
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@id/skipBtn"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="SKIP"
+                        android:textColor="@color/main_app_color"
+                        android:fontFamily="@font/poppins_regular"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/skipBtn" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    >
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_weight="1">
+
+                    <Button
                         android:id="@+id/takeBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
                         android:layout_margin="16dp"
-                        android:src="@drawable/ic_check"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:background="@drawable/round"
+                        android:backgroundTint="@color/main_app_color"
+                        android:drawableLeft="@drawable/ic_check"
+                        android:gravity="center"
+                        android:paddingLeft="12.5dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></Button>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="TAKE"
                         android:fontFamily="@font/poppins_regular"
-                        android:textColor="@color/main_app_color"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@id/takeBtn"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/takeBtn" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    >
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_weight="1">
+
+                    <Button
                         android:id="@+id/snoozeBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
                         android:layout_margin="16dp"
-                        android:src="@drawable/ic_snooze"
+                        android:background="@drawable/round"
                         android:backgroundTint="#D6D6D6"
+                        android:drawableLeft="@drawable/ic_snooze"
+                        android:gravity="center"
+                        android:paddingLeft="12.5dp"
                         app:borderWidth="0dp"
-                        app:tint= "@color/main_app_color"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></Button>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SNOOZE"
+                        android:layout_marginTop="8dp"
                         android:fontFamily="@font/poppins_regular"
                         android:textColor="@color/main_app_color"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@id/snoozeBtn"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="SNOOZE"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/snoozeBtn" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

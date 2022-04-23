@@ -176,8 +176,6 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
 
     }
 
-
-
     private void setAdapters(){
         ArrayAdapter<String> medFormAdapter = new ArrayAdapter<>(AddNewMedicineActivity.this, android.R.layout.simple_spinner_dropdown_item, Utility.medForm);
         medicationFormSpinner.setAdapter(medFormAdapter);
@@ -375,3 +373,11 @@ public class AddNewMedicineActivity extends AppCompatActivity implements AddNewM
         editMedTimeRecyclerview = (RecyclerView) findViewById(R.id.edit_med_time_recyclerview);
     }
 }
+
+/*
+* MedicationPojo{name='mmm', formIndex=0, strength='999', strengthUnitIndex=0, reason='bbb',
+* instructions='jjj', recurrencePerDayIndex=0, medDoseReminders=[MedicineDose{medForm='pill',
+* medDose='1', doseTimeInMilliSec=54720000}], recurrencePerWeekIndex=0, startDate=1650664800000,
+* endDate=1650664800000, medDays=[23-04-2022], medQty=88, reminderMedQtyLeft=8,
+* refillReminderTimeInMilliSec=54660000, isActive=true, medState=[MedState{time=54720000, state='non'},
+* MedState{time=54720000, state='non'}], medOwnerEmail=mando@iti.com*/

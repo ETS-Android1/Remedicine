@@ -90,23 +90,17 @@ public class MyPeriodicWorkManger extends Worker {
 
     @SuppressLint("NewApi")
     private void getCurrentAlarms() {
-        Log.e("mando", "getCurrentAlarms med list size " +medList.size());
-
         if(medList != null){
             Log.e("mando", "getCurrentAlarms med list size " +medList.size());
             for (MedicationPojo medication:medList) {
-                Log.e("mando", "getCurrentAlarms before matching days: " +medication.getName()+medication.getMedState()+medication.getMedDays());
-                Log.e("mando", "getCurrentAlarms before matching days: " +Utility.getCurrentDay()+"||||"+medication.getMedDays());
-
                 if(medication.getMedDays().stream().anyMatch(s -> s.contains(Utility.getCurrentDay()))){
-                    Log.e("mando", "getCurrentAlarms after matching days: " +medication.getName()+medication.getMedState()+medication.getMedDays());
+                   int indexOfDose =0;
                     for(MedState medState : medication.getMedState()){
-                        Log.e("mando", "getCurrentAlarms before checking if it passed or not yet: " +medication.getName()+medState.getTime()+medication.getMedDays());
-
                         if (checkPeriod(medState.getTime())){
-                            Log.e("mando", "getCurrentAlarms after checking if it passed or not yet: " +medication.getName()+medState.getTime()+medication.getMedDays());
-                            setOnTimeWorkManger(delay,medication);
+                            Log.e("mando", "getCurrentAlarms after checking if it passed or not yet: " +medication.getName()+medState.getTime()+medication.getMedDays()+"|||"+indexOfDose);
+                            setOnTimeWorkManger(delay,medication,indexOfDose);
                         }
+                        indexOfDose++;
                     }
                 }
             }
@@ -132,15 +126,16 @@ public class MyPeriodicWorkManger extends Worker {
         timeNow = (timeNow + minute) * 60 * 1000;
     }
 
-    private void setOnTimeWorkManger(long time, MedicationPojo medicationPOJO) {
+    private void setOnTimeWorkManger(long time, MedicationPojo medicationPOJO,int indexOfDose) {
         Log.e("mando", "setOnTimeWorkManger: "+medicationPOJO.getName()+time );
         Data data = new Data.Builder()
                 .putString(MyOneTimeWorkManger.MEDICINE_TAG, serializeToJason(medicationPOJO))
+                .putInt(MyOneTimeWorkManger.MEDICINE_DOSE_INDEX,indexOfDose)
                 .build();
         Constraints constraints = new Constraints.Builder()
                 .setRequiresBatteryNotLow(true)
                 .build();
-        String tag = time+medicationPOJO.getName();
+        String tag = indexOfDose+medicationPOJO.getName();
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(MyOneTimeWorkManger.class).
                 setInputData(data)
                 .setConstraints(constraints)

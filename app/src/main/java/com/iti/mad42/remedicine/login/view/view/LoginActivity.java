@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +23,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
@@ -43,19 +48,49 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
     private TextView emailTV, passwordTV, emailErrorMessage;
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
+    private static final int REQUEST_PERMISSION = 14;
+    public final static int REQUEST_CODE = -1010101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initUI();
+        checkDrawOverlayPermission();
         setBtnsListener();
         btnLoginWithFacebook.setReadPermissions("email","public_profile");
         callbackManager = CallbackManager.Factory.create();
         setRegisterCallback();
         presenter = new LoginPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this,callbackManager)));
+    }
 
+    @SuppressLint("NewApi")
+    public void checkDrawOverlayPermission() {
+        // Check if we already  have permission to draw over other apps
+        if (!Settings.canDrawOverlays(this)) {
+            // if not construct intent to request permission
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setTitle("Permission Required")
+                    .setMessage("Enable Overlay Permission")
+                    .setPositiveButton("Enable", (dialog, i) -> {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:" + getApplicationContext().getPackageName()));
+                        // request permission via start activity for result
+                        startActivityForResult(intent, REQUEST_CODE); //It will call onActivityResult Function After you press Yes/No and go Back after giving permission
+                        dialog.dismiss();
+                    }).setNegativeButton("Cancel", (dialog, i) -> {
+                dialog.dismiss();
+            }).show();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int permissionRequestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(permissionRequestCode, permissions, grantResults);
+        if (permissionRequestCode == REQUEST_PERMISSION) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "please we need your permission to have all our features", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
