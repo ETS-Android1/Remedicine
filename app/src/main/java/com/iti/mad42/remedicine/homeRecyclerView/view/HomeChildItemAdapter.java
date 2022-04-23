@@ -1,9 +1,11 @@
 package com.iti.mad42.remedicine.homeRecyclerView.view;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.R;
 
 import java.util.List;
@@ -18,14 +21,16 @@ import java.util.List;
 public class HomeChildItemAdapter extends RecyclerView
         .Adapter<HomeChildItemAdapter.ChildViewHolder> {
 
-    private List<HomeChildItem> ChildItemList;
+    private List<MedicationPojo> ChildItemList;
+    private OnNodeListener onNodeListener;
     Context context;
 
     // Constructor
-    HomeChildItemAdapter(Context context, List<HomeChildItem> childItemList)
+    HomeChildItemAdapter(Context context, List<MedicationPojo> childItemList, OnNodeListener onNodeListener)
     {
         this.ChildItemList = childItemList;
         this.context = context;
+        this.onNodeListener = onNodeListener;
     }
 
     @NonNull
@@ -44,17 +49,16 @@ public class HomeChildItemAdapter extends RecyclerView
     public void onBindViewHolder(
             @NonNull ChildViewHolder childViewHolder, int position) {
 
-        // Create an instance of the ChildItem
-        // class for the given position
-        HomeChildItem childItem = ChildItemList.get(position);
 
-        // For the created instance, set title.
-        // No need to set the image for
-        // the ImageViews because we have
-        // provided the source for the images
-        // in the layout file itself
-        childViewHolder.tvChildItemMedName.setText(childItem.getMedicineName());
-        childViewHolder.tvChildItemMedSub.setText(childItem.getMedicineSubtitle());
+        MedicationPojo childItem = ChildItemList.get(position);
+        childViewHolder.tvChildItemMedName.setText(childItem.getName());
+        childViewHolder.tvChildItemMedSub.setText(childItem.getStrength()+"g, Take "+childItem.getMedDoseReminders().get(0).getMedDose()+" Pill(s)");
+        childViewHolder.cellBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onNodeListener.getChosenMedicine(childItem);
+            }
+        });
     }
 
     @Override
@@ -63,14 +67,13 @@ public class HomeChildItemAdapter extends RecyclerView
         return ChildItemList.size();
     }
 
-    // This class is to initialize
-    // the Views present
-    // in the child RecyclerView
-    class ChildViewHolder extends RecyclerView.ViewHolder {
+    class ChildViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvChildItemMedName, tvChildItemMedSub;
         ImageView imgViewPillImage;
         ConstraintLayout constraintLayout;
+        Button cellBtn;
+        OnNodeListener onNodeListener;
 
         ChildViewHolder(View itemView)
         {
@@ -79,6 +82,10 @@ public class HomeChildItemAdapter extends RecyclerView
             tvChildItemMedSub = itemView.findViewById(R.id.txtViewHomeMedSubtitle);
             imgViewPillImage = itemView.findViewById(R.id.imgViewPill);
             constraintLayout = itemView.findViewById(R.id.constrainLayoutHomeChildItem);
+            cellBtn = itemView.findViewById(R.id.btnCell);
         }
     }
+
+
+
 }

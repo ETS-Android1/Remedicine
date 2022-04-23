@@ -41,12 +41,30 @@
         <entry key="app/src/main/res/layout/activity_edit_med.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_home_recycler_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+<<<<<<< HEAD
         <entry key="app/src/main/res/layout/activity_med_details.xml" value="0.28869778869778867" />
+=======
+        <entry key="app/src/main/res/layout/activity_med_details.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_medication_info_dialog.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/add_medfriend_dialog.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/dialog_medicine_info.xml" value="0.25" />
+>>>>>>> zeyad
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.12537993920972645" />
         <entry key="app/src/main/res/layout/fragment_home_fragmenet.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_pill_fragmenet.xml" value="0.12537993920972645" />
+<<<<<<< HEAD
         <entry key="app/src/main/res/layout/refill_med_dialog.xml" value="0.335" />
         <entry key="app/src/main/res/layout/requests_custom_cell.xml" value="0.11752786220871327" />
+=======
+        <entry key="app/src/main/res/layout/fragment_show_medications.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/home_child_recyclerview_item.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/med_fragment_custom_cell.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/med_time_recyclerview_item.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/medication_refill_alert.xml" value="0.13768115942028986" />
+        <entry key="app/src/main/res/layout/medication_reminder_dialog.xml" value="0.25" />
+>>>>>>> zeyad
       </map>
     </option>
   </component>
