@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/back"
+        android:id="@+id/addDoseBack"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="12dp"
@@ -92,7 +92,7 @@
                         android:src="@drawable/ic_pills"/>
 
                     <TextView
-                        android:id="@+id/medication_name_label"
+                        android:id="@+id/medication_dose_name_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
@@ -105,7 +105,7 @@
                         app:layout_constraintTop_toBottomOf="@id/med_img" />
 
                     <TextView
-                        android:id="@+id/medication_strength_label"
+                        android:id="@+id/medication_dose_strength_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -114,7 +114,7 @@
                         android:textColor="#595959"
                         app:layout_constraintEnd_toEndOf="@+id/med_img"
                         app:layout_constraintStart_toStartOf="@id/med_img"
-                        app:layout_constraintTop_toBottomOf="@id/medication_name_label" />
+                        app:layout_constraintTop_toBottomOf="@id/medication_dose_name_label" />
                     <View
                         android:id="@+id/seperator"
                         android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                         android:layout_marginHorizontal="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_strength_label"
+                        app:layout_constraintTop_toBottomOf="@id/medication_dose_strength_label"
                         />
 
                     <TextView
@@ -141,7 +141,7 @@
                         app:layout_constraintTop_toBottomOf="@id/seperator" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/medication_name_edt"
+                        android:id="@+id/medication_take_date_edt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
@@ -179,7 +179,7 @@
                         android:textColor="#595959"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/medication_name_edt" />
+                        app:layout_constraintTop_toBottomOf="@id/medication_take_date_edt" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/medication_strength_edt"

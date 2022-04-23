@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.facebook.CallbackManager;
 import com.google.android.material.button.MaterialButton;
@@ -34,11 +39,13 @@ import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MedDetails extends AppCompatActivity implements MedDetailsInterface {
 
@@ -137,8 +144,10 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MedDetails.this, AddDose.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MedDetails.this, AddDose.class);
+//                startActivity(intent);
+                presenter.addDose();
+                Toast.makeText(getApplicationContext(), "Additional Dose Taken", Toast.LENGTH_SHORT).show();
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +216,20 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
 
         refillDialog.show();
     }
+
+    public void setWorkTimerForRefillReminder() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWorkManger.class,
+                15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+    }
+
     private void initView() {
         back = (ImageView) findViewById(R.id.back);
         delete = (ImageView) findViewById(R.id.delete);

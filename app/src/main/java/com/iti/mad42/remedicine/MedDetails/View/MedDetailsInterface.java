@@ -25,5 +25,6 @@ public interface MedDetailsInterface {
 
     public void setMedicationStrengthLabel(String medicationStrength);
     public void setSuspendBtnText(String state);
+    public void setWorkTimerForRefillReminder();
 
 }
