@@ -165,7 +165,6 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                     databaseReferenceMedication.child(id).setValue(med);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

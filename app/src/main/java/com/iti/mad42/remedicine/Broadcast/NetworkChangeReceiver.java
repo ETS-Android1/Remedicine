@@ -9,6 +9,7 @@ import com.iti.mad42.remedicine.Model.pojo.NetworkUtility;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
+    public static boolean isConnected = false;
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
@@ -17,7 +18,9 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
             if (status == NetworkUtility.NETWORK_STATUS_NOT_CONNECTED) {
                 Log.e("mando", "no network");
+                isConnected =false;
             } else {
+                isConnected = true;
                 Log.e("mando", "network back");
             }
         }

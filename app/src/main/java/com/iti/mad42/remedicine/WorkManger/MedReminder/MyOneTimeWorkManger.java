@@ -22,7 +22,6 @@ public class MyOneTimeWorkManger extends Worker {
     public final static String MEDICINE_TAG = "MED";
     public final static String MEDICINE_DOSE_INDEX = "MED_DOSE_INDEX";
 
-
     public MyOneTimeWorkManger(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }

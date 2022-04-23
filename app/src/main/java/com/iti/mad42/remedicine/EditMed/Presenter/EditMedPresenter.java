@@ -177,7 +177,6 @@ public class EditMedPresenter implements EditMedPresenterInterface {
 
     @Override
     public void updateMedication() {
-        getData();
         repository.updateMedication(med);
 //        repository.updateMedicationToFirebase(med);
     }

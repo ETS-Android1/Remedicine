@@ -44,6 +44,7 @@ public class EditRemindersRecyclerAdapter extends RecyclerView.Adapter<EditRemin
         timeDoseDialog = new Dialog(_context);
         Log.e("mando", "EditRemindersRecyclerAdapter: " +myMeds.size() );
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -14,4 +14,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="MyTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#078E98</item>
+        <item name="colorPrimaryDark">@color/main_app_color</item>
+        <item name="colorAccent">#078E98</item>
+    </style>
 </resources>
