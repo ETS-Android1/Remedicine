@@ -45,6 +45,9 @@ public interface MedicineDAO {
     @Query("UPDATE medication SET isActive =0 WHERE (:currentDate > endDate)")
     void updateActiveStateForMedication(long currentDate);
 
+    @Query("SELECT * FROM medication WHERE (:refillTime BETWEEN startDate AND endDate) AND medQty <= reminderMedQtyLeft AND isActive =1")
+    Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime);
+
     // User Database Methods
 
 

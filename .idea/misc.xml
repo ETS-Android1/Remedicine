@@ -10,8 +10,9 @@
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/ic_close_btn.xml" value="0.3828125" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26944444444444443" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/drawable/ic_snooze.xml" value="0.3728205128205128" />
-        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_add_dose.xml" value="0.3625" />
+        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_add_dose.xml" value="0.30179028132992325" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_add_new_medicine.xml" value="0.25" />
+        <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_edit_med.xml" value="0.19322916666666667" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_home_recycler_view.xml" value="0.3625" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_main.xml" value="0.2653985507246377" />
         <entry key="..\:/1ITI/32Android/Project/Remedicine/app/src/main/res/layout/activity_med_details.xml" value="0.321656050955414" />
@@ -38,7 +39,6 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/drawable/border.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/activity_add_new_medicine.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_edit_med.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_home_recycler_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_med_details.xml" value="0.28869778869778867" />

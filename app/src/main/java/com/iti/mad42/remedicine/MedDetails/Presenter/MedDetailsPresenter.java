@@ -1,6 +1,7 @@
 package com.iti.mad42.remedicine.MedDetails.Presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.iti.mad42.remedicine.MedDetails.View.MedDetailsInterface;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
@@ -16,6 +17,7 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface{
 
     MedicationPojo medicationPojo;
     int amount;
+    int medQty;
 
     Context context;
     MedDetailsInterface view;
@@ -26,6 +28,7 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface{
         this.view = view;
         this.repository = repository;
         medicationPojo = view.getMedObject();
+        medQty = medicationPojo.getMedQty();
     }
 
     public MedicationPojo getMedication(){
@@ -69,6 +72,16 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface{
         view.setMedTimeRecyclerview(medicationPojo.getMedDoseReminders());
     }
 
+    @Override
+    public void addDose() {
+        medQty--;
+        Log.e("sandra", "from med Qty: ---> "+medQty+" and the med qty from med obj is-----> "+medicationPojo.getMedQty()+" and the med dose left to remind is: ---> "+medicationPojo.getReminderMedQtyLeft());
+        medicationPojo.setMedQty(medQty);
+        repository.updateMedication(medicationPojo);
+        if(medQty <= medicationPojo.getReminderMedQtyLeft()){
+            view.setWorkTimerForRefillReminder();
+        }
+    }
 
 
 }
