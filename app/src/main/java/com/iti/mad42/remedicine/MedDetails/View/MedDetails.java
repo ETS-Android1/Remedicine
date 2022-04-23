@@ -162,6 +162,7 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
             @Override
             public void onClick(View v) {
                 presenter.deleteMed();
+                setWorkTimer();
                 finish();
             }
         });
@@ -203,6 +204,7 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
             public void onClick(View view) {
                presenter.setRefillAmount(Integer.parseInt(refillEdt.getEditText().getText().toString()));
                presenter.refillMed();
+               setWorkTimer();
                refillDialog.dismiss();
             }
         });
@@ -230,6 +232,18 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
     }
 
+    private void setWorkTimer() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWorkManger.class,
+                15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+    }
     private void initView() {
         back = (ImageView) findViewById(R.id.back);
         delete = (ImageView) findViewById(R.id.delete);

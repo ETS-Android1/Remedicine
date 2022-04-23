@@ -47,7 +47,7 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface{
 
     public void deleteMed(){
         repository.deleteMedication(medicationPojo);
-        repository.deleteMedicationFromFirebase(medicationPojo);
+        //repository.deleteMedicationFromFirebase(medicationPojo);
     }
     public void suspendMed(){
         medicationPojo.setActive(!medicationPojo.isActive());
