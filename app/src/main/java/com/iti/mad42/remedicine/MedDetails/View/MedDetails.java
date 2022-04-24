@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -186,7 +187,7 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         refillDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Button refillBtn,cancelBtn;
-        TextInputLayout refillEdt;
+        EditText refillEdt;
         ImageView closeDialog = refillDialog.findViewById(R.id.dialogCloseBtn);
         closeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +203,7 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         refillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               presenter.setRefillAmount(Integer.parseInt(refillEdt.getEditText().getText().toString()));
+               presenter.setRefillAmount(Integer.parseInt(refillEdt.getText().toString()));
                presenter.refillMed();
                setWorkTimer();
                refillDialog.dismiss();
