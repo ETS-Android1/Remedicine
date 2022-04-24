@@ -190,7 +190,9 @@ public class MyPeriodicWorkManger extends Worker {
         OneTimeWorkRequest refillReminderOneTime = new OneTimeWorkRequest.Builder(RefillReminderOneTimeWorkManager.class)
                 .setInputData(data)
                 .setConstraints(constraints)
-                .setInitialDelay(3, TimeUnit.MINUTES)
+                //.setInitialDelay(3, TimeUnit.MINUTES)
+                .setInitialDelay(10, TimeUnit.SECONDS)
+
                 .addTag(tag)
                 .build();
 
