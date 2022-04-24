@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
@@ -39,7 +40,6 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
         this.context = context;
         this.repo = repo;
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
-
     }
 
     public void registerListeners() {
@@ -75,6 +75,7 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
                         if (user.getPassword().equals(password)) {
                             view.showToast("Logged in Successfully");
                             saveString(Utility.myCredentials,email);
+                            CurrentUser.getInstance().setEmail(email);
                             view.navigateToHome();
                         }else {
                             view.requestFocusFor("pass");

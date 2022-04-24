@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
@@ -56,14 +57,19 @@ public class RegisterActivity extends AppCompatActivity implements RegisterActiv
 
     private void setBtnsLisetner() {
         btnRegister.setOnClickListener(view -> {
-            if (isValidUsernameAndPassword()) {
-                String email = emailTV.getText().toString().trim();
-                String username = usernameTV.getText().toString();
-                String password = passwordTV.getText().toString();
-                presenter.registerNewUser(new User(email,username,password));
-            }else {
-                Toast.makeText(this,"Invalid inputs", Toast.LENGTH_SHORT).show();
+            if(NetworkChangeReceiver.isConnected){
+                if (isValidUsernameAndPassword()) {
+                    String email = emailTV.getText().toString().trim();
+                    String username = usernameTV.getText().toString();
+                    String password = passwordTV.getText().toString();
+                    presenter.registerNewUser(new User(email,username,password));
+                }else {
+                    Toast.makeText(this,"Invalid inputs", Toast.LENGTH_SHORT).show();
+                }
             }
+            else
+                Toast.makeText(this,"Please check your network connection",Toast.LENGTH_SHORT).show();
+
         });
     }
 
