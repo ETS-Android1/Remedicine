@@ -9,7 +9,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Handler;
+import android.os.VibrationEffect;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +60,7 @@ public class ReminderDialog {
     private Button skipBtn;
     private Button takeBtn;
     private Button snoozeBtn;
+    MediaPlayer mMediaPlayer;
     //Dialog reminderDg;
 
     public ReminderDialog(MedicationPojo medication, int index, Context context) {
@@ -71,6 +76,7 @@ public class ReminderDialog {
     }
 
     public void setMyWindowManger() {
+        setMediaPlayer(R.raw.hakim);
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         customNotificationDialogView = inflater.inflate(R.layout.medication_reminder_dialog, null);
         initView(customNotificationDialogView);
@@ -89,6 +95,12 @@ public class ReminderDialog {
         windowManager.addView(customNotificationDialogView, params);
     }
 
+    void setMediaPlayer(int id){
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer = MediaPlayer.create(context, id);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.start();
+    }
     private void initView(View view) {
         reminderDialogCloseBtn = (ImageView) view.findViewById(R.id.reminderDialogCloseBtn);
         reminderTime = (TextView) view.findViewById(R.id.reminderTime);
@@ -107,26 +119,54 @@ public class ReminderDialog {
             close();
         });
         takeBtn.setOnClickListener(v -> {
+            takeBtn.setEnabled(false);
+            reminderDialogCloseBtn.setEnabled(false);
+            skipBtn.setEnabled(false);
+            snoozeBtn.setEnabled(false);
             int doseLeft = medication.getMedQty() - medication.getMedDoseReminders().get(index).getMedDose();
             medication.setMedQty(doseLeft);
             medication.getMedState().get(index).setState("taken");
             updateMedication(medication);
+            setMediaPlayer(R.raw.se7aa);
             setPeriodicWorkManger();
-            stopMyService();
-            close();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            stopMyService();
+                            close();
+                        }
+                    },3000);
         });
 
         skipBtn.setOnClickListener(v -> {
-            context.stopService(new Intent(context, ReminderService.class));
-            stopMyService();
-            close();
+            takeBtn.setEnabled(false);
+            reminderDialogCloseBtn.setEnabled(false);
+            skipBtn.setEnabled(false);
+            snoozeBtn.setEnabled(false);
+            setMediaPlayer(R.raw.skip);
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            stopMyService();
+                            close();
+                        }
+                    },2000);
         });
 
         snoozeBtn.setOnClickListener(v -> {
+            setMediaPlayer(R.raw.snooze);
             setOnTimeWorkManger(medication, index);
             Toast.makeText(context, "Snoozed for 5 minutes", Toast.LENGTH_SHORT).show();
-            stopMyService();
-            close();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            stopMyService();
+                            close();
+                        }
+                    },3000);
         });
     }
 
@@ -184,6 +224,7 @@ public class ReminderDialog {
     }
 
     private void stopMyService() {
+        mMediaPlayer.stop();
         context.stopService(new Intent(context, ReminderService.class));
     }
 }

@@ -124,9 +124,7 @@ public class MyPeriodicWorkManger extends Worker {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        if (hour == 0) {
-            hour += 12;
-        }
+
         timeNow = hour * 60;
         timeNow = (timeNow + minute) * 60 * 1000;
     }

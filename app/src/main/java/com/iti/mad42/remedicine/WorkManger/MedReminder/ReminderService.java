@@ -11,10 +11,12 @@ import android.os.IBinder;
 import android.provider.Settings;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.gson.Gson;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.R;
 
 public class ReminderService extends Service {
 
@@ -26,6 +28,9 @@ public class ReminderService extends Service {
     NotificationManager notificationManager;
     String description;
     ReminderDialog reminderDialog;
+    private NotificationManagerCompat notificationManagerCompat;
+
+
 
     public ReminderService() {
     }
@@ -57,22 +62,22 @@ public class ReminderService extends Service {
         return gson.fromJson(pojoString, MedicationPojo.class);
     }
     private Notification makeNotification() {
-//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), myMedicine.getImageID());
-
+        notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
         description = "take " + myMedicine.getMedDoseReminders().get(index).getMedDose() + " " + Utility.medForm[myMedicine.getFormIndex()] + "(s), " +
                 myMedicine.getStrength() + Utility.medStrengthUnit[myMedicine.getStrengthUnitIndex()] +" , "+ myMedicine.getInstructions();
-        return new NotificationCompat.Builder(getApplicationContext(),
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(),
                 String.valueOf(CHANNEL_ID))
-                //.setSmallIcon(myMedicine.getImageID())
+                .setSmallIcon(R.drawable.logo)
                 .setContentText("Schedule for " + myMedicine.getName() + ", today")
                 .setContentTitle("Medication Reminder")
                 //.setLargeIcon(bitmap)
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(description))
                 .build();
+        notificationManagerCompat.notify(1,notification);
+        return notification;
 
     }
 
@@ -80,7 +85,7 @@ public class ReminderService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "MedReminderChannel";
             String description = "MedReminderChannelDescription";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(String.valueOf(CHANNEL_ID),
                     name, importance);
             channel.setDescription(description);
