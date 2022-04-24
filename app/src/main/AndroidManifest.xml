@@ -24,6 +24,11 @@
             android:enabled="true"
             android:exported="true"></service>
 
+        <service
+            android:name=".WorkManger.RefillReminder.RefillReminderService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".splashScreen.SplashScreen"
             android:exported="true">
