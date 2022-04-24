@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -51,12 +52,12 @@ public class RefillWindow {
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
-
     private ImageView refillAlertCloseBtn;
     private TextView medName;
     private Button skipBtn;
     private Button refillBtn;
     private Button snoozeBtn;
+    EditText refillEdt;
     private RepositoryInterface repository;
     private MedicationPojo medication;
     Dialog refillDialog;
@@ -89,7 +90,7 @@ public class RefillWindow {
         mParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 layoutFlag,
-                android.R.attr.showWhenLocked | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE,
+                android.R.attr.showWhenLocked | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN ,
                 PixelFormat.TRANSLUCENT);
         mWindowManager.addView(mView, mParams);
     }
@@ -100,9 +101,24 @@ public class RefillWindow {
         skipBtn =view.findViewById(R.id.refillSkipBtn);
         refillBtn = view.findViewById(R.id.refillTakeBtn);
         snoozeBtn = view.findViewById(R.id.refillSnoozeBtn);
+        refillEdt = view.findViewById(R.id.refillEdit);
         handleRefillDialogBtns();
     }
     private void handleRefillDialogBtns(){
+
+        refillEdt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                refillEdt.setCursorVisible(true);
+                WindowManager.LayoutParams floatWindowLayoutParamUpdateFlag = mParams;
+
+                floatWindowLayoutParamUpdateFlag.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+
+                // WindowManager is updated with the Updated Parameters
+                mWindowManager.updateViewLayout(mView, floatWindowLayoutParamUpdateFlag);
+                return false;
+            }
+        });
 
         refillAlertCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +140,13 @@ public class RefillWindow {
         refillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRefillDialog();
+                amount = Integer.parseInt(refillEdt.getText().toString());
+                setRefillAmount(amount);
+                refillMed();
+                setPeriodicWorkManger();
+                stopMyService();
+                close();
+
             }
         });
 
@@ -139,46 +161,6 @@ public class RefillWindow {
         });
 
 
-    }
-
-    void openRefillDialog(){
-
-        refillDialog.setContentView(R.layout.refill_med_dialog);
-        refillDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        Button refillBtn,cancelBtn;
-        EditText refillEdt;
-        ImageView closeDialog = refillDialog.findViewById(R.id.dialogCloseBtn);
-        closeDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refillDialog.dismiss();
-            }
-        });
-
-        refillBtn = refillDialog.findViewById(R.id.refillBtn);
-        cancelBtn = refillDialog.findViewById(R.id.cancelMedBtn);
-        refillEdt = refillDialog.findViewById(R.id.refillEdit);
-
-        refillBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int amountToRefill = Integer.parseInt(refillEdt.getText().toString());
-                setRefillAmount(amountToRefill);
-                refillMed();
-                setPeriodicWorkManger();
-                refillDialog.dismiss();
-            }
-        });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refillDialog.dismiss();
-            }
-        });
-
-        refillDialog.show();
     }
 
     public void refillMed(){
