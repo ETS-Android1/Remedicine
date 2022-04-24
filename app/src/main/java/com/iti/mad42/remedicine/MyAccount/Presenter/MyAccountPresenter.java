@@ -45,13 +45,6 @@ public class MyAccountPresenter implements MyAccountPresenterInterface, NetworkD
     }
 
     @Override
-    public void getAllMedsForMedfriend(String medOwnerEmail) {
-        repository.setNetworkDelegate(this);
-        repository.getAllMedicationFromFBForCurrentMedOwner(medOwnerEmail);
-    }
-
-
-    @Override
     public void navigateToHome() {
 
     }

@@ -2,6 +2,7 @@ package com.iti.mad42.remedicine.homeRecyclerView.view;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.harrywhewell.scrolldatepicker.DayScrollDatePicker;
 import com.harrywhewell.scrolldatepicker.OnDateSelectedListener;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
+import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.HomeParentItem;
@@ -40,10 +43,12 @@ import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.NetworkDelegate;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 import com.iti.mad42.remedicine.homeRecyclerView.presenter.HomePresenter;
 import com.iti.mad42.remedicine.homeRecyclerView.presenter.HomePresenterInterface;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,9 +68,9 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
     private HomeParentItemAdapter parentItemAdapter;
     private LinearLayoutManager layoutManager;
     public List<MedicationPojo> medicines;
-    private List<HomeParentItem> homeParentItemList = new ArrayList<>();
     private Dialog medicationAction;
-    private ImageButton btnClose, btnInfo, btnTakeMedicine;
+    private ImageButton btnClose, btnInfo;
+    private Button btnTakeMedicine;
     private TextView medicationScheduleTV, pillStrengthTV, leftPillsTV, lastTakenTV, medicineNameDialogTV;
 
     public HomeFragment() {
@@ -79,14 +84,22 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         presenter = new HomePresenter(getContext(),this, Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()), RemoteDataSource.getInstance(getContext(), CallbackManager.Factory.create())));
         getSharedPref();
         presenter.setCurrentUser();
-        Log.i("Current user email", CurrentUser.getInstance().getEmail() +"");
-        presenter.getAlMedicines();
+
+        if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            presenter.getAlMedicines();
+        }else {
+            if (NetworkChangeReceiver.isConnected){
+                presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
+            }else {
+                Toast.makeText(getContext(),"Please check your network connection",Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home_fragmenet,container,false);
         medicationAction = new Dialog(getContext());
 
@@ -124,7 +137,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
             public void onDateSelected(@Nullable Date date) {
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 Toast.makeText(getContext(),dateFormat.format(date),Toast.LENGTH_SHORT).show();
-                filterMedicationByDay(medicines, dateFormat.format(date));
+                presenter.filterMedicationByDay(medicines, dateFormat.format(date));
             }
         });
 
@@ -132,105 +145,46 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
 
 
 
-    private void getSharedPref() {
+    private String getSharedPref() {
         SharedPreferences prefs = getContext().getSharedPreferences("LoginTest", MODE_PRIVATE);
-        String name = prefs.getString(Utility.myCredentials, "No user registered");//"No name defined" is the default value.
-        Log.i("SharedPrefs", "onCreate: " + name);
+        return prefs.getString(Utility.myCredentials, "No user registered");
     }
 
     @Override
     public void showData(LiveData<List<MedicationPojo>> medicines) {
-        medicines.observe(this, new Observer<List<MedicationPojo>>() {
-            @Override
-            public void onChanged(List<MedicationPojo> medicationPojos) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    for (MedicationPojo m : medicationPojos){
-                        System.out.println(m);
-                    }
-                    HomeFragment.this.medicines = medicationPojos;
-                    filterMedicationByDay(medicationPojos,Utility.getCurrentDay());
+        medicines.observe(this, medicationPojos -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                for (MedicationPojo m : medicationPojos){
+                    System.out.println(m);
                 }
+                HomeFragment.this.medicines = medicationPojos;
+                presenter.filterMedicationByDay(medicationPojos,Utility.getCurrentDay());
             }
         });
     }
 
-
-    public void filterMedicationByDay(List<MedicationPojo> medicationList, String date) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            List<MedicationPojo> medicinesPerDay = medicationList.stream().filter(medicine -> medicine.getMedDays().contains(date.trim())).collect(Collectors.toList());
-            for (MedicationPojo m : medicinesPerDay) {
-                System.out.println(m);
-            }
-            buildArrayOfTimes(medicinesPerDay);
-        }
-    }
-
-    public void buildArrayOfTimes(List<MedicationPojo> medicines) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            List<Long> arrayOdTimes = new ArrayList<Long>();
-            List<Long> distinctArrayOfTimes;
-            for (MedicationPojo m : medicines) {
-                for (MedicineDose medicineDose : m.getMedDoseReminders()) {
-                    arrayOdTimes.add(medicineDose.getDoseTimeInMilliSec());
-                }
-            }
-            distinctArrayOfTimes = arrayOdTimes.stream().distinct().collect(Collectors.toList());
-            Collections.sort(distinctArrayOfTimes);
-            for (Long m : distinctArrayOfTimes) {
-                System.out.println(Utility.millisToTimeAsString(m) + "<<<<<<<<<<<<<<<<<<<<<");
-            }
-            matchMedicineToTime(medicines,distinctArrayOfTimes);
-        }
-    }
-
-    public void matchMedicineToTime(List<MedicationPojo> medicines, List<Long> times) {
-        ArrayList<ArrayList<MedicationPojo>> listsOfMedicines = new ArrayList<ArrayList<MedicationPojo>>();
-        for (Long time : times) {
-            ArrayList<MedicationPojo> list = new ArrayList<MedicationPojo>();
-            for (MedicationPojo m : medicines) {
-                for (MedicineDose md : m.getMedDoseReminders()) {
-                    if (md.getDoseTimeInMilliSec() == time) {
-                        list.add(m);
-                    }
-                }
-            }
-            listsOfMedicines.add(list);
-        }
-        printLists(listsOfMedicines);
-        ParentItemList(listsOfMedicines,times);
-    }
-
-    public void printLists(ArrayList<ArrayList<MedicationPojo>> lists) {
-        for (ArrayList<MedicationPojo> l : lists) {
-            for (MedicationPojo m : l) {
-                System.out.println(m);
-            }
-            System.out.println("\n");
-        }
-    }
-
-    private void ParentItemList(ArrayList<ArrayList<MedicationPojo>> lists, List<Long> times ) {
-
-        List<HomeParentItem> itemList = new ArrayList<>();
-        for (int x = 0; x < times.size(); x++) {
-            HomeParentItem item = new HomeParentItem(Utility.millisToTimeAsString(times.get(x)), lists.get(x));
-            itemList.add(item);
-        }
-        homeParentItemList = itemList;
-        parentItemAdapter = new HomeParentItemAdapter(getActivity(),itemList, this);
+    public void setParentItemAdapter(List<HomeParentItem> itemList, String date) {
+        parentItemAdapter = new HomeParentItemAdapter(getActivity(),itemList, this, date);
         ParentRecyclerViewItem.setAdapter(parentItemAdapter);
         parentItemAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getChosenMedicine(MedicationPojo medicine) {
+    public void getOnlineData(List<MedicationPojo> friendMedications) {
+        HomeFragment.this.medicines = friendMedications;
+        presenter.filterMedicationByDay(friendMedications,Utility.getCurrentDay());
+    }
+
+    @Override
+    public void getChosenMedicine(MedicationPojo medicine, Long time) {
         System.out.println(medicine);
         initDialogUI();
-        setDialogListeners();
+        setDialogListeners(medicine, time);
         medicineNameDialogTV.setText(medicine.getName().trim());
-
-
-
+        pillStrengthTV.setText(medicine.getStrength()+"g,take "+medicine.getMedDoseReminders().get(0).getMedDose()+" pill(s)");
+        leftPillsTV.setText(medicine.getReminderMedQtyLeft()+" pill(s) left");
+        lastTakenTV.setText("Last taken at "+Utility.millisToTimeAsString(medicine.getMedDoseReminders().get(medicine.getMedDoseReminders().size()-1).getDoseTimeInMilliSec()));
+        medicationScheduleTV.setText("Scheduled for "+Utility.millisToTimeAsString(time)+", today");
     }
 
     private void initDialogUI() {
@@ -247,7 +201,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         medicationAction.show();
     }
 
-    private void setDialogListeners() {
+    private void setDialogListeners(MedicationPojo medicine, Long time) {
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,18 +210,44 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
             }
         });
 
-        btnInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
+        btnInfo.setOnClickListener(view -> {
+            Intent intent = new Intent(HomeFragment.this.getActivity(), MedDetails.class);
+            intent.putExtra("fromActiveToDetails",(Serializable) medicine);
+            startActivity(intent);
+            ((Activity) getActivity()).overridePendingTransition(0, 0);
         });
 
-        btnTakeMedicine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnTakeMedicine.setOnClickListener(view -> {
 
+
+
+            int medDoseIndex = 0;
+            int medStatIndex = 0;
+            for (int x = 0; x < medicine.getMedDoseReminders().size(); x++) {
+                if (medicine.getMedDoseReminders().get(x).getDoseTimeInMilliSec() == time) {
+                    medDoseIndex = x;
+                    Log.i("TAG", "MedDose: "+ medicine.getMedDoseReminders().get(medDoseIndex).getMedDose());
+                }
             }
+
+
+            for (int x = 0; x < medicine.getMedState().size(); x++) {
+                if (medicine.getMedState().get(x).getTime() == time) {
+                    medStatIndex = x;
+                    Log.i("TAG", "MedDose: "+ medicine.getMedState().get(medStatIndex).getState());
+                }
+            }
+
+            int doseLeft = medicine.getMedQty() - medicine.getMedDoseReminders().get(medDoseIndex).getMedDose();
+            medicine.setMedQty(doseLeft);
+            medicine.getMedState().get(medStatIndex).setState("taken");
+            updateMedication(medicine);
+            medicationAction.dismiss();
+
         });
+    }
+
+    private void updateMedication(MedicationPojo medication) {
+        presenter.updateMedication(medication);
     }
 }

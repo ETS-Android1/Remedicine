@@ -7,22 +7,22 @@ import java.util.List;
 
 public class HomeParentItem {
 
-    private String doseTime;
+    private Long doseTime;
     private List<MedicationPojo> childItemList;
 
     public HomeParentItem() {
     }
 
-    public HomeParentItem(String doseTime, List<MedicationPojo> childItemList) {
+    public HomeParentItem(Long doseTime, List<MedicationPojo> childItemList) {
         this.doseTime = doseTime;
         this.childItemList = childItemList;
     }
 
-    public String getDoseTime() {
+    public Long getDoseTime() {
         return doseTime;
     }
 
-    public void setDoseTime(String doseTime) {
+    public void setDoseTime(Long doseTime) {
         this.doseTime = doseTime;
     }
 

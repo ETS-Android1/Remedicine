@@ -1,5 +1,6 @@
 package com.iti.mad42.remedicine.homeRecyclerView.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.iti.mad42.remedicine.Model.pojo.HomeParentItem;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 
 import java.util.List;
@@ -27,12 +29,14 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
     private Context context;
     private OnNodeListener onNodeListener;
     private int position;
+    private String date;
 
-    HomeParentItemAdapter(Context context, List<HomeParentItem> itemList, OnNodeListener onNodeListener)
+    HomeParentItemAdapter(Context context, List<HomeParentItem> itemList, OnNodeListener onNodeListener, String date)
     {
         this.itemList = itemList;
         this.context = context;
         this.onNodeListener = onNodeListener;
+        this.date = date;
     }
 
     @NonNull
@@ -47,7 +51,7 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ParentViewHolder parentViewHolder, int position) {
+    public void onBindViewHolder(@NonNull ParentViewHolder parentViewHolder, @SuppressLint("RecyclerView") int position) {
 
         // Create an instance of the ParentItem
         // class for the given position
@@ -57,7 +61,7 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
         // For the created instance,
         // get the title and set it
         // as the text for the TextView
-        parentViewHolder.txtViewDoseTime.setText(parentItem.getDoseTime());
+        parentViewHolder.txtViewDoseTime.setText(Utility.millisToTimeAsString(parentItem.getDoseTime()));
 
         // Create a layout manager
         // to assign a layout
@@ -78,7 +82,7 @@ public class HomeParentItemAdapter extends RecyclerView.Adapter<HomeParentItemAd
         // Create an instance of the child
         // item view adapter and set its
         // adapter, layout manager and RecyclerViewPool
-        childItemAdapter = new HomeChildItemAdapter(parentViewHolder.ChildRecyclerView.getContext(),parentItem.getChildItemList(),onNodeListener);
+        childItemAdapter = new HomeChildItemAdapter(parentViewHolder.ChildRecyclerView.getContext(),parentItem.getChildItemList(),onNodeListener, parentItem.getDoseTime(), date);
         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
         parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);
         parentViewHolder.ChildRecyclerView.setRecycledViewPool(viewPool);

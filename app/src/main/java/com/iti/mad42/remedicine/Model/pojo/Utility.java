@@ -13,6 +13,7 @@ public class Utility {
     public static final String [] medReminderPerWeekList ={"Every day","Every two days","Every three days","Every Week","Every Month"};
     public static final String myCredentials = "MyCredentials";
     public static final String currentMedFriend = "CurrentMedFriend";
+    public static boolean isMyAccount = true;
 
     public static long timeToMillis(int hour , int min){
         return ((hour*60)+min) * 60 * 1000;

@@ -32,6 +32,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
@@ -56,7 +57,7 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
     MyAccountPresenterInterface presenter;
     RecyclerView usersToSwitchLV;
     UsersToSwitchAdapter usersAdapter;
-    boolean isMyAccount;
+
 
     public MyAccountFragment() {
         // Required empty public constructor
@@ -227,16 +228,16 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
     @Override
     public void onClickRowItem(User user) {
         if(user.getEmail().equals(getString(Utility.myCredentials))){
-            isMyAccount = true;
+            Utility.isMyAccount = true;
             Toast.makeText(getContext(), "This is Already your Account, You can't switch to!", Toast.LENGTH_SHORT).show();
         }else{
             //save in shared pref the current medfriend
-            saveString(Utility.currentMedFriend, user.getEmail());
-            isMyAccount = false;
+            CurrentUser.getInstance().setEmail(user.getEmail().trim());
+            Utility.isMyAccount = false;
             // make flag isMedfriendViewer
             //isMyAccount true --> getFrom Room
             //isMyAccount false --> getFrom Firebase with the currentMedfriend email --> in shaerd pref
-            checkISMyAccountAndGetMedData();
+//            checkISMyAccountAndGetMedData();
         }
     }
 
@@ -251,17 +252,17 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         }
     }
 
-    public void saveString (String key ,String value){
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
-        editor.putString(key,value);
-        editor.apply();
-    }
+//    public void saveString (String key ,String value){
+//        SharedPreferences.Editor editor = getContext().getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
+//        editor.putString(key,value);
+//        editor.apply();
+//    }
 
-    public void checkISMyAccountAndGetMedData(){
-        if(!isMyAccount){
-            //get data from fb with current med friend
-            presenter.getAllMedsForMedfriend(getString(Utility.currentMedFriend));
-
-        }
-    }
+//    public void checkISMyAccountAndGetMedData(){
+//        if(!Utility.isMyAccount){
+//            //get data from fb with current med friend
+//            CurrentUser.getInstance().setEmail("");
+//            presenter.getAllMedsForMedfriend(getString(Utility.currentMedFriend));
+//        }
+//    }
 }

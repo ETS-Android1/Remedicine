@@ -87,7 +87,7 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         })));
         setListeners();
         presenter.setData();
-
+        Log.i(">>>>>>>>>>>>>>>", "onCreate: " + (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails"));
     }
 
     public MedicationPojo getMedObject() {
