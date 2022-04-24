@@ -51,33 +51,25 @@
                 app:layout_constraintTop_toBottomOf="@id/dialogTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 />
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
                 android:id="@+id/refillEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/border"
-                android:elevation="8dp"
+                android:elevation="4dp"
+
                 app:boxBackgroundColor="#FFF"
                 app:boxStrokeColor="#FFF"
                 app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintEnabled="false"
+                android:background="@drawable/border"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Refill Amount"
+                android:inputType="number"
                 app:layout_constraintStart_toStartOf="@id/emailTitle"
-                app:layout_constraintTop_toBottomOf="@id/emailTitle"
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:fontFamily="@font/poppins_regular"
-                    android:hint="Refill Amount"
-                    android:inputType="numberDecimal"
-                    android:textColor="#000"
-                    tools:ignore="SpeakableTextPresentCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/emailTitle"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,11 +80,10 @@
                 app:layout_constraintTop_toBottomOf="@id/refillEdit"
                 >
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/refillBtn"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Button"
                     android:text="Refill"
                     android:fontFamily="@font/poppins_semi_bold"
                     android:textAllCaps="false"
@@ -104,7 +95,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     />
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/cancelMedBtn"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
