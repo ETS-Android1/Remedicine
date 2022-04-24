@@ -3,10 +3,13 @@ package com.iti.mad42.remedicine.splashScreen;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
@@ -21,7 +24,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
+        initConnectionListener();
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
@@ -38,4 +41,10 @@ public class SplashScreen extends AppCompatActivity {
             }
         }, 2000);
     }
+    private void initConnectionListener(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new NetworkChangeReceiver(), intentFilter);
+    }
+
 }

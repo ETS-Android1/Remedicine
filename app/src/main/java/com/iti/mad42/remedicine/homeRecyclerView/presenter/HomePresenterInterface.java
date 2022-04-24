@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public interface HomePresenterInterface {
 
     public void getAlMedicines();
-    public void setCurrentUser();
     public void filterMedicationByDay(List<MedicationPojo> medicationList, String date);
     public void updateMedication(MedicationPojo medication);
     public void getOnlineData(String medFriendEmail);
+    public String getSharedPref();
 }

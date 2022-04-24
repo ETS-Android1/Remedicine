@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.OnlineDataInterface;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
@@ -169,7 +170,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
     @Override
     public void updateMedicationToFirebase(MedicationPojo med) {
-        databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(getString(Utility.myCredentials)).addValueEventListener(new ValueEventListener() {
+        databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(CurrentUser.getInstance().getEmail()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -360,30 +361,6 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             }
         });
     }
-
-//    @Override
-//    public void getUserData(String senderEmail) {
-//        databaseReferenceUser.orderByChild("email").equalTo(senderEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    for (DataSnapshot snapshot1 : snapshot.getChildren()){
-//                        if(senderEmail.equals(snapshot1.getValue(User.class).getEmail())){
-//                            User senderUser = snapshot1.getValue(User.class);
-//                            Log.e("sandra", "User is : "+senderUser);
-//                            Log.e("sandra", "local : "+networkDelegate);
-//                            networkDelegate.insertMedFriend(senderUser);
-//                        }
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
-
 
     @Override
     public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface) {

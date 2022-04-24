@@ -231,13 +231,10 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
             Utility.isMyAccount = true;
             Toast.makeText(getContext(), "This is Already your Account, You can't switch to!", Toast.LENGTH_SHORT).show();
         }else{
-            //save in shared pref the current medfriend
             CurrentUser.getInstance().setEmail(user.getEmail().trim());
             Utility.isMyAccount = false;
-            // make flag isMedfriendViewer
-            //isMyAccount true --> getFrom Room
-            //isMyAccount false --> getFrom Firebase with the currentMedfriend email --> in shaerd pref
-//            checkISMyAccountAndGetMedData();
+            switchAccountDialog.dismiss();
+            Toast.makeText(getContext(), "switched successfully", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -252,17 +249,4 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         }
     }
 
-//    public void saveString (String key ,String value){
-//        SharedPreferences.Editor editor = getContext().getSharedPreferences("LoginTest",MODE_PRIVATE).edit();
-//        editor.putString(key,value);
-//        editor.apply();
-//    }
-
-//    public void checkISMyAccountAndGetMedData(){
-//        if(!Utility.isMyAccount){
-//            //get data from fb with current med friend
-//            CurrentUser.getInstance().setEmail("");
-//            presenter.getAllMedsForMedfriend(getString(Utility.currentMedFriend));
-//        }
-//    }
 }

@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
     @Override
     protected void onResume() {
         super.onResume();
-        initConnectionListener();
     }
 
     @Override
@@ -127,27 +126,27 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityInt
         emailErrorMessage = findViewById(R.id.txtViewEmailErrorMessageLogin);
     }
 
-    private void initConnectionListener(){
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(new NetworkChangeReceiver(), intentFilter);
-    }
 
     private void setBtnsListener() {
 
         btnLogin.setOnClickListener(view -> {
-            if (isValidUsernameAndPassword()) {
-
-                String email = emailTV.getText().toString().trim();
-                String password = passwordTV.getText().toString().trim();
-                presenter.tryToLogin(email,password);
+            if (NetworkChangeReceiver.isConnected) {
+                if (isValidUsernameAndPassword()) {
+                    String email = emailTV.getText().toString().trim();
+                    String password = passwordTV.getText().toString().trim();
+                    presenter.tryToLogin(email,password);
+                }
             }
+            else
+                Toast.makeText(this,"Please check your network connection",Toast.LENGTH_SHORT).show();
         });
 
 
         btnSignup.setOnClickListener(view -> {
+
             intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
+
         });
     }
 

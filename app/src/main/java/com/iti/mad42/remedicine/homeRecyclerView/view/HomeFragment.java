@@ -82,18 +82,8 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new HomePresenter(getContext(),this, Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()), RemoteDataSource.getInstance(getContext(), CallbackManager.Factory.create())));
-        getSharedPref();
-        presenter.setCurrentUser();
+        presenter.getSharedPref();
 
-        if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
-            presenter.getAlMedicines();
-        }else {
-            if (NetworkChangeReceiver.isConnected){
-                presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
-            }else {
-                Toast.makeText(getContext(),"Please check your network connection",Toast.LENGTH_SHORT).show();
-            }
-        }
 
     }
 
@@ -122,6 +112,18 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
 
         ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
+        if (presenter.getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            presenter.getAlMedicines();
+            btnAddMedicine.setEnabled(true);
+        }else {
+            if (NetworkChangeReceiver.isConnected){
+                presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
+                btnAddMedicine.setEnabled(false);
+            }else {
+                btnAddMedicine.setEnabled(false);
+                Toast.makeText(getContext(),"Please check your network connection",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -144,11 +146,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
     }
 
 
-
-    private String getSharedPref() {
-        SharedPreferences prefs = getContext().getSharedPreferences("LoginTest", MODE_PRIVATE);
-        return prefs.getString(Utility.myCredentials, "No user registered");
-    }
 
     @Override
     public void showData(LiveData<List<MedicationPojo>> medicines) {
@@ -218,8 +215,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         });
 
         btnTakeMedicine.setOnClickListener(view -> {
-
-
 
             int medDoseIndex = 0;
             int medStatIndex = 0;

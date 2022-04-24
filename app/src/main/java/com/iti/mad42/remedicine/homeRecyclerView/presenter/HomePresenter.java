@@ -5,9 +5,11 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.HomeParentItem;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
@@ -40,10 +42,6 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
         view.showData(repo.getAllMedications());
     }
 
-    public void setCurrentUser() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("LoginTest",MODE_PRIVATE);
-        CurrentUser.getInstance().setEmail(sharedPreferences.getString(Utility.myCredentials,null));
-    }
 
     public void filterMedicationByDay(List<MedicationPojo> medicationList, String date) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -113,7 +111,17 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
     @Override
     public void updateMedication(MedicationPojo medication) {
-        repo.updateMedication(medication);
+        if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            repo.updateMedication(medication);
+            repo.updateMedicationToFirebase(medication);
+        }else {
+            if (NetworkChangeReceiver.isConnected){
+                repo.updateMedicationToFirebase(medication);
+            }else {
+                Toast.makeText(context,"Please check your network connection",Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     @Override
@@ -125,5 +133,10 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
     @Override
     public void onlineDataResult(List<MedicationPojo> friendMedications) {
         view.getOnlineData(friendMedications);
+
+    }
+    public String getSharedPref() {
+        SharedPreferences prefs = context.getSharedPreferences("LoginTest", MODE_PRIVATE);
+        return prefs.getString(Utility.myCredentials, "No user registered");
     }
 }
