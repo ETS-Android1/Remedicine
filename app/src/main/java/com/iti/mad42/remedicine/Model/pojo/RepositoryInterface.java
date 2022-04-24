@@ -36,8 +36,7 @@ public interface RepositoryInterface {
     public void setNetworkDelegate(NetworkDelegate networkDelegate);
     public void rejectRequest(RequestPojo request);
     public void updateRequestStateWhenAccept(RequestPojo request);
-    public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource);
     Single<List<MedicationPojo>> getAllMedicationsList();
-    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail);
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface);
     public Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime);
 }
