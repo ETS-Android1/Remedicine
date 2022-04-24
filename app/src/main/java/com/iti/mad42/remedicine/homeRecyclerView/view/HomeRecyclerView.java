@@ -28,16 +28,8 @@ public class HomeRecyclerView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_recycler_view);
 
-        if(Build.VERSION.SDK_INT>=21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
 
-        //getSupportActionBar().hide();
         bubbleNavigationLinearView = findViewById(R.id.bubbleNavigationBar);
-
         replaceFragments(new HomeFragment());
 
         bubbleNavigationLinearView.setNavigationChangeListener((view, position) -> {

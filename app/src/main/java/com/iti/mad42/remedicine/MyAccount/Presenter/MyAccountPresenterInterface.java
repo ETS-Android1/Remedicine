@@ -15,5 +15,4 @@ public interface MyAccountPresenterInterface {
     public void saveString (String key ,String value);
     public void sendRequest(RequestPojo request);
     public LiveData<List<User>> getAllUsers();
-    public void getAllMedsForMedfriend(String medOwnerEmail);
 }

@@ -19,7 +19,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public class Repository implements RepositoryInterface{
+public class Repository implements RepositoryInterface, OnlineDataInterface{
     private Context context;
     private LocalDatabaseSourceInterface localDatabaseSource;
     private RemoteDataSourceInterface remoteDataSource;
@@ -127,11 +127,7 @@ public class Repository implements RepositoryInterface{
         remoteDataSource.setNetworkDelegate(networkDelegate);
     }
 
-    @Override
-    public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource) {
-        this.localDatabaseSource = localDataSource;
-        remoteDataSource.setLocalDataSource(localDataSource);
-    }
+
 
     @Override
     public Single<List<MedicationPojo>> getAllMedicationsList() {
@@ -170,8 +166,8 @@ public class Repository implements RepositoryInterface{
 
 
     @Override
-    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail) {
-        remoteDataSource.getAllMedicationFromFBForCurrentMedOwner(medOwnerEmail);
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface) {
+        remoteDataSource.getAllMedicationFromFBForCurrentMedOwner(medOwnerEmail,onlineDataInterface);
     }
 
     @Override
@@ -179,4 +175,8 @@ public class Repository implements RepositoryInterface{
         return localDatabaseSource.getMedicationsToRefillReminder(refillTime);
     }
 
+    @Override
+    public void onlineDataResult(List<MedicationPojo> friendMedications) {
+
+    }
 }

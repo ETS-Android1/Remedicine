@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.Model.pojo.OnlineDataInterface;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.RequestPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
@@ -50,8 +52,6 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     private DatabaseReference databaseReferenceMedication;
     private DatabaseReference databaseReferenceRequests;
     private NetworkDelegate networkDelegate;
-    private LocalDatabaseSourceInterface localDatabaseSource;
-
 
     private RemoteDataSource(Context context, CallbackManager callbackManager) {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -89,11 +89,6 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
     @Override
     public void setNetworkDelegate(NetworkDelegate networkDelegate) {
         this.networkDelegate = networkDelegate;
-    }
-
-    @Override
-    public void setLocalDataSource(LocalDatabaseSourceInterface localDataSource) {
-        this.localDatabaseSource = localDataSource;
     }
 
     public void registerListeners() {
@@ -391,7 +386,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
 
 
     @Override
-    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail) {
+    public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface) {
         List<MedicationPojo> friendMedications = new ArrayList<>();
         databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(medOwnerEmail).addValueEventListener(new ValueEventListener() {
             @Override
@@ -403,22 +398,12 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
                         String id = medSnapshot.getKey();
                         if (medication.getMedOwnerEmail().equals(medOwnerEmail)) {
                             friendMedications.add(medication);
-//                            Log.e("sandra", "meds for friend size : " + friendMedications.size());
-////
-//                            //just for test data
-//                            Log.e("sandra", "Medication for current medfriend is : " + friendMedications.get(friendMedications.size()-1).getName());
-//                            Log.e("sandra", "Medication for current medfriend is : ---- " + friendMedications.get(friendMedications.size()-1).getMedOwnerEmail());
-//                            Log.e("sandra", "snapshot size : "+snapshot.getChildrenCount());
-
                         }
                     }
+                    onlineDataInterface.onlineDataResult(friendMedications);
                 } else {
                     Toast.makeText(context, "There is no Medications to show.", Toast.LENGTH_SHORT).show();
                 }
-                //call method that will set the adapter with the list of medications.
-                Log.e("sandra", "meds for friend size : " + friendMedications.size());
-                Log.e("sandra", "network delegate in getall meds : "+networkDelegate);
-                networkDelegate.successReturnMedications(friendMedications);
             }
 
             @Override

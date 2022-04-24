@@ -67,157 +67,162 @@
                 />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/txtViewMedicineScheduleLinearCons"
+                android:id="@+id/medicineInfoLinearConstrain"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="4"
                 app:layout_constraintTop_toBottomOf="@+id/txtViewMedicineNameDialog"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="horizontal"
-                android:weightSum="6">
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_baseline_calendar_today_24"
-                    android:layout_gravity="center"/>
-
-                <TextView
-                    android:id="@+id/txtViewMedicineSchedule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Scheduled for 1:00 PM, today"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="8dp"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/txtViewMedicineScheduleLinearCons"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/txtViewScheduled"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_weight="5"/>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/txtViewPillStrengthDialogLinearCons"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewMedicineScheduleLinearCons"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="horizontal"
-                android:weightSum="6">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="6">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_baseline_calendar_today_24"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/txtViewMedicineSchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Scheduled for 1:00 PM, today"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/txtViewScheduled"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_weight="5"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/txtViewPillStrengthDialogLinearCons"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_baseline_perm_device_information_24"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:id="@+id/txtViewPillStrengthDialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="1000g, take 1 Pill(s) after eating"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="5"
-                    android:layout_gravity="center"
-                    />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/txtViewLeftPillsLinearCons"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewPillStrengthDialogLinearCons"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="horizontal"
-                android:weightSum="6">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_baseline_timer_24"
-                    android:layout_gravity="center"/>
-
-                <TextView
-                    android:id="@+id/txtViewLeftPills"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="1 pill left"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="5"
-                    />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/txtViewLastTakenLinearCons"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewLeftPillsLinearCons"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="horizontal"
-                android:weightSum="6">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_baseline_delete_forever_24"
-                    android:layout_gravity="center" />
+                    android:orientation="horizontal"
+                    android:weightSum="6">
 
-                <TextView
-                    android:id="@+id/txtViewLastTaken"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Last taken at 2:34 PM Apr 15"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginLeft="8dp"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_baseline_perm_device_information_24"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:id="@+id/txtViewPillStrengthDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="1000g, take 1 Pill(s) after eating"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="5"
+                        android:layout_gravity="center"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/txtViewLeftPillsLinearCons"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="5"
-                    />
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="6">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_baseline_timer_24"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/txtViewLeftPills"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="1 pill left"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="5"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/txtViewLastTakenLinearCons"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="6">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_baseline_delete_forever_24"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/txtViewLastTaken"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Last taken at 2:34 PM Apr 15"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="5"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewLastTakenLinearCons"
+                app:layout_constraintTop_toBottomOf="@+id/medicineInfoLinearConstrain"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -232,28 +237,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     >
-                    <ImageButton
+                    <Button
                         android:id="@+id/btnTakeMedicine"
                         android:layout_width="300dp"
-                        android:layout_height="50dp"
+                        android:layout_height="55dp"
                         android:layout_margin="16dp"
-                        android:src="@drawable/ic_check"
+                        android:text="TAKE"
                         android:background="@color/main_app_color"
-                        app:icon="@drawable/ic_check"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TAKE"
-                        android:fontFamily="@font/poppins_regular"
-                        android:textColor="@color/main_app_color"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@id/btnTakeMedicine"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

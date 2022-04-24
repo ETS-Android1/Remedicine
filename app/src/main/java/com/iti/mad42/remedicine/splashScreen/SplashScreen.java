@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
@@ -28,6 +29,7 @@ public class SplashScreen extends AppCompatActivity {
                 String email = sharedPreferences.getString(Utility.myCredentials,null);
                 if (email != null) {
                     mainIntent = new Intent(SplashScreen.this, HomeRecyclerView.class);
+                    CurrentUser.getInstance().setEmail(email);
                 }else {
                     mainIntent = new Intent(SplashScreen.this, LoginActivity.class);
                 }
