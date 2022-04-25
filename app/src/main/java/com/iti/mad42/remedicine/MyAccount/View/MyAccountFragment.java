@@ -207,7 +207,7 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null){
             LoginManager.getInstance().logOut();
             Log.i("SharedPrefs", "onLogout: " + LoginManager.getInstance().getAuthType());
-
+            presenter.deleteFromFirebase();
         }
         presenter.saveString(Utility.myCredentials,null);
         SharedPreferences prefs = getContext().getSharedPreferences("LoginTest", MODE_PRIVATE);

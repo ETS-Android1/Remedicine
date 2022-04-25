@@ -50,7 +50,7 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
     }
 
     public void handleFacebookToken(AccessToken token) {
-        repo.handleFacebookToken(token,this);
+        repo.handleFacebookToken(token,this, context);
     }
 
     @Override

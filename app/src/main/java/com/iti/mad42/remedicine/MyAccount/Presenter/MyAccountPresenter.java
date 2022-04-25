@@ -45,6 +45,11 @@ public class MyAccountPresenter implements MyAccountPresenterInterface, NetworkD
     }
 
     @Override
+    public void deleteFromFirebase() {
+        repository.deleteFromFirebase();
+    }
+
+    @Override
     public void navigateToHome() {
 
     }
@@ -63,5 +68,6 @@ public class MyAccountPresenter implements MyAccountPresenterInterface, NetworkD
     public void successReturnMedications(List<MedicationPojo> meds) {
         view.sendAllMedsToHomeScreen(meds);
     }
+
 
 }

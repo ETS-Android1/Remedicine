@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
 
     public HomeFragment() {
         // Required empty public constructor
+        Log.e(">>>>>>>>>>>>>", "HomeFragment: " + CurrentUser.getInstance().getEmail().trim());
     }
 
 
@@ -218,9 +219,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         });
 
         btnTakeMedicine.setOnClickListener(view -> {
-
-
-
             int medDoseIndex = 0;
             int medStatIndex = 0;
             for (int x = 0; x < medicine.getMedDoseReminders().size(); x++) {

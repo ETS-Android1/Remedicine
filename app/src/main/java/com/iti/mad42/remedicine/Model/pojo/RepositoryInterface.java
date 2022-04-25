@@ -1,5 +1,7 @@
 package com.iti.mad42.remedicine.Model.pojo;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 
 import com.facebook.AccessToken;
@@ -24,7 +26,7 @@ public interface RepositoryInterface {
     public void updateActiveStateForMedication(long currentDate);
     public void registerListeners();
     public void unregisterListeners();
-    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate);
+    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate, Context context);
     public void addMedicationToFirebase(MedicationPojo med);
     public void updateMedicationToFirebase(MedicationPojo med);
     public void deleteMedicationFromFirebase(MedicationPojo med);
@@ -39,4 +41,6 @@ public interface RepositoryInterface {
     Single<List<MedicationPojo>> getAllMedicationsList();
     public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface);
     public Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime);
+    public void deleteFromFirebase();
+
 }

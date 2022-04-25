@@ -1,5 +1,7 @@
 package com.iti.mad42.remedicine.data.FacebookAuthentication;
 
+import android.content.Context;
+
 import com.facebook.AccessToken;
 import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
@@ -13,9 +15,10 @@ public interface RemoteDataSourceInterface {
 
     public void unregisterListeners();
 
-    public void handleFacebookToken(AccessToken token,NetworkDelegate networkDelegate);
+    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate, Context context);
 
     public void addMedicationToFirebase(MedicationPojo med);
+    public void deleteFromFirebase();
     public void updateMedicationToFirebase(MedicationPojo med);
     public void deleteMedicationFromFirebase(MedicationPojo med);
 
