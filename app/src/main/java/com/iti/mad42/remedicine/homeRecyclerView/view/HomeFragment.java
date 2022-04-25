@@ -83,8 +83,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         super.onCreate(savedInstanceState);
         presenter = new HomePresenter(getContext(),this, Repository.getInstance(getContext(), ConcreteLocalDataSource.getInstance(getContext()), RemoteDataSource.getInstance(getContext(), CallbackManager.Factory.create())));
         presenter.getSharedPref();
-
-
     }
 
     @Override
@@ -113,8 +111,14 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
         if (presenter.getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
-            presenter.getAlMedicines();
-            btnAddMedicine.setEnabled(true);
+           if(NetworkChangeReceiver.isConnected){
+               presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
+               btnAddMedicine.setEnabled(true);
+           }
+           else {
+               presenter.getAlMedicines();
+               btnAddMedicine.setEnabled(false);
+           }
         }else {
             if (NetworkChangeReceiver.isConnected){
                 presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
