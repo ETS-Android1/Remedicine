@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +68,8 @@ public class RefillWindow {
     private RepositoryInterface repository;
     private MedicationPojo medication;
     Dialog refillDialog;
+    MediaPlayer mMediaPlayer;
+
     int amount;
 
     public RefillWindow(Context context, MedicationPojo medication) {
@@ -81,7 +85,14 @@ public class RefillWindow {
         }));
     }
 
+    void setMediaPlayer(int id){
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer = MediaPlayer.create(context, id);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.start();
+    }
     public void setRefillWindowManager(){
+        setMediaPlayer(R.raw.noti);
         repository.getSpecificMedication(medication.getName()).subscribe(new SingleObserver<MedicationPojo>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {

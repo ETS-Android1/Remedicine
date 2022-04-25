@@ -24,13 +24,13 @@ public class Utility {
         int hours   = (int) ((timeInMillis / (1000*60*60)) % 24);
         if (hours > 11) {
             if (minutes < 10) {
-                return (hours+":"+minutes+"0 PM");
+                return (hours+":"+"0"+minutes+" PM");
             }else {
                 return (hours+":"+minutes+" PM");
             }
         }else {
             if (minutes < 10) {
-                return (hours+":"+minutes+"0 AM");
+                return (hours+":"+"0"+minutes+" AM");
             }else {
                 return (hours+":"+minutes+" AM");            }
         }
