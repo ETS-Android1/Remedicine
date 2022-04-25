@@ -108,6 +108,7 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener((Activity) context, task -> {
             if (task.isSuccessful()) {
+                CurrentUser.getInstance().setEmail(user.getEmail().trim());
                 Log.i(TAG, "sign in with credential: successful ");
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 addUserToFirebase(networkDelegate, new User(user.getEmail(), user.getDisplayName(), ""));
