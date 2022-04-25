@@ -31,10 +31,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.iti.mad42.remedicine.AddDose.View.AddDose;
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.EditMed.View.EditMedActivity;
 import com.iti.mad42.remedicine.MedDetails.Presenter.MedDetailsPresenter;
 import com.iti.mad42.remedicine.MedDetails.Presenter.MedDetailsPresenterInterface;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
@@ -89,6 +91,19 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         setListeners();
         presenter.setData();
         Log.i(">>>>>>>>>>>>>>>", "onCreate: " + (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails"));
+        if (presenter.getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            suspendBtn.setEnabled(true);
+            refillBtn.setEnabled(true);
+        }else {
+            if (NetworkChangeReceiver.isConnected){
+                suspendBtn.setEnabled(false);
+                refillBtn.setEnabled(false);
+            }else {
+                suspendBtn.setEnabled(false);
+                refillBtn.setEnabled(false);
+                Toast.makeText(this,"Please check your network connection",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public MedicationPojo getMedObject() {

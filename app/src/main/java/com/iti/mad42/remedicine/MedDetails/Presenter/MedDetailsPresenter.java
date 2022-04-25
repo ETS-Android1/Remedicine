@@ -1,19 +1,23 @@
 package com.iti.mad42.remedicine.MedDetails.Presenter;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.iti.mad42.remedicine.MedDetails.View.MedDetailsInterface;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
+import com.iti.mad42.remedicine.Model.pojo.OnlineDataInterface;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedDetailsPresenter implements  MedDetailsPresenterInterface{
+public class MedDetailsPresenter implements  MedDetailsPresenterInterface, OnlineDataInterface {
 
     MedicationPojo medicationPojo;
     int amount;
@@ -83,5 +87,20 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface{
         }
     }
 
+    @Override
+    public String getSharedPref() {
+        SharedPreferences prefs = context.getSharedPreferences("LoginTest", MODE_PRIVATE);
+        return prefs.getString(Utility.myCredentials, "No user registered");
+    }
 
+    @Override
+    public void getOnlineData(String medFriendEmail) {
+        //repository.getAllMedicationFromFBForCurrentMedOwner(medFriendEmail,this);
+    }
+
+
+    @Override
+    public void onlineDataResult(List<MedicationPojo> friendMedications) {
+
+    }
 }

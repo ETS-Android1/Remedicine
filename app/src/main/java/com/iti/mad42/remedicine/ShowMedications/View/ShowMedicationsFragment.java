@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -19,8 +20,10 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.iti.mad42.remedicine.AddNewMedicine.View.AddNewMedicineActivity;
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetails;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
@@ -70,7 +73,27 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
             }
         });
 
+
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (presenter.getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            setActiveAdapter();
+            setInactiveAdapter();
+            addMedBtn.setEnabled(true);
+        }else {
+            if (NetworkChangeReceiver.isConnected){
+                presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
+                addMedBtn.setEnabled(false);
+            }else {
+                addMedBtn.setEnabled(false);
+                Toast.makeText(getContext(),"Please check your network connection",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -94,7 +117,7 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
             }
         }));
         repository.updateActiveStateForMedication(Utility.dateToLong(Utility.getCurrentDay()));
-        presenter = new ShowMedicationsPresenter(this,repository);
+        presenter = new ShowMedicationsPresenter(getContext(),this,repository);
 
     }
 
@@ -148,6 +171,17 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
     public void showInActiveMedications(List<MedicationPojo> meds) {
         inactiveAdapter.setList(meds);
         inactiveAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getOnlineData(List<MedicationPojo> friendMedications) {
+        presenter.getActiveMedications(Utility.dateToLong(Utility.getCurrentDay())).observe(getViewLifecycleOwner(), new Observer<List<MedicationPojo>>() {
+            @Override
+            public void onChanged(List<MedicationPojo> medicationPojos) {
+                showActiveMedications(medicationPojos);
+                inactiveAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
