@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
 import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
@@ -102,19 +103,16 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
         }
     }
 
-    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate) {
+    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate, Context context) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.i(TAG, "sign in with credential: successful ");
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    addUserToFirebase(networkDelegate, new User(user.getEmail(), user.getDisplayName(), ""));
-                } else {
-                    Log.i(TAG, "sign in with credential: failed ", task.getException());
-                }
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener((Activity) context, task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "sign in with credential: successful ");
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                addUserToFirebase(networkDelegate, new User(user.getEmail(), user.getDisplayName(), ""));
+            } else {
+                Log.i(TAG, "sign in with credential: failed ", task.getException());
             }
         });
     }
@@ -164,6 +162,26 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    @Override
+    public void deleteFromFirebase() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query applesQuery = ref.child("users").orderByChild("email").equalTo(CurrentUser.getInstance().getEmail().trim());
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                    appleSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
     }

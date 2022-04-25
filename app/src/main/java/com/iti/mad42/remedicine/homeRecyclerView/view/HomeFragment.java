@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
 
     public HomeFragment() {
         // Required empty public constructor
+        Log.e(">>>>>>>>>>>>>", "HomeFragment: " + CurrentUser.getInstance().getEmail().trim());
     }
 
 

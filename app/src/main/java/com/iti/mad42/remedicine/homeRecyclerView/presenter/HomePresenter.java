@@ -59,13 +59,14 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
     public void filterMedicationByDay(List<MedicationPojo> medicationList, String date) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Log.e("mando", "filterMedicationByDay: "+medicationList.size() );
-            List<MedicationPojo> medicinesPerDay = medicationList.stream().filter(medicine -> medicine.getMedDays().contains(date.trim())).collect(Collectors.toList());
-            for (MedicationPojo m : medicinesPerDay) {
-                System.out.println(m);
+        if (medicationList != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                List<MedicationPojo> medicinesPerDay = medicationList.stream().filter(medicine -> medicine.getMedDays().contains(date.trim())).collect(Collectors.toList());
+                for (MedicationPojo m : medicinesPerDay) {
+                    System.out.println(m);
+                }
+                buildArrayOfTimes(medicinesPerDay, date);
             }
-            buildArrayOfTimes(medicinesPerDay, date);
         }
     }
 

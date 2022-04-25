@@ -100,8 +100,8 @@ public class Repository implements RepositoryInterface, OnlineDataInterface{
 
     }
 
-    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate) {
-        remoteDataSource.handleFacebookToken(token,networkDelegate);
+    public void handleFacebookToken(AccessToken token, NetworkDelegate networkDelegate, Context context) {
+        remoteDataSource.handleFacebookToken(token,networkDelegate, context);
     }
     public void addMedicationToFirebase(MedicationPojo med){
         remoteDataSource.addMedicationToFirebase(med);
@@ -189,6 +189,11 @@ public class Repository implements RepositoryInterface, OnlineDataInterface{
 //    public void getMedicationFromFB(String medOwnerEmail, String medName, OnlineDataInterface onlineDataInterface) {
 //       remoteDataSource.getMedicationFromFB(medOwnerEmail,medName,onlineDataInterface);
 //    }
+
+    @Override
+    public void deleteFromFirebase() {
+        remoteDataSource.deleteFromFirebase();
+    }
 
     @Override
     public void onlineDataResult(List<MedicationPojo> friendMedications) {

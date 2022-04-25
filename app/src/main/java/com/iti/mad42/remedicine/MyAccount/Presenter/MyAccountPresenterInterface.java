@@ -16,4 +16,6 @@ public interface MyAccountPresenterInterface {
     public void sendRequest(RequestPojo request);
     public LiveData<List<User>> getAllUsers();
     public void emptyLocalDB();
+    public void deleteFromFirebase();
+
 }
