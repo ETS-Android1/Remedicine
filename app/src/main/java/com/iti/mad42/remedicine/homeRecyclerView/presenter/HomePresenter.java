@@ -5,8 +5,10 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 
 import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
@@ -25,11 +27,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+
 public class HomePresenter implements HomePresenterInterface, OnlineDataInterface {
 
     private Context context;
     private HomeFragmentInterface view;
     private Repository repo;
+    Single<List<MedicationPojo>> medicationSingleList;
+    List<MedicationPojo> medList = new ArrayList<>();
 
     public HomePresenter(Context context, HomeFragmentInterface view, Repository repo) {
         this.context = context;
@@ -129,9 +137,11 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
         repo.getAllMedicationFromFBForCurrentMedOwner(medFriendEmail,this);
     }
 
-
     @Override
     public void onlineDataResult(List<MedicationPojo> friendMedications) {
+        for (MedicationPojo med : friendMedications){
+            repo.updateMedication(med);
+        }
         view.getOnlineData(friendMedications);
 
     }
