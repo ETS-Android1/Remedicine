@@ -10,4 +10,6 @@ public interface MedDetailsPresenterInterface {
     public void setData();
     public void suspendMed();
     public void addDose();
+    public String getSharedPref();
+    public void getOnlineData(String medFriendEmail);
 }
