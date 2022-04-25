@@ -1,6 +1,7 @@
 package com.iti.mad42.remedicine.Model.pojo;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Query;
 
 import com.facebook.AccessToken;
 import com.iti.mad42.remedicine.Model.database.LocalDatabaseSourceInterface;
@@ -16,7 +17,7 @@ public interface RepositoryInterface {
     //functions for Room Database
     public LiveData<List<MedicationPojo>> getAllMedications();
     public void insertMedication(MedicationPojo medication);
-    public LiveData<MedicationPojo> getSpecificMedication(String medName);
+    public Single<MedicationPojo> getSpecificMedication(String medName);
     public void updateMedication(MedicationPojo med);
     public void deleteMedication(MedicationPojo med);
     public LiveData<List<MedicationPojo>> getActiveMedications(long currentDate);
@@ -39,4 +40,10 @@ public interface RepositoryInterface {
     Single<List<MedicationPojo>> getAllMedicationsList();
     public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface);
     public Single<List<MedicationPojo>> getMedicationsToRefillReminder(long refillTime);
+
+    void deleteMedications();
+    void deleteUsers();
+//    public void getMedicationFromFB(String medOwnerEmail,String medName, OnlineDataInterface onlineDataInterface);
+
+
 }

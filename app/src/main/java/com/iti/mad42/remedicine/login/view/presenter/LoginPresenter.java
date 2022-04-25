@@ -76,6 +76,7 @@ public class LoginPresenter implements LoginPresenterInterface , NetworkDelegate
                             view.showToast("Logged in Successfully");
                             saveString(Utility.myCredentials,email);
                             CurrentUser.getInstance().setEmail(email);
+                            repo.insertMedfriendUser(user);
                             view.navigateToHome();
                         }else {
                             view.requestFocusFor("pass");

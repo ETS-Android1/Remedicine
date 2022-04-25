@@ -197,7 +197,6 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(List<User> users) {
-                users.add(new User(getString(Utility.myCredentials), "",""));
                 //users.stream().distinct().collect(Collectors.toList());
                 //users.stream().filter( distinctByKey(user -> user.getEmail())).distinct().collect(Collectors.toList());
                 showAllUsers(users);
@@ -228,16 +227,19 @@ public class MyAccountFragment extends Fragment implements MyAccountFragmentInte
         }
         presenter.saveString(Utility.myCredentials,null);
         SharedPreferences prefs = getContext().getSharedPreferences("LoginTest", MODE_PRIVATE);
-        String name = prefs.getString(Utility.myCredentials, null);//"No name defined" is the default value.
+        String name = prefs.getString(Utility.myCredentials, null);
+        CurrentUser.getInstance().setEmail(null);
+        presenter.emptyLocalDB();
+        //"No name defined" is the default value.
         Log.i("SharedPrefs", "onCreate: " + name);
         intent = new Intent(getActivity(), LoginActivity.class);
+
         startActivity(intent);
         getActivity().finish();
     }
 
     @Override
     public void showAllUsers(List<User> users) {
-
         usersAdapter.setUsersList(users);
         usersAdapter.notifyDataSetChanged();
     }

@@ -5,17 +5,27 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.MedDetails.View.MedDetailsInterface;
+import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
 import com.iti.mad42.remedicine.Model.pojo.MedState;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.OnlineDataInterface;
 import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MedDetailsPresenter implements  MedDetailsPresenterInterface, OnlineDataInterface {
 
@@ -42,8 +52,19 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface, Onlin
     public void refillMed(){
         medicationPojo.setMedQty(amount);
         view.setPillsLeftLabel(amount+" "+ Utility.medForm[medicationPojo.getFormIndex()]+" left");
-        repository.updateMedication(medicationPojo);
-        repository.updateMedicationToFirebase(medicationPojo);
+        if (NetworkChangeReceiver.isConnected){
+            repository.updateMedication(medicationPojo);
+            repository.updateMedicationToFirebase(medicationPojo);
+            if(medQty <= medicationPojo.getReminderMedQtyLeft()){
+                view.setWorkTimerForRefillReminder();
+            }
+        }else {
+            repository.updateMedication(medicationPojo);
+            if(medQty <= medicationPojo.getReminderMedQtyLeft()){
+                view.setWorkTimerForRefillReminder();
+            }
+        }
+
     }
     public void setRefillAmount(int amount){
         this.amount=amount;
@@ -51,7 +72,8 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface, Onlin
 
     public void deleteMed(){
         repository.deleteMedication(medicationPojo);
-        //repository.deleteMedicationFromFirebase(medicationPojo);
+        repository.deleteMedicationFromFirebase(medicationPojo);
+        setWorkTimer();
     }
     public void suspendMed(){
         medicationPojo.setActive(!medicationPojo.isActive());
@@ -65,6 +87,18 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface, Onlin
         repository.updateMedicationToFirebase(medicationPojo);
     }
 
+    private void setWorkTimer() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWorkManger.class,
+                15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+    }
     public void setData(){
         view.setPillsLeftLabel(medicationPojo.getMedQty()+" "+ Utility.medForm[medicationPojo.getFormIndex()]+" left");
         view.setPrescriptionRefillLabel("Refill Reminder When I have "+medicationPojo.getReminderMedQtyLeft()+" Meds Left");
@@ -78,13 +112,37 @@ public class MedDetailsPresenter implements  MedDetailsPresenterInterface, Onlin
 
     @Override
     public void addDose() {
-        medQty--;
-        Log.e("sandra", "from med Qty: ---> "+medQty+" and the med qty from med obj is-----> "+medicationPojo.getMedQty()+" and the med dose left to remind is: ---> "+medicationPojo.getReminderMedQtyLeft());
-        medicationPojo.setMedQty(medQty);
-        repository.updateMedication(medicationPojo);
-        if(medQty <= medicationPojo.getReminderMedQtyLeft()){
-            view.setWorkTimerForRefillReminder();
+        if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            if (NetworkChangeReceiver.isConnected){
+                medQty--;
+                medicationPojo.setMedQty(medQty);
+                view.setPillsLeftLabel(medicationPojo.getMedQty()+" "+ Utility.medForm[medicationPojo.getFormIndex()]+" left");
+                repository.updateMedication(medicationPojo);
+                repository.updateMedicationToFirebase(medicationPojo);
+                if(medQty <= medicationPojo.getReminderMedQtyLeft()){
+                    view.setWorkTimerForRefillReminder();
+                }
+            }else {
+                medQty--;
+                medicationPojo.setMedQty(medQty);
+                view.setPillsLeftLabel(medicationPojo.getMedQty()+" "+ Utility.medForm[medicationPojo.getFormIndex()]+" left");
+                repository.updateMedication(medicationPojo);
+                if(medQty <= medicationPojo.getReminderMedQtyLeft()){
+                    view.setWorkTimerForRefillReminder();
+                }
+            }
+        }else {
+            if (NetworkChangeReceiver.isConnected){
+                medQty--;
+                medicationPojo.setMedQty(medQty);
+                Log.e("mando", "onViewCreated: " +CurrentUser.getInstance().getEmail().trim());
+                view.setPillsLeftLabel(medicationPojo.getMedQty()+" "+ Utility.medForm[medicationPojo.getFormIndex()]+" left");
+                repository.updateMedicationToFirebase(medicationPojo);
+            }else {
+                Toast.makeText(context,"Please check your network connection",Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 
     @Override

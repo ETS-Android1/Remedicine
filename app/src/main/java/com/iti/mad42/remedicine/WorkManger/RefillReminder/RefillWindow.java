@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -34,6 +35,7 @@ import androidx.work.WorkManager;
 import com.facebook.CallbackManager;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
@@ -45,6 +47,9 @@ import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 
 public class RefillWindow {
     private Context context;
@@ -77,6 +82,22 @@ public class RefillWindow {
     }
 
     public void setRefillWindowManager(){
+        repository.getSpecificMedication(medication.getName()).subscribe(new SingleObserver<MedicationPojo>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(@NonNull MedicationPojo medicationPojo) {
+                medication = medicationPojo;
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = layoutInflater.inflate(R.layout.medication_refill_alert, null);
         initView(mView);
@@ -102,6 +123,7 @@ public class RefillWindow {
         refillBtn = view.findViewById(R.id.refillTakeBtn);
         snoozeBtn = view.findViewById(R.id.refillSnoozeBtn);
         refillEdt = view.findViewById(R.id.refillEdit);
+        medName.setText(medication.getName());
         handleRefillDialogBtns();
     }
     private void handleRefillDialogBtns(){
@@ -165,8 +187,9 @@ public class RefillWindow {
 
     public void refillMed(){
         medication.setMedQty(amount);
+
         updateMed(medication);
-        repository.updateMedicationToFirebase(medication);
+
     }
     public void setRefillAmount(int amount){
         this.amount=amount;
@@ -179,7 +202,13 @@ public class RefillWindow {
     }
 
     private void updateMed(MedicationPojo medication){
-        repository.updateMedication(medication);
+        if(NetworkChangeReceiver.isConnected){
+            repository.updateMedication(medication);
+            repository.updateMedicationToFirebase(medication);
+        }
+        else {
+            repository.updateMedication(medication);
+        }
     }
 
     private void setRefillOneTimeWorkManager(MedicationPojo medication){

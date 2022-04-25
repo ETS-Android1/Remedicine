@@ -178,7 +178,7 @@ public class EditMedPresenter implements EditMedPresenterInterface {
     @Override
     public void updateMedication() {
         repository.updateMedication(med);
-//        repository.updateMedicationToFirebase(med);
+        repository.updateMedicationToFirebase(med);
     }
 
     public List<String> getDays(String startDate, String endDate, int x) {

@@ -90,7 +90,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_fragmenet,container,false);
         medicationAction = new Dialog(getContext());
-
         return view;
     }
 
@@ -172,6 +171,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
 
     @Override
     public void getOnlineData(List<MedicationPojo> friendMedications) {
+        Log.e("mando", "getOnlineData:9999 "+friendMedications.size() );
         HomeFragment.this.medicines = friendMedications;
         presenter.filterMedicationByDay(friendMedications,Utility.getCurrentDay());
     }
@@ -184,7 +184,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         medicineNameDialogTV.setText(medicine.getName().trim());
         pillStrengthTV.setText(medicine.getStrength()+"g,take "+medicine.getMedDoseReminders().get(0).getMedDose()+" pill(s)");
         leftPillsTV.setText(medicine.getReminderMedQtyLeft()+" pill(s) left");
-        lastTakenTV.setText("Last taken at "+Utility.millisToTimeAsString(medicine.getMedDoseReminders().get(medicine.getMedDoseReminders().size()-1).getDoseTimeInMilliSec()));
         medicationScheduleTV.setText("Scheduled for "+Utility.millisToTimeAsString(time)+", today");
     }
 
@@ -195,7 +194,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         medicationScheduleTV = medicationAction.findViewById(R.id.txtViewMedicineSchedule);
         pillStrengthTV = medicationAction.findViewById(R.id.txtViewPillStrengthDialog);
         leftPillsTV = medicationAction.findViewById(R.id.txtViewLeftPills);
-        lastTakenTV = medicationAction.findViewById(R.id.txtViewLastTaken);
         btnClose = medicationAction.findViewById(R.id.btnCloseDialog);
         btnInfo = medicationAction.findViewById(R.id.btnMedicineInfoInDialog);
         btnTakeMedicine = medicationAction.findViewById(R.id.btnTakeMedicine);

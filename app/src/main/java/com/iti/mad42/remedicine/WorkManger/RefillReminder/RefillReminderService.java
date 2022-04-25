@@ -70,6 +70,7 @@ public class RefillReminderService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(description))
+                .setAutoCancel(true)
                 .build();
 
     }

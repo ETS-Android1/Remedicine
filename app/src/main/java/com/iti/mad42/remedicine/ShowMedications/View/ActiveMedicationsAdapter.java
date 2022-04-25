@@ -77,6 +77,8 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
     @Override
     public int getItemCount() {
         Log.i("TAG", "size is: "+myMeds.size());
+        if (myMeds.size() == 0)
+            return 0;
         return myMeds.size();
     }
     public void setOnItemClickListener(OnItemClickListenerInterface listener){
@@ -84,5 +86,6 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
     }
     public void setList(List<MedicationPojo> meds){
         this.myMeds = meds;
+        Log.e("mando", "setList: "+myMeds.size()+"||||||"+meds.size());
     }
 }

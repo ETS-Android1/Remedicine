@@ -1,6 +1,7 @@
 package com.iti.mad42.remedicine.register.view.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Database;
 
@@ -12,14 +13,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
+import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.R;
+import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
 import com.iti.mad42.remedicine.register.view.presenter.RegisterPresenter;
 import com.iti.mad42.remedicine.register.view.presenter.RegisterPresenterInterface;
@@ -42,7 +47,12 @@ public class RegisterActivity extends AppCompatActivity implements RegisterActiv
         initUI();
         setBtnsLisetner();
 
-        presenter = new RegisterPresenter(this,this);
+        presenter = new RegisterPresenter(this,this, Repository.getInstance(this, ConcreteLocalDataSource.getInstance(this), RemoteDataSource.getInstance(this, new CallbackManager() {
+            @Override
+            public boolean onActivityResult(int i, int i1, @Nullable Intent intent) {
+                return false;
+            }
+        })));
 
     }
 

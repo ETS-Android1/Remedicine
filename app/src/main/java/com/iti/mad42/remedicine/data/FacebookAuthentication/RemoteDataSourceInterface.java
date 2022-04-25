@@ -27,4 +27,5 @@ public interface RemoteDataSourceInterface {
     public void rejectRequest(RequestPojo request);
     //public void getUserData(String senderEmail);
     public void getAllMedicationFromFBForCurrentMedOwner(String medOwnerEmail, OnlineDataInterface onlineDataInterface);
+//    public void getMedicationFromFB(String medOwnerEmail,String medName, OnlineDataInterface onlineDataInterface);
 }

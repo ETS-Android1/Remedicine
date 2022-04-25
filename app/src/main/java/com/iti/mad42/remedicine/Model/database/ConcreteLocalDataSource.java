@@ -57,7 +57,7 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     }
 
     @Override
-    public LiveData<MedicationPojo> getSpecificMedication(String medName) {
+    public Single<MedicationPojo> getSpecificMedication(String medName) {
         return medicineDAO.getSpecificMedication(medName);
     }
 
@@ -116,6 +116,22 @@ public class ConcreteLocalDataSource implements LocalDatabaseSourceInterface{
     @Override
     public Single<List<MedicationPojo>>  getAllMedicationsList() {
         return medicationPojoList;
+    }
+
+    @Override
+    public void deleteMedications() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                medicineDAO.deleteMedications();
+            }
+        }).start();
+
+    }
+
+    @Override
+    public void deleteUsers() {
+        //userDAO.deleteUsers();
     }
 
     @Override

@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
     ShowMedicationsPresenterInterface presenter;
     FloatingActionButton addMedBtn;
     Repository repository;
+    LinearLayoutManager activeLayoutManager;
 
     public ShowMedicationsFragment() {
         // Required empty public constructor
@@ -69,11 +71,8 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), AddNewMedicineActivity.class));
-
             }
         });
-
-
 
         return view;
     }
@@ -81,12 +80,22 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        setActiveAdapter();
+//        setInactiveAdapter();
         if (presenter.getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
-            setActiveAdapter();
-            setInactiveAdapter();
-            addMedBtn.setEnabled(true);
+            if (NetworkChangeReceiver.isConnected){
+                setActiveAdapter();
+                setInactiveAdapter();
+                addMedBtn.setEnabled(true);
+            }else {
+                setActiveAdapter();
+                setInactiveAdapter();
+                addMedBtn.setEnabled(false);
+            }
         }else {
             if (NetworkChangeReceiver.isConnected){
+                Log.e("mando", "onViewCreated: " +CurrentUser.getInstance().getEmail().trim());
+
                 presenter.getOnlineData(CurrentUser.getInstance().getEmail().trim());
                 addMedBtn.setEnabled(false);
             }else {
@@ -99,8 +108,6 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
     @Override
     public void onStart() {
         super.onStart();
-        setActiveAdapter();
-        setInactiveAdapter();
     }
 
     private void initUI(View view){
@@ -122,7 +129,7 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
     }
 
     private void setActiveAdapter(){
-        LinearLayoutManager activeLayoutManager = new LinearLayoutManager(getContext());
+        activeLayoutManager = new LinearLayoutManager(getContext());
         activeAdapter = new ActiveMedicationsAdapter(getContext(), new ArrayList<>());
         activeAdapter.setOnItemClickListener(this);
         activeMedsRecycler.setHasFixedSize(true);
@@ -175,13 +182,23 @@ public class ShowMedicationsFragment extends Fragment implements ShowMedicationF
 
     @Override
     public void getOnlineData(List<MedicationPojo> friendMedications) {
-        presenter.getActiveMedications(Utility.dateToLong(Utility.getCurrentDay())).observe(getViewLifecycleOwner(), new Observer<List<MedicationPojo>>() {
-            @Override
-            public void onChanged(List<MedicationPojo> medicationPojos) {
-                showActiveMedications(medicationPojos);
-                inactiveAdapter.notifyDataSetChanged();
-            }
-        });
+        activeLayoutManager = new LinearLayoutManager(getContext());
+        activeAdapter = new ActiveMedicationsAdapter(getContext(), new ArrayList<>());
+        activeAdapter.setOnItemClickListener(this);
+        activeMedsRecycler.setHasFixedSize(true);
+        activeLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        activeMedsRecycler.setLayoutManager(activeLayoutManager);
+        activeMedsRecycler.setAdapter(activeAdapter);
+        Log.e("mando", "getOnlineData:medd " + friendMedications.size());
+        showActiveMedications(friendMedications);
+
+//        presenter.getActiveMedications(Utility.dateToLong(Utility.getCurrentDay())).observe(getViewLifecycleOwner(), new Observer<List<MedicationPojo>>() {
+//            @Override
+//            public void onChanged(List<MedicationPojo> medicationPojos) {
+//                showActiveMedications(medicationPojos);
+//                inactiveAdapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
     @Override

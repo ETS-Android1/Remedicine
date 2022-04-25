@@ -58,7 +58,7 @@ public class Repository implements RepositoryInterface, OnlineDataInterface{
     }
 
     @Override
-    public LiveData<MedicationPojo> getSpecificMedication(String medName) {
+    public Single<MedicationPojo> getSpecificMedication(String medName) {
         return localDatabaseSource.getSpecificMedication(medName);
     }
 
@@ -176,7 +176,27 @@ public class Repository implements RepositoryInterface, OnlineDataInterface{
     }
 
     @Override
+    public void deleteMedications() {
+        localDatabaseSource.deleteMedications();
+    }
+
+    @Override
+    public void deleteUsers() {
+        localDatabaseSource.deleteUsers();
+    }
+
+//    @Override
+//    public void getMedicationFromFB(String medOwnerEmail, String medName, OnlineDataInterface onlineDataInterface) {
+//       remoteDataSource.getMedicationFromFB(medOwnerEmail,medName,onlineDataInterface);
+//    }
+
+    @Override
     public void onlineDataResult(List<MedicationPojo> friendMedications) {
 
     }
+//
+//    @Override
+//    public void medDataResult(MedicationPojo medicationPojo) {
+//
+//    }
 }
