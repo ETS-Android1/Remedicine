@@ -77,6 +77,7 @@ public class ActiveMedicationsAdapter extends RecyclerView.Adapter<ActiveMedicat
     @Override
     public int getItemCount() {
         Log.i("TAG", "size is: "+myMeds.size());
+        Log.i("TAG", "size is: "+myMeds.size());
         return myMeds.size();
     }
     public void setOnItemClickListener(OnItemClickListenerInterface listener){
