@@ -49,6 +49,11 @@ public class MyAccountPresenter implements MyAccountPresenterInterface, NetworkD
 
     }
 
+    public void emptyLocalDB(){
+        repository.deleteMedications();
+        //repository.deleteUsers();
+    }
+
     @Override
     public void successReturnRequests(List<RequestPojo> requests) {
 

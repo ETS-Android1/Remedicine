@@ -172,7 +172,6 @@ public class AddNewMedicineActivityPresenter implements AddNewMedicineActivityPr
         med.setMedState(medStates);
         med.setActive(true);
         med.setMedOwnerEmail(getString(Utility.myCredentials));
-
     }
     @Override
     public void insertMedication() {

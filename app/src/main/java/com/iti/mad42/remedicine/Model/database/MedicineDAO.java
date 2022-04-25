@@ -24,14 +24,17 @@ public interface MedicineDAO {
     @Query("SELECT * FROM medication")
     Single<List<MedicationPojo>> getAllMedicationsList();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMedication(MedicationPojo medication);
 
     @Query("SELECT * FROM medication WHERE name =:medName")
-    LiveData<MedicationPojo> getSpecificMedication(String medName);
+    Single<MedicationPojo> getSpecificMedication(String medName);
 
     @Update
     void updateMedication(MedicationPojo med);
+
+    @Query("DELETE FROM medication")
+    void deleteMedications();
 
     @Delete
     void deleteMedication(MedicationPojo med);

@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
+import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
 import com.iti.mad42.remedicine.Model.pojo.User;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.register.view.view.RegisterActivityInterface;
@@ -25,11 +26,13 @@ public class RegisterPresenter implements RegisterPresenterInterface {
     private Context context;
     private RegisterActivityInterface view;
     private DatabaseReference databaseReferenceUser;
+    private RepositoryInterface repo;
 
 
-    public RegisterPresenter(Context context, RegisterActivityInterface view) {
+    public RegisterPresenter(Context context, RegisterActivityInterface view, RepositoryInterface repo) {
         this.context = context;
         this.view = view;
+        this.repo = repo;
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
     }
 
@@ -47,6 +50,8 @@ public class RegisterPresenter implements RegisterPresenterInterface {
                     databaseReferenceUser.child(id).setValue(user);
                     view.showToast("User added successfully");
                     saveString(Utility.myCredentials,user.getEmail());
+                    CurrentUser.getInstance().setEmail(user.getEmail());
+                    repo.insertMedfriendUser(user);
                     view.navigateToHome();
                 }
             }

@@ -51,4 +51,9 @@ public class ShowMedicationsPresenter implements ShowMedicationsPresenterInterfa
     public void onlineDataResult(List<MedicationPojo> friendMedications) {
         view.getOnlineData(friendMedications);
     }
+//
+//    @Override
+//    public void medDataResult(MedicationPojo medicationPojo) {
+//
+//    }
 }

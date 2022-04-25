@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface OnlineDataInterface {
     public void onlineDataResult(List<MedicationPojo> friendMedications);
+//    public void medDataResult(MedicationPojo medicationPojo);
+
 }

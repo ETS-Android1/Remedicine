@@ -30,7 +30,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.iti.mad42.remedicine.AddDose.View.AddDose;
 import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.EditMed.View.EditMedActivity;
 import com.iti.mad42.remedicine.MedDetails.Presenter.MedDetailsPresenter;
@@ -92,15 +91,21 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         presenter.setData();
         Log.i(">>>>>>>>>>>>>>>", "onCreate: " + (MedicationPojo) getIntent().getSerializableExtra("fromActiveToDetails"));
         if (presenter.getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
-            suspendBtn.setEnabled(true);
-            refillBtn.setEnabled(true);
+            suspendBtn.setVisibility(View.VISIBLE);
+            refillBtn.setVisibility(View.VISIBLE);
+            edit.setVisibility(View.VISIBLE);
+            delete.setVisibility(View.VISIBLE);
         }else {
             if (NetworkChangeReceiver.isConnected){
-                suspendBtn.setEnabled(false);
-                refillBtn.setEnabled(false);
+                edit.setVisibility(View.INVISIBLE);
+                delete.setVisibility(View.INVISIBLE);
+                suspendBtn.setVisibility(View.INVISIBLE);
+                refillBtn.setVisibility(View.INVISIBLE);
             }else {
-                suspendBtn.setEnabled(false);
-                refillBtn.setEnabled(false);
+                edit.setVisibility(View.INVISIBLE);
+                delete.setVisibility(View.INVISIBLE);
+                suspendBtn.setVisibility(View.INVISIBLE);
+                refillBtn.setVisibility(View.INVISIBLE);
                 Toast.makeText(this,"Please check your network connection",Toast.LENGTH_SHORT).show();
             }
         }
@@ -247,7 +252,6 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
     }
-
     private void setWorkTimer() {
         Constraints constraints = new Constraints.Builder()
                 .setRequiresBatteryNotLow(true)
@@ -278,6 +282,5 @@ public class MedDetails extends AppCompatActivity implements MedDetailsInterface
         refillBtn = (MaterialButton) findViewById(R.id.refill_btn);
         howToUseLabel = (TextView) findViewById(R.id.how_to_use_label);
         add = (Button) findViewById(R.id.add);
-        lastTimeTakenLabel = (TextView) findViewById(R.id.last_time_taken_label);
     }
 }

@@ -102,7 +102,7 @@ public class MyPeriodicWorkManger extends Worker {
                    int indexOfDose =0;
                     for(MedState medState : medication.getMedState()){
                         if (checkPeriod(medState.getTime())){
-                            Log.e("mando", "getCurrentAlarms after checking if it passed or not yet: " +medication.getName()+medState.getTime()+medication.getMedDays()+"|||"+indexOfDose);
+                            Log.e("mando", "getCurrentAlarms after checking if it passed or not yet: " +medication.getName()+"||"+Utility.millisToTimeAsString(medState.getTime()));
                             setOnTimeWorkManger(delay,medication,indexOfDose);
                         }
                         indexOfDose++;

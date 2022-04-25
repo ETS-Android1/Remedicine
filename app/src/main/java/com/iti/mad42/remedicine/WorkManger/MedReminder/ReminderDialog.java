@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -39,6 +40,7 @@ import com.google.gson.Gson;
 import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
+import com.iti.mad42.remedicine.Model.pojo.Utility;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
@@ -110,6 +112,10 @@ public class ReminderDialog {
         skipBtn = (Button) view.findViewById(R.id.skipBtn);
         takeBtn = (Button) view.findViewById(R.id.takeBtn);
         snoozeBtn = (Button) view.findViewById(R.id.snoozeBtn);
+        reminderTime.setText(Utility.millisToTimeAsString(medication.getMedState().get(index).getTime()));
+        medRemName.setText(medication.getName());
+        reminderMsg.setText(medication.getStrength()+" "+ Utility.medStrengthUnit[medication.getStrengthUnitIndex()] +" Take "+ medication.getMedDoseReminders().get(index).getMedDose()+" "+medication.getMedDoseReminders().get(index).getMedForm()+" (s)"+medication.getInstructions());
+
         handleButtons();
     }
 
@@ -171,7 +177,8 @@ public class ReminderDialog {
     }
 
     private void updateMedication(MedicationPojo medication) {
-        repository.updateMedication(medication);
+        repository.insertMedication(medication);
+        repository.updateMedicationToFirebase(medication);
     }
 
     private void setOnTimeWorkManger(MedicationPojo medicationPOJO,int indexOfDose) {

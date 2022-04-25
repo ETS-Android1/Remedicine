@@ -285,43 +285,19 @@
                         android:id="@+id/how_to_use_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#000"
-                        android:text="After Eating"
                         android:layout_marginVertical="8dp"
                         android:fontFamily="@font/poppins_regular"
+                        android:text="After Eating"
+
+                        android:textColor="#000"
                         app:layout_constraintStart_toStartOf="@+id/reminders_tv"
                         app:layout_constraintTop_toBottomOf="@+id/how_to_use_tv" />
-                    <TextView
-                        android:id="@+id/last_time_taken_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_marginTop="12dp"
-
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="Last Taken"
-                        android:textColor="#595959"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/how_to_use_label" />
-
-                    <TextView
-                        android:id="@+id/last_time_taken_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#000"
-                        android:text="27/06/2022    9:00 AM"
-                        android:layout_marginVertical="8dp"
-                        android:fontFamily="@font/poppins_regular"
-                        app:layout_constraintStart_toStartOf="@+id/reminders_tv"
-                        app:layout_constraintTop_toBottomOf="@+id/last_time_taken_tv" />
 
                     <Button
                         android:id="@+id/add"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="36dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="36dp"
                         android:background="@drawable/border"
@@ -329,12 +305,12 @@
                         android:fontFamily="@font/poppins_regular"
                         android:text="Add Dose"
                         android:textColor="#ffff"
+                        android:layout_marginTop="16dp"
                         android:textSize="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/how_to_use_label"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/last_time_taken_label"
-                        />
+                        app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>

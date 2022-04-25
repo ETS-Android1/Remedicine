@@ -68,10 +68,6 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".AddDose.View.AddDose"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".MedDetails.View.MedDetails"
             android:exported="false"
             android:screenOrientation="portrait"/>

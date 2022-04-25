@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
@@ -19,12 +23,14 @@ import com.iti.mad42.remedicine.Model.pojo.MedicineDose;
 import com.iti.mad42.remedicine.Model.pojo.OnlineDataInterface;
 import com.iti.mad42.remedicine.Model.pojo.Repository;
 import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeFragmentInterface;
 import com.iti.mad42.remedicine.homeRecyclerView.view.HomeParentItemAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import io.reactivex.Single;
@@ -52,7 +58,9 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
 
     public void filterMedicationByDay(List<MedicationPojo> medicationList, String date) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Log.e("mando", "filterMedicationByDay: "+medicationList.size() );
             List<MedicationPojo> medicinesPerDay = medicationList.stream().filter(medicine -> medicine.getMedDays().contains(date.trim())).collect(Collectors.toList());
             for (MedicationPojo m : medicinesPerDay) {
                 System.out.println(m);
@@ -64,6 +72,7 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
 
     public void buildArrayOfTimes(List<MedicationPojo> medicines, String date) {
+        Log.e("mando", "buildArrayOfTimes: "+medicines.size());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             List<Long> arrayOdTimes = new ArrayList<Long>();
             List<Long> distinctArrayOfTimes;
@@ -120,7 +129,7 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
     @Override
     public void updateMedication(MedicationPojo medication) {
         if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
-            repo.updateMedication(medication);
+            repo.insertMedication(medication);
             repo.updateMedicationToFirebase(medication);
         }else {
             if (NetworkChangeReceiver.isConnected){
@@ -139,11 +148,34 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
     @Override
     public void onlineDataResult(List<MedicationPojo> friendMedications) {
-        for (MedicationPojo med : friendMedications){
-            repo.updateMedication(med);
-        }
-        view.getOnlineData(friendMedications);
+        Log.e("mando", "onlineDataResult: "+friendMedications.size() );
 
+        if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
+            for (MedicationPojo med : friendMedications){
+                repo.insertMedication(med);
+            }
+            setWorkTimer();
+        }
+
+        view.getOnlineData(friendMedications);
+    }
+
+//    @Override
+//    public void medDataResult(MedicationPojo medicationPojo) {
+//
+//    }
+
+    private void setWorkTimer() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyPeriodicWorkManger.class,
+                15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
     }
     public String getSharedPref() {
         SharedPreferences prefs = context.getSharedPreferences("LoginTest", MODE_PRIVATE);

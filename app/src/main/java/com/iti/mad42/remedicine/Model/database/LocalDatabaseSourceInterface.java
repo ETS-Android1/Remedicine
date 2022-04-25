@@ -1,6 +1,7 @@
 package com.iti.mad42.remedicine.Model.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Query;
 
 import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.Model.pojo.User;
@@ -12,7 +13,7 @@ import io.reactivex.Single;
 public interface LocalDatabaseSourceInterface {
     LiveData<List<MedicationPojo>> getAllMedications();
     void insertMedication(MedicationPojo medication);
-    LiveData<MedicationPojo> getSpecificMedication(String medName);
+    Single<MedicationPojo> getSpecificMedication(String medName);
     void updateMedication(MedicationPojo med);
     void deleteMedication(MedicationPojo med);
     LiveData<List<MedicationPojo>> getActiveMedication(long currentDate);
@@ -25,5 +26,9 @@ public interface LocalDatabaseSourceInterface {
     LiveData<List<User>> getAllUsers();
 
     Single<List<MedicationPojo>> getAllMedicationsList();
+    void deleteMedications();
+    void deleteUsers();
+
+
 
 }
