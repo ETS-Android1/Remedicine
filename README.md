@@ -19,7 +19,9 @@ Android Mobile Application that helps the user to record his list of medication 
 - Switch accounts between your account and medfriend account if you are a medfriend to someone
 
 ## Screenshots
-https://drive.google.com/drive/folders/136U7lu04P-gBej7-t5h4Ag_7dRkl-75y
+![Screenshot_2022-04-26-12-20-26-50_2a80bf5e90b5635a70c558f747e035ef](https://user-images.githubusercontent.com/66483556/165279448-99d02b4b-6f6e-4f82-8855-641b682e897e.jpg)
+
+
 ## Installation
 - Download the APK file in your Android app and Install it.
 
