@@ -54,17 +54,15 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 public class HomeFragment extends Fragment implements HomeFragmentInterface, OnNodeListener{
 
     private View view;
-    private DayScrollDatePicker dayScrollDatePicker;
     private RecyclerView ParentRecyclerViewItem;
     private FloatingActionButton btnAddMedicine;
     private HomePresenterInterface presenter;
     private HomeParentItemAdapter parentItemAdapter;
     private LinearLayoutManager layoutManager;
-    public List<MedicationPojo> medicines;
     private Dialog medicationAction;
     private ImageButton btnClose, btnInfo;
     private Button btnTakeMedicine;
-    private TextView medicationScheduleTV, pillStrengthTV, leftPillsTV, lastTakenTV, medicineNameDialogTV;
+    private TextView medicationScheduleTV, pillStrengthTV, leftPillsTV, medicineNameDialogTV;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -141,22 +139,7 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
             public void onDateSelected(Calendar date, int position) {
                 Date date1 = date.getTime();
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                presenter.filterMedicationByDay(medicines, dateFormat.format(date1));
-            }
-        });
-    }
-
-
-
-    @Override
-    public void showData(LiveData<List<MedicationPojo>> medicines) {
-        medicines.observe(this, medicationPojos -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                for (MedicationPojo m : medicationPojos){
-                    System.out.println(m);
-                }
-                HomeFragment.this.medicines = medicationPojos;
-                presenter.filterMedicationByDay(medicationPojos,Utility.getCurrentDay());
+                presenter.filterMedicationByDay(presenter.getMedList(), dateFormat.format(date1));
             }
         });
     }
@@ -169,8 +152,6 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
 
     @Override
     public void getOnlineData(List<MedicationPojo> friendMedications) {
-        Log.e("mando", "getOnlineData:9999 "+friendMedications.size() );
-        HomeFragment.this.medicines = friendMedications;
         presenter.filterMedicationByDay(friendMedications,Utility.getCurrentDay());
     }
 

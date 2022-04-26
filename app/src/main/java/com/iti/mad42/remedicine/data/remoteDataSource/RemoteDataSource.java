@@ -403,31 +403,4 @@ public class RemoteDataSource implements RemoteDataSourceInterface {
             }
         });
     }
-//    public void getMedicationFromFB(String medOwnerEmail,String medName, OnlineDataInterface onlineDataInterface) {
-//
-//        databaseReferenceMedication.orderByChild("medOwnerEmail").equalTo(medOwnerEmail).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.exists()) {
-//                    MedicationPojo medicationPojo = new MedicationPojo();
-//                    for (DataSnapshot medSnapshot : snapshot.getChildren()) {
-//                        MedicationPojo medication = medSnapshot.getValue(MedicationPojo.class);
-//                        if(medication.getName().equals(medName)){
-//                            medicationPojo = medication;
-//                        }
-//                    }
-//                    onlineDataInterface.medDataResult(medicationPojo);
-//                } else {
-//                    Toast.makeText(context, "There is no Medications to show.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
-
-
 }

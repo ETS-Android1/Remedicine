@@ -2,17 +2,23 @@ package com.iti.mad42.remedicine.home.presenter;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.iti.mad42.remedicine.home.view.HomeFragment;
 import com.iti.mad42.remedicine.networkChengerBrodcast.NetworkChangeReceiver;
 import com.iti.mad42.remedicine.data.pojo.CurrentUser;
 import com.iti.mad42.remedicine.data.pojo.HomeParentItem;
@@ -32,13 +38,12 @@ import java.util.stream.Collectors;
 
 import io.reactivex.Single;
 
-public class HomePresenter implements HomePresenterInterface, OnlineDataInterface {
+public class HomePresenter implements HomePresenterInterface, OnlineDataInterface{
 
     private Context context;
     private HomeFragmentInterface view;
     private Repository repo;
-    Single<List<MedicationPojo>> medicationSingleList;
-    List<MedicationPojo> medList = new ArrayList<>();
+    List<MedicationPojo> medList;
 
     public HomePresenter(Context context, HomeFragmentInterface view, Repository repo) {
         this.context = context;
@@ -48,9 +53,18 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
     @Override
     public void getAlMedicines() {
-        view.showData(repo.getAllMedications());
+        repo.getAllMedications().observe((LifecycleOwner) context, medicationPojos -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                medList = medicationPojos;
+                filterMedicationByDay(medicationPojos,Utility.getCurrentDay());
+            }
+        });
     }
 
+
+    public List<MedicationPojo> getMedList() {
+        return medList;
+    }
 
     public void filterMedicationByDay(List<MedicationPojo> medicationList, String date) {
 
@@ -68,7 +82,6 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
 
     public void buildArrayOfTimes(List<MedicationPojo> medicines, String date) {
-        Log.e("mando", "buildArrayOfTimes: "+medicines.size());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             List<Long> arrayOdTimes = new ArrayList<Long>();
             List<Long> distinctArrayOfTimes;
@@ -99,17 +112,7 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
             }
             listsOfMedicines.add(list);
         }
-        printLists(listsOfMedicines);
         ParentItemList(listsOfMedicines,times,date);
-    }
-
-    public void printLists(ArrayList<ArrayList<MedicationPojo>> lists) {
-        for (ArrayList<MedicationPojo> l : lists) {
-            for (MedicationPojo m : l) {
-                System.out.println(m);
-            }
-            System.out.println("\n");
-        }
     }
 
     private void ParentItemList(ArrayList<ArrayList<MedicationPojo>> lists, List<Long> times, String date ) {
@@ -144,22 +147,16 @@ public class HomePresenter implements HomePresenterInterface, OnlineDataInterfac
 
     @Override
     public void onlineDataResult(List<MedicationPojo> friendMedications) {
-        Log.e("mando", "onlineDataResult: "+friendMedications.size() );
-
         if (getSharedPref().equals(CurrentUser.getInstance().getEmail())) {
             for (MedicationPojo med : friendMedications){
                 repo.insertMedication(med);
             }
             setWorkTimer();
         }
-
+        medList = friendMedications;
         view.getOnlineData(friendMedications);
     }
 
-//    @Override
-//    public void medDataResult(MedicationPojo medicationPojo) {
-//
-//    }
 
     private void setWorkTimer() {
         Constraints constraints = new Constraints.Builder()
