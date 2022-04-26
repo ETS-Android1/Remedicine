@@ -23,30 +23,30 @@ Android Mobile Application that helps the user to record his list of medication 
 
 <table>
   <tr>
-    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a04.jpg" width=300 height=430></td>
-    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a01.jpg" width=300 height=430></td>
-    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a10.jpg" width=300 height=430></td>
+    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a04.jpg" width=300 height=480></td>
+    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a01.jpg" width=300 height=480></td>
+    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a10.jpg" width=300 height=480></td>
   </tr>
  </table>
  <table>
    <tr>
-     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a08.jpg" width=300 height=430></td>
-     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a11.jpg" width=300 height=430></td>
-     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a05.jpg" width=300 height=430></td>
+     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a08.jpg" width=300 height=480></td>
+     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a11.jpg" width=300 height=480></td>
+     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a05.jpg" width=300 height=480></td>
    </tr>
   </table>
   <table>
     <tr>
-      <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a09.jpg" width=300 height=430></td>
-      <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a12.jpg" width=300 height=430></td>
-      <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a13.jpg" width=300 height=430></td>
+      <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a09.jpg" width=300 height=480></td>
+      <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a12.jpg" width=300 height=480></td>
+      <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a13.jpg" width=300 height=480></td>
     </tr>
    </table>
    <table>
      <tr>
-       <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a14.jpg" width=300 height=430></td>
-       <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a16.jpg" width=300 height=430></td>
-       <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a17.jpg" width=300 height=430></td>
+       <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a14.jpg" width=300 height=480></td>
+       <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a16.jpg" width=300 height=480></td>
+       <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a17.jpg" width=300 height=480></td>
      </tr>
     </table>
 
