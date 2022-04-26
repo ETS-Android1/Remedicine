@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".AddNewMedicine.View.AddNewMedicineActivity"
+    tools:context=".addNewMedicine.View.AddNewMedicineActivity"
     tools:ignore="SpeakableTextPresentCheck">
 
     <include

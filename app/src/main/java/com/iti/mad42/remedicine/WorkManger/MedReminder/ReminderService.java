@@ -14,8 +14,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.gson.Gson;
-import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
-import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.data.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.utility.Utility;
 import com.iti.mad42.remedicine.R;
 
 public class ReminderService extends Service {

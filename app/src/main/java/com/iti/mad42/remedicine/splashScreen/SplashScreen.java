@@ -9,12 +9,12 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
-import com.iti.mad42.remedicine.Model.pojo.CurrentUser;
-import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.networkChengerBrodcast.NetworkChangeReceiver;
+import com.iti.mad42.remedicine.data.pojo.CurrentUser;
+import com.iti.mad42.remedicine.utility.Utility;
 import com.iti.mad42.remedicine.R;
-import com.iti.mad42.remedicine.homeRecyclerView.view.HomeRecyclerView;
-import com.iti.mad42.remedicine.login.view.view.LoginActivity;
+import com.iti.mad42.remedicine.home.view.BottomNavigationBar;
+import com.iti.mad42.remedicine.login.view.LoginActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("LoginTest",MODE_PRIVATE);
                 String email = sharedPreferences.getString(Utility.myCredentials,null);
                 if (email != null) {
-                    mainIntent = new Intent(SplashScreen.this, HomeRecyclerView.class);
+                    mainIntent = new Intent(SplashScreen.this, BottomNavigationBar.class);
                     CurrentUser.getInstance().setEmail(email);
                 }else {
                     mainIntent = new Intent(SplashScreen.this, LoginActivity.class);

@@ -13,8 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.gson.Gson;
-import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
-import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.data.pojo.MedicationPojo;
 import com.iti.mad42.remedicine.R;
 
 public class RefillReminderService extends Service {

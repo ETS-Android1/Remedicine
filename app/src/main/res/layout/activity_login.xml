@@ -17,7 +17,7 @@ android:fillViewport="true">
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".login.view.view.LoginActivity">
+        tools:context=".login.view.LoginActivity">
 
         <ImageView
             android:layout_width="match_parent"

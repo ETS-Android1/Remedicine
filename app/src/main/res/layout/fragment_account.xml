@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/holo_orange_light"
-    tools:context=".homeRecyclerView.view.HomeFragment">
+    tools:context=".home.view.HomeFragment">
 
     <TextView
         android:layout_width="wrap_content"

@@ -6,9 +6,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -35,18 +33,16 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.facebook.CallbackManager;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.iti.mad42.remedicine.Broadcast.NetworkChangeReceiver;
-import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
-import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
-import com.iti.mad42.remedicine.Model.pojo.Repository;
-import com.iti.mad42.remedicine.Model.pojo.RepositoryInterface;
-import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.networkChengerBrodcast.NetworkChangeReceiver;
+import com.iti.mad42.remedicine.data.localDataSource.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.data.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.data.repositry.Repository;
+import com.iti.mad42.remedicine.data.repositry.RepositoryInterface;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.WorkManger.MedReminder.ReminderService;
 import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
-import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
+import com.iti.mad42.remedicine.data.remoteDataSource.RemoteDataSource;
 
 import java.util.concurrent.TimeUnit;
 

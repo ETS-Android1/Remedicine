@@ -48,31 +48,31 @@
             android:value="@string/facebook_client_token" />
 
         <activity
-            android:name=".EditMed.View.EditMedActivity"
+            android:name=".editMedicine.View.EditMedActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".register.view.view.RegisterActivity"
+            android:name=".register.view.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".login.view.view.LoginActivity"
+            android:name=".login.view.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Requests.View.RequestsViewActivity"
+            android:name=".healthTakerRequests.View.RequestsViewActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".AddNewMedicine.View.AddNewMedicineActivity"
+            android:name=".addNewMedicine.View.AddNewMedicineActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".MedDetails.View.MedDetails"
+            android:name=".medicineDetails.View.MedDetails"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".homeRecyclerView.view.HomeRecyclerView"
+            android:name=".home.view.BottomNavigationBar"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
@@ -100,7 +100,7 @@
         </activity>
 
         <receiver
-            android:name=".Broadcast.NetworkChangeReceiver"
+            android:name=".networkChengerBrodcast.NetworkChangeReceiver"
             android:exported="false"
             android:label="NetworkChangeReceiver">
             <intent-filter>

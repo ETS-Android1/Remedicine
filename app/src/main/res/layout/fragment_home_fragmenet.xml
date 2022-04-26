@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/white"
-    tools:context=".homeRecyclerView.view.HomeFragment">
+    tools:context=".home.view.HomeFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddMedicineHome"

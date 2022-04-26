@@ -5,7 +5,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import static android.content.Context.WINDOW_SERVICE;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -13,7 +12,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
-import android.os.VibrationEffect;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -35,15 +32,14 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.facebook.CallbackManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
-import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
-import com.iti.mad42.remedicine.Model.pojo.Repository;
-import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.data.localDataSource.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.data.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.data.repositry.Repository;
+import com.iti.mad42.remedicine.utility.Utility;
 import com.iti.mad42.remedicine.R;
 import com.iti.mad42.remedicine.WorkManger.MyPeriodicWorkManger;
-import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
+import com.iti.mad42.remedicine.data.remoteDataSource.RemoteDataSource;
 
 import java.util.concurrent.TimeUnit;
 
@@ -226,7 +222,7 @@ public class ReminderDialog {
             customNotificationDialogView.invalidate();
             ((ViewGroup) customNotificationDialogView.getParent()).removeAllViews();
         } catch (Exception e) {
-            Log.d("mando", e.toString());
+            Log.d("<<<<<<<<<<<", e.toString());
         }
     }
 
