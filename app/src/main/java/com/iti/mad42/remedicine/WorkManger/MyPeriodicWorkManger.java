@@ -7,7 +7,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -18,14 +17,14 @@ import androidx.work.WorkerParameters;
 
 import com.facebook.CallbackManager;
 import com.google.gson.Gson;
-import com.iti.mad42.remedicine.Model.database.ConcreteLocalDataSource;
-import com.iti.mad42.remedicine.Model.pojo.MedState;
-import com.iti.mad42.remedicine.Model.pojo.MedicationPojo;
-import com.iti.mad42.remedicine.Model.pojo.Repository;
-import com.iti.mad42.remedicine.Model.pojo.Utility;
+import com.iti.mad42.remedicine.data.localDataSource.ConcreteLocalDataSource;
+import com.iti.mad42.remedicine.data.pojo.MedState;
+import com.iti.mad42.remedicine.data.pojo.MedicationPojo;
+import com.iti.mad42.remedicine.data.repositry.Repository;
+import com.iti.mad42.remedicine.utility.Utility;
 import com.iti.mad42.remedicine.WorkManger.MedReminder.MyOneTimeWorkManger;
 import com.iti.mad42.remedicine.WorkManger.RefillReminder.RefillReminderOneTimeWorkManager;
-import com.iti.mad42.remedicine.data.FacebookAuthentication.RemoteDataSource;
+import com.iti.mad42.remedicine.data.remoteDataSource.RemoteDataSource;
 
 import java.util.Calendar;
 import java.util.List;
