@@ -28,6 +28,8 @@ public class RefillReminderOneTimeWorkManager extends Worker {
     public Result doWork() {
         returnedData = getInputData();
         Log.e("sandra ", "data received from refill periodic is: ---> "+returnedData.getString(REFILL_TAG));
+        Log.e("sandra ", "data received from refill periodic is: ---> "+returnedData.getString(REFILL_TAG));
+
         startMyService();
         return Result.success();
     }
