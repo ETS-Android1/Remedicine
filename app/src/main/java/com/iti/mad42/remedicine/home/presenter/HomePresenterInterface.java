@@ -11,4 +11,5 @@ public interface HomePresenterInterface {
     public void updateMedication(MedicationPojo medication);
     public void getOnlineData(String medFriendEmail);
     public String getSharedPref();
+    public List<MedicationPojo> getMedList();
 }
