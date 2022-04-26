@@ -25,7 +25,6 @@ Android Mobile Application that helps the user to record his list of medication 
     <td><img src="https://drive.google.com/file/d/13HE105xp3EYXfletRjdEk_jaFthP4OkN/view?usp=drivesdk" width=300 height=480></td>
     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a04.jpg" width=300 height=480></td>
     <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a01.jpg" width=300 height=480></td>
-    <td><img src="https://github.com/zyeadkamal/Remedicine/blob/main/app/src/main/res/drawable-nodpi/a10.jpg" width=300 height=480></td> 
      
   </tr>
  </table>
