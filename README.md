@@ -19,7 +19,7 @@ Android Mobile Application that helps the user to record his list of medication 
 - Switch accounts between your account and medfriend account if you are a medfriend to someone
 
 ## Screenshots
-https://raw.githubusercontent.com/zyeadkamal/Remedicine/main/app/src/main/res/drawable-nodpi/a04.jpg
+https://drive.google.com/drive/folders/136U7lu04P-gBej7-t5h4Ag_7dRkl-75y
 ## Installation
 - Download the APK file in your Android app and Install it.
 
