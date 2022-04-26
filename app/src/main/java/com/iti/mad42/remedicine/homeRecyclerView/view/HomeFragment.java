@@ -58,6 +58,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
+
 public class HomeFragment extends Fragment implements HomeFragmentInterface, OnNodeListener{
 
     private View view;
@@ -135,17 +138,22 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface, OnN
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.MONTH, -1);
 
-        dayScrollDatePicker = view.findViewById(R.id.dayDatePicker);
-        dayScrollDatePicker.setStartDate(12,4,2022);
-        dayScrollDatePicker.getSelectedDate(new OnDateSelectedListener() {
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, 1);
+
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(getActivity(), R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .build();
+
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
-            public void onDateSelected(@Nullable Date date) {
+            public void onDateSelected(Calendar date, int position) {
+                Date date1 = date.getTime();
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                Toast.makeText(getContext(),dateFormat.format(date),Toast.LENGTH_SHORT).show();
-                presenter.filterMedicationByDay(medicines, dateFormat.format(date));
+                presenter.filterMedicationByDay(medicines, dateFormat.format(date1));
             }
         });
-
     }
 
 

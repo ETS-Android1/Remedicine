@@ -50,14 +50,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.harrywhewell.scrolldatepicker.DayScrollDatePicker
-        android:id="@+id/dayDatePicker"
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        app:selectorColor="@color/ic_launcher_background"
+        app:textColorNormal="@color/ic_launcher_background"
+        app:textColorSelected="@color/black"
+        android:backgroundTint="@color/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="54dp" />
+        tools:layout_editor_absoluteY="54dp"/>
 
     <FrameLayout
         android:id="@+id/homeFragmentFrameLayout"
